@@ -38,7 +38,6 @@ class Tweet extends \yii\db\ActiveRecord
             [['tweetId', 'text'], 'required'],
             [['tweetId', 'status', 'commentCount', 'likeCount'], 'integer'],
             [['text'], 'string'],
-            [['createTime', 'updateTime'], 'safe'],
             [['userId'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 512],
             [['tweetId'], 'unique'],

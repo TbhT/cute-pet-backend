@@ -34,7 +34,6 @@ class Comment extends \yii\db\ActiveRecord
         return [
             [['commentId', 'userId'], 'required'],
             [['commentId', 'tweetId', 'status'], 'integer'],
-            [['createTime', 'updateTime'], 'safe'],
             [['userId'], 'string', 'max' => 255],
             [['commentId'], 'unique'],
         ];

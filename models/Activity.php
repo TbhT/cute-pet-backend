@@ -40,7 +40,7 @@ class Activity extends \yii\db\ActiveRecord
         return [
             [['activityId'], 'required'],
             [['status'], 'integer'],
-            [['beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'createTime', 'updateTime'], 'safe'],
+            [['beginTime', 'endTime', 'joinBeginTime', 'joinEndTime'], 'safe'],
             [['activityId', 'place'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],

@@ -38,7 +38,6 @@ class Pet extends \yii\db\ActiveRecord
         return [
             [['petId'], 'required'],
             [['status', 'gender', 'age', 'vaccineStatus', 'petType'], 'integer'],
-            [['createTime', 'updateTime'], 'safe'],
             [['petId'], 'string', 'max' => 255],
             [['nickname', 'type'], 'string', 'max' => 16],
             [['petId'], 'unique'],
