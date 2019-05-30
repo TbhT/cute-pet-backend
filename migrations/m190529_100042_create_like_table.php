@@ -13,8 +13,8 @@ class m190529_100042_create_like_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%like_tweet}}', [
-            'likeId' => $this->primaryKey()->unique(),
-            'tweetId' => $this->string(127)->unique(),
+            'likeId' => $this->integer(32)->unique(),
+            'tweetId' => $this->integer(32),
             'userId' => $this->string(255)->notNull(),
             'createTime' => $this->dateTime()->defaultExpression('current_timestamp()'),
             'updateTime' => $this->dateTime()->defaultExpression('current_timestamp()'),
