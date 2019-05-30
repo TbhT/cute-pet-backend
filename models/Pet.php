@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "pet".
@@ -40,6 +42,19 @@ class Pet extends \yii\db\ActiveRecord
             [['petId'], 'string', 'max' => 255],
             [['nickname', 'type'], 'string', 'max' => 16],
             [['petId'], 'unique'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ]
+            ]
         ];
     }
 

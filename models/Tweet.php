@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "tweet".
@@ -40,6 +42,19 @@ class Tweet extends \yii\db\ActiveRecord
             [['userId'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 512],
             [['tweetId'], 'unique'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ]
+            ]
         ];
     }
 
