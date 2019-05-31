@@ -21,7 +21,7 @@ class LoginForm extends Model
 
 
     /**
-     * @return array the validation rules.
+     * @return array the validation rbac.
      */
     public function rules()
     {

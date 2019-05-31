@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,6 +27,19 @@ class ActivityController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'update', 'delete'],
+                'rbac' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'update'],
+                        'matchCallback' => function ($rule, $action) {
+//            todo: 当用户是超级管理员或者活动的添加者才可以修改
+                        }
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -101,6 +115,8 @@ class ActivityController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
