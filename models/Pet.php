@@ -67,16 +67,16 @@ class Pet extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'petId' => 'Pet ID',
-            'status' => 'Status',
-            'nickname' => 'Nickname',
-            'gender' => 'Gender',
-            'age' => 'Age',
-            'vaccineStatus' => 'Vaccine Status',
-            'petType' => 'Pet Type',
-            'type' => 'Type',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'petId' => '宠物id',
+            'status' => '宠物状态',
+            'nickname' => '宠物昵称',
+            'gender' => '性别',
+            'age' => '年龄',
+            'vaccineStatus' => '疫苗状态',
+            'petType' => '宠物类型',
+            'type' => '品种',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

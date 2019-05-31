@@ -4,7 +4,6 @@ namespace app\behaviors;
 
 use yii\behaviors\AttributeBehavior;
 use app\utils\Generate;
-use yii\db\BaseActiveRecord;
 
 
 class GenerateIdBehavior extends AttributeBehavior

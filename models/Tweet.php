@@ -38,7 +38,6 @@ class Tweet extends \yii\db\ActiveRecord
             [['text'], 'required'],
             [['status', 'commentCount', 'likeCount'], 'integer'],
             [['text'], 'string'],
-            [['userId'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 512],
         ];
     }
@@ -69,15 +68,15 @@ class Tweet extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'tweetId' => 'Tweet ID',
-            'userId' => 'User ID',
-            'status' => 'Status',
-            'text' => 'Text',
-            'image' => 'Image',
-            'commentCount' => 'Comment Count',
-            'likeCount' => 'Like Count',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'tweetId' => '动态id',
+            'userId' => '用户id',
+            'status' => '动态状态',
+            'text' => '内容',
+            'image' => '图片',
+            'commentCount' => '评论数',
+            'likeCount' => '赞数',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

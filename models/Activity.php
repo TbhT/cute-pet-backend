@@ -40,7 +40,7 @@ class Activity extends ActiveRecord
         return [
             [['status'], 'integer'],
             [['beginTime', 'endTime', 'joinBeginTime', 'joinEndTime'], 'safe'],
-            [['activityId', 'place'], 'string', 'max' => 255],
+            [['place'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
         ];
@@ -73,18 +73,18 @@ class Activity extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'activityId' => 'Activity ID',
-            'status' => 'Status',
-            'name' => 'Name',
-            'beginTime' => 'Begin Time',
-            'endTime' => 'End Time',
-            'joinBeginTime' => 'Join Begin Time',
-            'joinEndTime' => 'Join End Time',
-            'organizer' => 'Organizer',
-            'coorganizer' => 'Coorganizer',
-            'place' => 'Place',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'activityId' => '活动id',
+            'status' => '活动状态',
+            'name' => '活动名称',
+            'beginTime' => '活动开始时间',
+            'endTime' => '活动结束时间',
+            'joinBeginTime' => '报名开始时间',
+            'joinEndTime' => '报名截止时间',
+            'organizer' => '主办方',
+            'coorganizer' => '协办方',
+            'place' => '活动地点',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

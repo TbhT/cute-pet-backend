@@ -12,12 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'commentId')->textInput() ?>
-
-    <?= $form->field($model, 'tweetId')->textInput() ?>
-
-    <?= $form->field($model, 'userId')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'status')->textInput() ?>
 
     <?= $form->field($model, 'createTime')->textInput() ?>

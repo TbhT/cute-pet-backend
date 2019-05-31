@@ -34,7 +34,6 @@ class LikeTweet extends ActiveRecord
         return [
             [['userId'], 'required'],
             [['tweetId'], 'integer'],
-            [['userId'], 'string', 'max' => 255],
         ];
     }
 
@@ -64,11 +63,11 @@ class LikeTweet extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'likeId' => 'Like ID',
-            'tweetId' => 'Tweet ID',
-            'userId' => 'User ID',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'likeId' => '赞id',
+            'tweetId' => '动态id',
+            'userId' => '用户id',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

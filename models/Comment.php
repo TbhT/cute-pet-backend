@@ -34,7 +34,7 @@ class Comment extends ActiveRecord
         return [
             [['userId'], 'required'],
             [['tweetId', 'status'], 'integer'],
-            [['userId'], 'string', 'max' => 255],
+            [['text'], 'string', 'max' => 255],
         ];
     }
 
@@ -64,12 +64,13 @@ class Comment extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'commentId' => 'Comment ID',
-            'tweetId' => 'Tweet ID',
-            'userId' => 'User ID',
-            'status' => 'Status',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'commentId' => '评论id',
+            'tweetId' => '动态id',
+            'userId' => '用户id',
+            'text' => '评论内容',
+            'status' => '评论状态',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 
