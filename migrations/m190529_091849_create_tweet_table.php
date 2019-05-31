@@ -13,8 +13,8 @@ class m190529_091849_create_tweet_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%tweet}}', [
-            'tweetId' => $this->integer(32)->unsigned()->unique(),
-            'userId' => $this->string(255)->defaultValue('')->notNull(),
+            'tweetId' => $this->bigInteger(64)->unsigned()->unique(),
+            'userId' => $this->bigInteger(64)->unsigned()->notNull(),
             'status' => $this->tinyInteger(16)->defaultValue(0),
             'text' => $this->text()->defaultValue('')->notNull(),
             'image' => $this->string(512)->defaultValue(''),

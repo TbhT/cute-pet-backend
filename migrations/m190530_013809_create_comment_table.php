@@ -13,9 +13,9 @@ class m190530_013809_create_comment_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%comment}}', [
-            'commentId' => $this->integer(32),
-            'tweetId' => $this->integer(32),
-            'userId' => $this->string(255)->notNull(),
+            'commentId' => $this->bigInteger(64)->notNull()->unique()->unsigned(),
+            'tweetId' => $this->bigInteger(64)->notNull()->unsigned(),
+            'userId' => $this->bigInteger(64)->notNull()->unsigned(),
             'status' => $this->tinyInteger(16)->defaultValue(0),
             'createTime' => $this->dateTime()->defaultExpression('current_timestamp()'),
             'updateTime' => $this->dateTime()->defaultExpression('current_timestamp()'),

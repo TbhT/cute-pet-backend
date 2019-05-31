@@ -13,7 +13,7 @@ class m190530_015536_create_pet_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%pet}}', [
-            'petId' => $this->string(255)->unique(),
+            'petId' => $this->bigInteger(64)->unique(),
             'status' => $this->tinyInteger(16)->defaultValue(0),
             'nickname' => $this->char(16),
             'gender' => $this->tinyInteger(1),

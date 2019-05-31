@@ -13,7 +13,7 @@ class m190530_021832_create_activity_table extends Migration
     public function safeUp()
     {
         $this->createTable('{{%activity}}', [
-            'activityId' => $this->string(255)->unique(),
+            'activityId' => $this->bigInteger(64)->unique(),
             'status' => $this->tinyInteger(1)->defaultValue(1),
             'name' => $this->char(32)->defaultValue(''),
             'beginTime' => $this->dateTime(),
