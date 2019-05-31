@@ -6,9 +6,11 @@ use Yii;
 use app\models\Tweet;
 use app\models\TweetSearch;
 use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * TweetController implements the CRUD actions for Tweet model.
@@ -33,14 +35,20 @@ class TweetController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'view'],
+                        'actions' => ['view'],
                         'roles' => ['@']
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['update', 'delete', 'index'],
+                        'actions' => ['create', 'update', 'delete', 'index'],
                         'roles' => ['admin']
                     ]
+                ]
+            ],
+            [
+                'class' => ContentNegotiator::className(),
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
                 ]
             ]
         ];
@@ -90,6 +98,25 @@ class TweetController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionUserCreate()
+    {
+        $model = new Tweet();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return [
+                'iRet' => 0,
+                'msg' => 'success',
+                'data' => $model->toArray()
+            ];
+        }
+
+        return [
+            'iRet' => -1,
+            'msg' => 'create tweet failed',
+            'data' => null
+        ];
     }
 
     /**

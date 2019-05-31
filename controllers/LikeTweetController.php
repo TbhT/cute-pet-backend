@@ -92,6 +92,26 @@ class LikeTweetController extends Controller
         ]);
     }
 
+    public function actionUserCreate()
+    {
+        $model = new LikeTweet();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return [
+                'iRet' => 0,
+                'msg' => 'success',
+                'data' => $model->toArray()
+            ];
+        }
+
+        return [
+            'iRet' => -1,
+            'msg' => 'create tweet failed',
+            'data' => null
+        ];
+    }
+
+
     /**
      * Updates an existing LikeTweet model.
      * If update is successful, the browser will be redirected to the 'view' page.
