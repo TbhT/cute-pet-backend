@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Pet;
 use app\models\PetSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,6 +27,22 @@ class PetController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'update', 'delete', 'index', 'view'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'view'],
+                        'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update', 'delete', 'index'],
+                        'roles' => ['admin']
+                    ]
+                ]
+            ]
         ];
     }
 
@@ -101,6 +118,8 @@ class PetController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

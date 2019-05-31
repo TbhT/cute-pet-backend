@@ -24,19 +24,34 @@ class ActivityController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['POST']
                 ],
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete'],
-                'rbac' => [
+                'only' => ['create', 'update', 'delete', 'index', 'view'],
+                'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update'],
-                        'matchCallback' => function ($rule, $action) {
-//            todo: 当用户是超级管理员或者活动的添加者才可以修改
+                        'actions' => ['create', 'view'],
+                        'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['updateActivity'],
+                        'roleParams' => function () {
+                            return [
+                                'activity' => Activity::findOne([
+                                    'activityId' => Yii::$app->request->get('id')
+                                ])
+                            ];
                         }
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['delete', 'update', 'index'],
+                        'roles' => ['admin']
                     ]
                 ]
             ]
