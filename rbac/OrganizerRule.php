@@ -9,6 +9,7 @@ use yii\rbac\Rule;
 
 class OrganizerRule extends Rule
 {
+    public $name = 'isOrganizer';
 
     /**
      * Executes the rule.
