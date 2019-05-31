@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
+use app\behaviors\GenerateIdBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property string $createTime
  * @property string $updateTime
  */
-class Comment extends \yii\db\ActiveRecord
+class Comment extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -32,10 +32,9 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['commentId', 'userId'], 'required'],
-            [['commentId', 'tweetId', 'status'], 'integer'],
+            [['userId'], 'required'],
+            [['tweetId', 'status'], 'integer'],
             [['userId'], 'string', 'max' => 255],
-            [['commentId'], 'unique'],
         ];
     }
 
@@ -48,6 +47,13 @@ class Comment extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ]
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['commentId']
+                ],
+                'idType' => GenerateIdBehavior::COMMENT_ID_TYPE
             ]
         ];
     }

@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
+use app\behaviors\GenerateIdBehavior;
 use yii\db\ActiveRecord;
 
 /**
@@ -35,12 +35,11 @@ class Tweet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tweetId', 'text'], 'required'],
-            [['tweetId', 'status', 'commentCount', 'likeCount'], 'integer'],
+            [['text'], 'required'],
+            [['status', 'commentCount', 'likeCount'], 'integer'],
             [['text'], 'string'],
             [['userId'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 512],
-            [['tweetId'], 'unique'],
         ];
     }
 
@@ -53,6 +52,13 @@ class Tweet extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ]
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['tweetId']
+                ],
+                'idType' => GenerateIdBehavior::PET_ID_TYPE
             ]
         ];
     }

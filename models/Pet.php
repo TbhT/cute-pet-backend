@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use app\behaviors\GenerateIdBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -20,7 +20,7 @@ use yii\db\ActiveRecord;
  * @property string $createTime
  * @property string $updateTime
  */
-class Pet extends \yii\db\ActiveRecord
+class Pet extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,11 +36,8 @@ class Pet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['petId'], 'required'],
             [['status', 'gender', 'age', 'vaccineStatus', 'petType'], 'integer'],
-            [['petId'], 'string', 'max' => 255],
             [['nickname', 'type'], 'string', 'max' => 16],
-            [['petId'], 'unique'],
         ];
     }
 
@@ -53,6 +50,13 @@ class Pet extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ]
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['petId']
+                ],
+                'idType' => GenerateIdBehavior::PET_ID_TYPE
             ]
         ];
     }

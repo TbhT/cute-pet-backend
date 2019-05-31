@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use app\behaviors\GenerateIdBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -22,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property string $createTime
  * @property string $updateTime
  */
-class Activity extends \yii\db\ActiveRecord
+class Activity extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -38,13 +38,11 @@ class Activity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['activityId'], 'required'],
             [['status'], 'integer'],
             [['beginTime', 'endTime', 'joinBeginTime', 'joinEndTime'], 'safe'],
             [['activityId', 'place'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
-            [['activityId'], 'unique'],
         ];
     }
 
@@ -57,6 +55,13 @@ class Activity extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ]
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['activityId']
+                ],
+                'idType' => GenerateIdBehavior::ACTIVITY_ID_TYPE
             ]
         ];
     }

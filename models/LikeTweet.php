@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use Yii;
+use app\behaviors\GenerateIdBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property string $createTime
  * @property string $updateTime
  */
-class LikeTweet extends \yii\db\ActiveRecord
+class LikeTweet extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -32,10 +32,9 @@ class LikeTweet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['likeId', 'userId'], 'required'],
-            [['likeId', 'tweetId'], 'integer'],
+            [['userId'], 'required'],
+            [['tweetId'], 'integer'],
             [['userId'], 'string', 'max' => 255],
-            [['likeId'], 'unique'],
         ];
     }
 
@@ -48,6 +47,13 @@ class LikeTweet extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ]
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['likeId']
+                ],
+                'idType' => GenerateIdBehavior::LIKE_TWEET_ID_TYPE
             ]
         ];
     }
