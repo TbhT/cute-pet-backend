@@ -14,13 +14,13 @@ class Generate
     public static function userId()
     {
         $time = self::timeId();
-        return "9$time";
+        return intval("9$time");
     }
 
     public static function petId()
     {
         $time = self::timeId();
-        return "8$time";
+        return intval("8$time");
     }
 
     private static function shortId()
@@ -33,25 +33,25 @@ class Generate
     public static function tweetId()
     {
         $id = self::shortId();
-        return "2$id";
+        return intval("2$id");
     }
 
     public static function activityId()
     {
         $id = self::shortId();
-        return "3$id";
+        return intval("3$id");
     }
 
     public static function commentId()
     {
         $id = self::shortId();
-        return "4$id";
+        return intval("4$id");
     }
 
     public static function likeTweetId()
     {
         $id = self::shortId();
-        return "5$id";
+        return intval("5$id");
     }
 
 
