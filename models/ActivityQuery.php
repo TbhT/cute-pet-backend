@@ -31,4 +31,9 @@ class ActivityQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function activityDetail($activityId)
+    {
+        return $this->andOnCondition(['activityId' => $activityId]);
+    }
 }

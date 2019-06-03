@@ -31,4 +31,9 @@ class CommentQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function commentDetail($commentId)
+    {
+        return $this->andOnCondition(['commentId' => $commentId]);
+    }
 }

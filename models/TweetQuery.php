@@ -31,4 +31,16 @@ class TweetQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function tweetsByUserId($userId = null)
+    {
+        return $this->andOnCondition(['userId' => $userId]);
+    }
+
+    public function tweetDetail($petId)
+    {
+        return $this->andOnCondition(['tweetId' => $petId]);
+    }
+
+
 }

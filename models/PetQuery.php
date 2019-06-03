@@ -31,4 +31,9 @@ class PetQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function petDetail($petId)
+    {
+        return $this->andOnCondition(['petId' => $petId]);
+    }
 }
