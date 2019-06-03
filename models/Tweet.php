@@ -88,4 +88,31 @@ class Tweet extends \yii\db\ActiveRecord
     {
         return new TweetQuery(get_called_class());
     }
+
+    /**
+     * 获取tweet对应的用户信息
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['userId' => 'userId']);
+    }
+
+    /**
+     * 获取tweet对应的赞总数
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLikes()
+    {
+        return $this->hasMany(LikeTweet::className(), ['tweetId' => 'tweetId']);
+    }
+
+    /**
+     * 获取tweet对应的评论总数
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['tweetId' => 'tweetId']);
+    }
 }
