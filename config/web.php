@@ -1,7 +1,11 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+if (defined('YII_ENV') && YII_ENV === 'test') {
+    $db = require __DIR__ . '/db-local.php';
+} else {
+    $db = require __DIR__ . '/db.php';
+}
 
 $config = [
     'id' => 'basic',

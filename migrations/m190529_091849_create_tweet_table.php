@@ -16,7 +16,7 @@ class m190529_091849_create_tweet_table extends Migration
             'tweetId' => $this->bigInteger(64)->unsigned()->unique(),
             'userId' => $this->bigInteger(64)->unsigned()->notNull(),
             'status' => $this->tinyInteger(16)->defaultValue(0),
-            'text' => $this->text()->defaultValue('')->notNull(),
+            'text' => $this->text()->notNull(),
             'image' => $this->string(512)->defaultValue(''),
             'commentCount' => $this->integer(11)->defaultValue(0),
             'likeCount' => $this->integer(11)->defaultValue(0),
