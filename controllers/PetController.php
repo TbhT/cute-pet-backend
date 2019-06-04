@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use stdClass;
 use Yii;
 use app\models\Pet;
 use app\models\PetSearch;
@@ -92,23 +93,42 @@ class PetController extends Controller
         ]);
     }
 
-    public function actionUserCreate()
+    /**
+     * @return stdClass
+     */
+    public function actionJCreate()
     {
         $model = new Pet();
+        $result = new stdClass();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'iRet' => 0,
-                'msg' => 'success',
-                'data' => $model->toArray()
-            ];
+            $result->iRet = 0;
+            $result->msg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -1;
+            $result->msg = 'create pet failed';
+            $result->data = $model->getErrorSummary(true);
         }
 
-        return [
-            'iRet' => -1,
-            'msg' => 'create tweet failed',
-            'data' => null
-        ];
+        return $result;
+    }
+
+    /**
+     * @return stdClass
+     */
+    public function actionJDetail()
+    {
+        $petId = Yii::$app->request->post('petId');
+        $result = new stdClass();
+
+        $data = Pet::find()->getPetDetail($petId)->asArray();
+
+        $result->iRet = 0;
+        $result->data = $data;
+        $result->msg = 'success';
+
+        return $result;
     }
 
 

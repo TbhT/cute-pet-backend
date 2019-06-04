@@ -41,7 +41,7 @@ class TweetQuery extends ActiveQuery
      * @param int $offset
      * @return TweetQuery
      */
-    public function tweetsByUserId($userId, $num = 20, $offset = 0)
+    public function getTweetsByUserId($userId, $offset = 0, $num = 20)
     {
         return $this->andOnCondition(['userId' => $userId])
             ->limit($num)
@@ -53,7 +53,7 @@ class TweetQuery extends ActiveQuery
      * @param $tweetId
      * @return TweetQuery
      */
-    public function tweetDetail($tweetId)
+    public function getTweetDetail($tweetId)
     {
         return $this->andOnCondition(['tweetId' => $tweetId])
             ->innerJoinWith('user');
@@ -64,7 +64,7 @@ class TweetQuery extends ActiveQuery
      * @param $tweetId
      * @return TweetQuery
      */
-    public function comments($tweetId)
+    public function getComments($tweetId)
     {
         return $this->andOnCondition(['tweetId' => $tweetId])
             ->innerJoinWith('comments')

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use stdClass;
 use Yii;
 use app\models\Tweet;
 use app\models\TweetSearch;
@@ -47,6 +48,8 @@ class TweetController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
+//                todo: 需要添加角色给 j-create
+                'only' => ['j-create', 'j-all-tweets'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -100,23 +103,45 @@ class TweetController extends Controller
         ]);
     }
 
-    public function actionUserCreate()
+    /**
+     * @return stdClass
+     */
+    public function actionJCreate()
     {
         $model = new Tweet();
+        $result = new stdClass();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'iRet' => 0,
-                'msg' => 'success',
-                'data' => $model->toArray()
-            ];
+            $result->iRet = 0;
+            $result->msg = 'success';
+            $result->data = $model->toArray();
+        } else {
+            $result->iRet = -1;
+            $result->msg = 'create tweet failed';
+            $result->data = $model->getErrorSummary(true);
         }
 
-        return [
-            'iRet' => -1,
-            'msg' => 'create tweet failed',
-            'data' => null
-        ];
+        return $result;
+    }
+
+    /**
+     * @return stdClass
+     */
+    public function actionJAllTweets()
+    {
+        $query = Tweet::find()
+            ->orderBy('createTime DESC')
+            ->limit(20)
+            ->offset(0);
+
+        $data = $query->asArray();
+        $result = new stdClass();
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = $data;
+
+        return $result;
     }
 
     /**
@@ -145,6 +170,8 @@ class TweetController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

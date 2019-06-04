@@ -19,7 +19,7 @@ use yii\db\ActiveRecord;
  * @property string $createTime
  * @property string $updateTime
  */
-class Tweet extends \yii\db\ActiveRecord
+class Tweet extends ActiveRecord
 {
     /**
      * {@inheritdoc}
