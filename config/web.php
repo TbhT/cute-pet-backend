@@ -1,5 +1,8 @@
 <?php
 
+use yii\filters\ContentNegotiator;
+use yii\web\Response;
+
 $params = require __DIR__ . '/params.php';
 if (defined('YII_ENV') && YII_ENV === 'test') {
     $db = require __DIR__ . '/db-local.php';
@@ -10,7 +13,15 @@ if (defined('YII_ENV') && YII_ENV === 'test') {
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        [
+            'class' => ContentNegotiator::className(),
+            'formats' => [
+                'application/json' => Response::FORMAT_JSON
+            ]
+        ]
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
@@ -22,10 +33,6 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -55,6 +62,24 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
         ],
+    ],
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'modelMap' => [
+                'User' => 'app\models\User'
+            ],
+            'controllerMap' => [
+                'security' => 'app\controllers\UserController'
+            ],
+            'enableUnconfirmedLogin' => true,
+            'enableConfirmation' => false,
+            'cost' => 12,
+            'admins' => ['19011110000'],
+            'urlRules' => [
+                '<action:(coupon|person|orders|resetpwd|login|logout|auth)>' => 'security/<action>'
+            ]
+        ]
     ],
     'params' => $params,
 ];
