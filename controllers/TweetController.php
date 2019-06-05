@@ -130,6 +130,8 @@ class TweetController extends Controller
     /**
      * 点赞或者取消点赞
      * @return stdClass
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionJLike()
     {
