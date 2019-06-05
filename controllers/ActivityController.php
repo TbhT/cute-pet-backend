@@ -2,14 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\ActivityUser;
 use stdClass;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
 use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -54,6 +57,13 @@ class ActivityController extends Controller
                         'actions' => ['delete', 'update', 'index'],
                         'roles' => ['admin']
                     ]
+                ]
+            ],
+            [
+                'class' => ContentNegotiator::className(),
+                'only' => ['j-join', 'j-create'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
                 ]
             ]
         ];
@@ -114,7 +124,7 @@ class ActivityController extends Controller
         $model = new Activity();
         $result = new stdClass();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             $result->iRet = 0;
             $result->msg = 'success';
             $result->data = null;
@@ -127,11 +137,49 @@ class ActivityController extends Controller
         return $result;
     }
 
+    /**
+     * 报名参加某项活动
+     * @return stdClass
+     */
     public function actionJJoin()
     {
         $activityId = Yii::$app->request->post('activityId');
+        $userId = Yii::$app->user->id;
         $model = Activity::findOne(['activityId' => $activityId]);
-//        $userId =
+        $result = new stdClass();
+
+        if (!$model) {
+            $result->iRet = -3;
+            $result->msg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $auModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
+
+        if (!$auModel) {
+//             已经参加过活动
+            $result->iRet = -4;
+            $result->msg = 'has joined activity';
+            $result->data = null;
+            return $result;
+        }
+
+        $auModel = new ActivityUser();
+        $auModel->activityId = $activityId;
+        $auModel->userId = $userId;
+
+        if ($auModel->save()) {
+            $result->iRet = 0;
+            $result->data = null;
+            $result->msg = 'success';
+        } else {
+            $result->data = $auModel->getErrorSummary(true);
+            $result->msg = 'join activity failed';
+            $result->iRet = -4;
+        }
+
+        return $result;
     }
 
     /**
