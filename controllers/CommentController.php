@@ -2,13 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\Tweet;
+use stdClass;
 use Yii;
 use app\models\Comment;
 use app\models\CommentSearch;
 use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * CommentController implements the CRUD actions for Comment model.
@@ -41,6 +45,13 @@ class CommentController extends Controller
                         'actions' => ['update', 'delete', 'index'],
                         'roles' => ['admin']
                     ]
+                ]
+            ],
+            [
+                'class' => ContentNegotiator::className(),
+                'only' => ['j-create'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
                 ]
             ]
         ];
@@ -92,23 +103,39 @@ class CommentController extends Controller
         ]);
     }
 
-    public function actionUserCreate()
+    /**
+     * 新建评论
+     * @return stdClass
+     */
+    public function actionJCreate()
     {
         $model = new Comment();
+        $result = new stdClass();
+        $model->userId = Yii::$app->user->id;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'iRet' => 0,
-                'msg' => 'success',
-                'data' => $model->toArray()
-            ];
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
+            $tweetId = Yii::$app->request->post('tweetId');
+            $tweet = Tweet::findOne(['tweetId' => $tweetId]);
+            if (!$tweet) {
+                $result->iRet = -3;
+                $result->msg = 'tweet is not exist';
+                $result->data = $tweet->getErrorSummary(true);
+                return $result;
+            } else {
+                $tweet->commentCount += 1;
+                $tweet->save(false);
+            }
+
+            $result->iRet = 0;
+            $result->msg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -4;
+            $result->msg = 'comment failed';
+            $result->data = $model->getErrorSummary(true);
         }
 
-        return [
-            'iRet' => -1,
-            'msg' => 'create tweet failed',
-            'data' => null
-        ];
+        return $result;
     }
 
 
