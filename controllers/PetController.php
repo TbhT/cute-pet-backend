@@ -7,9 +7,11 @@ use Yii;
 use app\models\Pet;
 use app\models\PetSearch;
 use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * PetController implements the CRUD actions for Pet model.
@@ -42,6 +44,13 @@ class PetController extends Controller
                         'actions' => ['update', 'delete', 'index'],
                         'roles' => ['admin']
                     ]
+                ]
+            ],
+            [
+                'class' => ContentNegotiator::className(),
+                'only' => ['j-create', 'j-detail'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
                 ]
             ]
         ];

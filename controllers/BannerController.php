@@ -2,12 +2,15 @@
 
 namespace app\controllers;
 
+use stdClass;
 use Yii;
 use app\models\Banner;
 use app\models\BannerSearch;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * BannerController implements the CRUD actions for Banner model.
@@ -26,7 +29,34 @@ class BannerController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            [
+                'class' => ContentNegotiator::className(),
+                'only' => ['j-get'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
+                ]
+            ]
         ];
+    }
+
+    /**
+     * 获取所有banner图
+     * @return stdClass
+     */
+    public function actionJGet()
+    {
+        $banners = Banner::find()->asArray()->all();
+        $result = new stdClass();
+        $result->iRet = 0;
+        $result->msg = 'success';
+
+        if ($banners) {
+            $result->data = $banners;
+        } else {
+            $result->data = [];
+        }
+
+        return $result;
     }
 
     /**

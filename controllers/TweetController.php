@@ -51,7 +51,7 @@ class TweetController extends Controller
             [
                 'class' => ContentNegotiator::className(),
 //                todo: 需要添加角色给 j-create
-                'only' => ['j-create', 'j-all-tweets'],
+                'only' => ['j-create', 'j-all-tweets', 'j-like'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]

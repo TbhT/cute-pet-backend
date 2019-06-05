@@ -47,7 +47,7 @@ class UserController extends SecurityController
             [
                 [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['j-login', 'j-sign-up', 'j-logout'],
+                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status'],
                     'formats' => [
                         'application/json' => Response::FORMAT_JSON
                     ]
@@ -57,6 +57,30 @@ class UserController extends SecurityController
     }
 
     /**
+     * 获取用户的登录状态
+     * @return stdClass
+     */
+    public function actionJStatus()
+    {
+        $result = new stdClass();
+        $result->iRet = 0;
+        $result->msg = 'success';
+
+        if (Yii::$app->user->identity) {
+            $result->data = [
+                'userId' => Yii::$app->user->id
+            ];
+        } else {
+            $result->data = [
+                'userId' => null
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 用户登录
      * @return stdClass
      */
     public function actionJLogin()
@@ -78,6 +102,7 @@ class UserController extends SecurityController
     }
 
     /**
+     * 用户退出
      * @return stdClass
      */
     public function actionJLogout()
