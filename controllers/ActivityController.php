@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use stdClass;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
@@ -104,23 +105,33 @@ class ActivityController extends Controller
         ]);
     }
 
-    public function actionUserCreate()
+    /**
+     * 用户新建活动
+     * @return stdClass
+     */
+    public function actionJCreate()
     {
         $model = new Activity();
+        $result = new stdClass();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return [
-                'iRet' => 0,
-                'msg' => 'success',
-                'data' => $model->toArray()
-            ];
+            $result->iRet = 0;
+            $result->msg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -1;
+            $result->msg = 'create activity failed';
+            $result->data = $model->getErrorSummary(true);
         }
 
-        return [
-            'iRet' => -1,
-            'msg' => 'create tweet failed',
-            'data' => null
-        ];
+        return $result;
+    }
+
+    public function actionJJoin()
+    {
+        $activityId = Yii::$app->request->post('activityId');
+        $model = Activity::findOne(['activityId' => $activityId]);
+//        $userId =
     }
 
     /**
