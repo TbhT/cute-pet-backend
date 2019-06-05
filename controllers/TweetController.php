@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\LikeTweet;
+use dektrium\user\helpers\Password;
 use stdClass;
 use Yii;
 use app\models\Tweet;
@@ -104,6 +106,7 @@ class TweetController extends Controller
     }
 
     /**
+     * 发表推特
      * @return stdClass
      */
     public function actionJCreate()
@@ -111,10 +114,10 @@ class TweetController extends Controller
         $model = new Tweet();
         $result = new stdClass();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             $result->iRet = 0;
             $result->msg = 'success';
-            $result->data = $model->toArray();
+            $result->data = $model->getAttributes();
         } else {
             $result->iRet = -1;
             $result->msg = 'create tweet failed';
@@ -125,17 +128,77 @@ class TweetController extends Controller
     }
 
     /**
+     * 点赞或者取消点赞
+     * @return stdClass
+     */
+    public function actionJLike()
+    {
+        $type = Yii::$app->request->post('type');
+        $tweetId = Yii::$app->request->post('tweetId');
+        $tweet = Tweet::findOne(['tweetId' => $tweetId]);
+        $result = new stdClass();
+        $userId = Yii::$app->user->id;
+
+        if (!$tweet) {
+            return $result;
+        }
+
+        if ($type == 1) {
+            $tweet->likeCount += 1;
+            $likeTweet = new LikeTweet();
+            $likeTweet->tweetId = $tweetId;
+            $likeTweet->userId = $userId;
+
+            if (!$likeTweet->save()) {
+                $result->iRet = -3;
+                $result->data = $likeTweet->getErrorSummary(true);
+                $result->msg = 'like failed';
+                return $result;
+            }
+        } else {
+            $tweet->likeCount -= 1;
+            $likeTweet = LikeTweet::findOne(['userId' => $userId, 'tweetId' => $tweetId]);
+            if ($likeTweet) {
+                $likeTweet->delete();
+            }
+        }
+
+        if ($tweet->save(false)) {
+            $result->iRet = 0;
+            $result->msg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -1;
+            $result->msg = 'like or not like failed';
+            $result->data = $tweet->getErrorSummary(true);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取所有的推特信息流
      * @return stdClass
      */
     public function actionJAllTweets()
     {
+        $offset = Yii::$app->request->post('offset');
+        $result = new stdClass();
+
+        if (!is_numeric($offset)) {
+            $result->iRet = -2;
+            $result->msg = 'parameter invalid';
+            $result->data = null;
+
+            return $result;
+        }
+
         $query = Tweet::find()
             ->orderBy('createTime DESC')
             ->limit(20)
-            ->offset(0);
+            ->offset($offset - 1);
 
-        $data = $query->asArray();
-        $result = new stdClass();
+        $data = $query->asArray()->all();
 
         $result->iRet = 0;
         $result->msg = 'success';

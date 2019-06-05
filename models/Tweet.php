@@ -5,6 +5,7 @@ namespace app\models;
 use yii\behaviors\TimestampBehavior;
 use app\behaviors\GenerateIdBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "tweet".
@@ -50,14 +51,15 @@ class Tweet extends ActiveRecord
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
-                ]
+                ],
+                'value' => new Expression('NOW()')
             ],
             [
                 'class' => GenerateIdBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['tweetId']
                 ],
-                'idType' => GenerateIdBehavior::PET_ID_TYPE
+                'idType' => GenerateIdBehavior::TWEET_ID_TYPE
             ]
         ];
     }

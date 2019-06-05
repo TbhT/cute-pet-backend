@@ -14,44 +14,43 @@ class Generate
     public static function userId()
     {
         $time = self::timeId();
-        return intval("9$time");
+        return "9$time";
     }
 
     public static function petId()
     {
         $time = self::timeId();
-        return intval("8$time");
+        return "8$time";
     }
 
     private static function shortId()
     {
         $id = time();
-        $r = rand(1000, 9999);
-        return "$r$id";
+        return "$id";
     }
 
     public static function tweetId()
     {
         $id = self::shortId();
-        return intval("2$id");
+        return "2$id";
     }
 
     public static function activityId()
     {
         $id = self::shortId();
-        return intval("3$id");
+        return "3$id";
     }
 
     public static function commentId()
     {
         $id = self::shortId();
-        return intval("4$id");
+        return "4$id";
     }
 
     public static function likeTweetId()
     {
         $id = self::shortId();
-        return intval("5$id");
+        return "5$id";
     }
 
 
