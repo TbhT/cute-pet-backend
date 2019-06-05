@@ -24,9 +24,7 @@ class m190603_142424_add_userid_feild_to_activity_table extends Migration
      */
     public function safeDown()
     {
-        echo "m190603_142424_add_userid_feild_to_activity_table cannot be reverted.\n";
-
-        return false;
+        $this->dropColumn('{{%activity}}', 'userId');
     }
 
     /*
