@@ -32,8 +32,23 @@ class ActivityQuery extends \yii\db\ActiveQuery
         return parent::one($db);
     }
 
-    public function activityDetail($activityId)
+    /**
+     * 获取活动详情
+     * @param $activityId
+     * @return ActivityQuery
+     */
+    public function getDetail($activityId)
     {
         return $this->andOnCondition(['activityId' => $activityId]);
+    }
+
+    /**
+     * 获取某类型的活动
+     * @param $type
+     * @return ActivityQuery
+     */
+    public function getActivities($type)
+    {
+        return $this->andOnCondition(['type' => $type]);
     }
 }

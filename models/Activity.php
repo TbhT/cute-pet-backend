@@ -24,6 +24,10 @@ use yii\db\ActiveRecord;
  */
 class Activity extends ActiveRecord
 {
+    const COMPETE_ACTIVITY = 1;
+    const PARTY_ACTIVITY = 2;
+    const TRAVEL_ACTIVITY = 3;
+
     /**
      * {@inheritdoc}
      */

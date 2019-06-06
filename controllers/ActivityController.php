@@ -61,7 +61,7 @@ class ActivityController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-join', 'j-create'],
+                'only' => ['j-join', 'j-create', 'j-activities'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -113,6 +113,32 @@ class ActivityController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * 获取类型活动
+     * @return stdClass
+     */
+    public function actionJActivities()
+    {
+        $type = Yii::$app->request->post('type');
+
+        $result = new stdClass();
+
+        if ($type === 0) {
+            $result->iRet = -2;
+            $result->msg = 'invalid parameter';
+            $result->data = null;
+            return $result;
+        }
+
+        $models = Activity::find()->getActivities($type)->asArray()->all();
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = $models;
+
+        return $result;
     }
 
     /**
