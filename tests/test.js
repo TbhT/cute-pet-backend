@@ -29,3 +29,13 @@ $.ajax({
         console.log(error)
     }
 });
+
+//  获取 token
+
+$.ajax({
+    url: '/oauth2/token',
+    type: 'post',
+    data: {
+
+    }
+})
