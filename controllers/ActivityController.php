@@ -122,17 +122,22 @@ class ActivityController extends Controller
     public function actionJActivities()
     {
         $type = Yii::$app->request->post('type');
+        $offset = Yii::$app->request->post('offset');
 
         $result = new stdClass();
 
-        if ($type === 0) {
+        if (!$type || !$offset) {
             $result->iRet = -2;
             $result->msg = 'invalid parameter';
             $result->data = null;
             return $result;
         }
 
-        $models = Activity::find()->getActivities($type)->asArray()->all();
+        $models = Activity::find()
+            ->getActivities($type)
+            ->limit(20)
+            ->offset($offset - 1)
+            ->asArray()->all();
 
         $result->iRet = 0;
         $result->msg = 'success';

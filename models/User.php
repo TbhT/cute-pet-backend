@@ -57,4 +57,9 @@ class User extends BaseUser
     {
         return static::findOne(['username' => $username]);
     }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+
+    }
 }

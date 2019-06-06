@@ -23,13 +23,8 @@ class UserController extends SecurityController
             $parent['access']['rules'],
             [
                 'allow' => true,
-                'actions' => ['j-login', 'j-sign-up'],
+                'actions' => ['j-login', 'j-sign-up', 'j-status'],
                 'roles' => ['?']
-            ],
-            [
-                'allow' => true,
-                'actions' => ['j-login'],
-                'roles' => ['@']
             ]
         );
 
