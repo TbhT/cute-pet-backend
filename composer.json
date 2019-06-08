@@ -25,7 +25,7 @@
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "dektrium/yii2-user": "^0.9.14",
     "ext-json": "*",
-    "filsh/yii2-oauth2-server": "*"
+    "yiisoft/yii2-authclient": "^2.2"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
