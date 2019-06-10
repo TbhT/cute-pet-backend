@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\behaviors\GenerateIdBehavior;
-use app\models\Pet;
 use stdClass;
 use Yii;
 use app\models\Market;
@@ -15,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+
 
 /**
  * MarketController implements the CRUD actions for Market model.
