@@ -70,4 +70,22 @@ class TweetQuery extends ActiveQuery
             ->innerJoinWith('comments')
             ->innerJoinWith('user');
     }
+
+    /**
+     * 查询主题相关的动态信息流
+     * @param $topicId
+     * @return |null
+     */
+    public function relatedTweets($topicId)
+    {
+        $topic = Topic::find()->where(['topicId' => $topicId])->one();
+
+        if (empty($topic)) {
+            return $this;
+        }
+
+        return $this->andWhere([
+            'like', 'text', $topic->text
+        ]);
+    }
 }

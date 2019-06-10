@@ -86,7 +86,7 @@ class Tweet extends ActiveRecord
      * {@inheritdoc}
      * @return TweetQuery the active query used by this AR class.
      */
-    public static function find()
+    public static function  find()
     {
         return new TweetQuery(get_called_class());
     }

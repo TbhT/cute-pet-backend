@@ -206,25 +206,7 @@
                     "dektrium\\user\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dmitry Erofeev",
-                    "email": "dmeroff@gmail.com",
-                    "homepage": "http://dmeroff.ru"
-                }
-            ],
-            "description": "Flexible user registration and authentication module for Yii2",
-            "keywords": [
-                "User management",
-                "dektrium",
-                "yii2",
-                "yii2-user"
-            ],
-            "time": "2018-04-03T12:24:41+00:00"
+            "notification-url": "https://packagist.org/downloads/"
         },
         {
             "name": "doctrine/lexer",
@@ -985,24 +967,7 @@
                     "yii\\httpclient\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Klimov",
-                    "email": "klimov.paul@gmail.com"
-                }
-            ],
-            "description": "HTTP client extension for the Yii framework",
-            "keywords": [
-                "curl",
-                "http",
-                "httpclient",
-                "yii2"
-            ],
-            "time": "2019-05-14T13:33:37+00:00"
+            "notification-url": "https://packagist.org/downloads/"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
