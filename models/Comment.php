@@ -82,4 +82,9 @@ class Comment extends ActiveRecord
     {
         return new CommentQuery(get_called_class());
     }
+
+    public function a()
+    {
+
+    }
 }

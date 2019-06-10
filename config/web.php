@@ -60,10 +60,7 @@ $config = [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                'POST oauth2/<action:\w+>' => 'oauth2/rest/<action>'
-            ]
+            'showScriptName' => false
         ],
     ],
     'modules' => [

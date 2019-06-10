@@ -32,6 +32,11 @@ class CommentQuery extends \yii\db\ActiveQuery
         return parent::one($db);
     }
 
+    /**
+     * 获取评论的详情
+     * @param $commentId
+     * @return CommentQuery
+     */
     public function commentDetail($commentId)
     {
         return $this->andOnCondition(['commentId' => $commentId]);

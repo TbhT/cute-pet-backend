@@ -104,6 +104,15 @@ class CommentController extends Controller
     }
 
     /**
+     * 获取某条动态下的评论
+     */
+    public function actionJTweet()
+    {
+        $tweetId = Yii::$app->request->post('tweetId');
+
+    }
+
+    /**
      * 新建评论
      * @return stdClass
      */
