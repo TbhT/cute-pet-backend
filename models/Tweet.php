@@ -22,6 +22,9 @@ use yii\db\Expression;
  */
 class Tweet extends ActiveRecord
 {
+    const NORMAL_STATUS = 0;
+
+
     /**
      * {@inheritdoc}
      */

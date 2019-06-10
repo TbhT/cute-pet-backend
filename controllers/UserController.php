@@ -71,6 +71,10 @@ class UserController extends SecurityController
             ];
         }
 
+        $result->data = [
+            'userId' => 121391401423
+        ];
+
         return $result;
     }
 

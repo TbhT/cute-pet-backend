@@ -28,6 +28,9 @@ class Activity extends ActiveRecord
     const PARTY_ACTIVITY = 2;
     const TRAVEL_ACTIVITY = 3;
 
+    const REVIEW_STATUS = 2;
+    const SUBMIT_STATUS = 1;
+
     /**
      * {@inheritdoc}
      */

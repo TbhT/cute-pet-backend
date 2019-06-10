@@ -18,6 +18,8 @@ use yii\db\ActiveRecord;
  */
 class Comment extends ActiveRecord
 {
+    const NORMAL = 0;
+
     /**
      * {@inheritdoc}
      */
