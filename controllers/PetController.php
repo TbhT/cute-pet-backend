@@ -110,7 +110,7 @@ class PetController extends Controller
         $model = new Pet();
         $result = new stdClass();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             $result->iRet = 0;
             $result->msg = 'success';
             $result->data = null;

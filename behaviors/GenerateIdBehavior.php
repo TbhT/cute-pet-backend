@@ -14,6 +14,7 @@ class GenerateIdBehavior extends AttributeBehavior
     const COMMENT_ID_TYPE = 'comment_id';
     const LIKE_TWEET_ID_TYPE = 'like_tweet_id';
     const PET_ID_TYPE = 'pet_id';
+    const MARKET_ID_TYPE = 'market_id';
 
     public $idType;
 
@@ -59,6 +60,11 @@ class GenerateIdBehavior extends AttributeBehavior
             case self::PET_ID_TYPE:
                 {
                     $value = Generate::petId();
+                    break;
+                }
+            case self::MARKET_ID_TYPE:
+                {
+                    $value = Generate::marketId();
                     break;
                 }
         }

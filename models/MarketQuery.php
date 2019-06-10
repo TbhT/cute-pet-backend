@@ -31,4 +31,14 @@ class MarketQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    /**
+     * 市场详情
+     * @param $marketId
+     * @return MarketQuery
+     */
+    public function detail($marketId)
+    {
+        return $this->andOnCondition(['marketId' => $marketId]);
+    }
 }

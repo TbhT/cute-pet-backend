@@ -29,6 +29,12 @@ class Generate
         return "$id";
     }
 
+    public static function marketId()
+    {
+        $id = self::shortId();
+        return "6$id";
+    }
+
     public static function tweetId()
     {
         $id = self::shortId();
