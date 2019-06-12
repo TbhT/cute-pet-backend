@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Pet;
 use app\models\RegisterForm;
 use app\models\Tweet;
+use app\models\User;
 use dektrium\user\controllers\SecurityController;
 use stdClass;
 use Yii;
@@ -23,7 +24,7 @@ class UserController extends SecurityController
             $parent['access']['rules'],
             [
                 'allow' => true,
-                'actions' => ['j-login', 'j-sign-up', 'j-status'],
+                'actions' => ['j-login', 'j-sign-up', 'j-status', 'j-all-pets', 'j-all-tweets'],
                 'roles' => ['?']
             ]
         );
@@ -42,7 +43,7 @@ class UserController extends SecurityController
             [
                 [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status'],
+                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status', 'j-all-pets', 'j-all-tweets'],
                     'formats' => [
                         'application/json' => Response::FORMAT_JSON
                     ]
@@ -71,10 +72,6 @@ class UserController extends SecurityController
             ];
         }
 
-        $result->data = [
-            'userId' => 121391401423
-        ];
-
         return $result;
     }
 
@@ -87,10 +84,16 @@ class UserController extends SecurityController
         $model = new LoginForm();
         $result = new stdClass();
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
+            $user = User::findOne(['username' => $model->username]);
             $result->iRet = 0;
             $result->message = 'success';
-            $result->data = null;
+            $result->data = [
+                'userId' => $user->userId,
+                'name' => $user->name,
+                'nickname' => $user->nickname,
+                'gender' => $user->gender
+            ];
         } else {
             $result->iRet = -1;
             $result->message = 'login failed';
@@ -127,14 +130,22 @@ class UserController extends SecurityController
         $this->performAjaxValidation($model);
         $result = new stdClass();
 
-        if ($model->load(Yii::$app->request->post()) && $model->register()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
             $result->iRet = 0;
             $result->message = 'success';
             $result->data = null;
         } else {
-            $result->iRet = -1;
-            $result->message = 'sign up failed';
-            $result->data = $model->getErrorSummary(true);
+            $userModelError = $model->getUserModelErrors();
+
+            if (!empty($userModelError)) {
+                $result->iRet = -2;
+                $result->message = 'user error';
+                $result->data = $userModelError;
+            } else {
+                $result->iRet = -1;
+                $result->message = 'sign up failed';
+                $result->data = $model->getErrorSummary(true);
+            }
         }
 
         return $result;
@@ -173,6 +184,37 @@ class UserController extends SecurityController
         $result->msg = 'success';
 
         return $result;
+    }
+
+    /**
+     * 获取用户的基本信息
+     */
+    public function actionJInfo()
+    {
+        $result = new stdClass();
+        $userId = Yii::$app->user->id;
+        $user = User::findOne(['userId' => $userId]);
+        $pet = $user->getPetsInfo()->orderBy('createTime DESC')->one();
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = [
+
+        ];
+    }
+
+    /**
+     * 获取用户的详细信息
+     */
+    public function actionJDetailInfo()
+    {
+        $result = new stdClass();
+        $userId = Yii::$app->user->id;
+        $user = User::findOne(['userId' => $userId]);
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = [];
     }
 
 }

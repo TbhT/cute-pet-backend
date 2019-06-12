@@ -5,8 +5,6 @@ namespace app\models;
 
 use yii\base\Model;
 
-const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|9[89])\\d{8}$/';
-
 
 class RegisterForm extends Model
 {
@@ -19,12 +17,16 @@ class RegisterForm extends Model
     public $name;
     public $homeAddress;
     public $workAddress;
+    protected $user;
 
     public function rules()
     {
         return [
             [
                 'username', 'match', 'pattern' => PHONE_REGEXP
+            ],
+            [
+                'email', 'email'
             ],
             [
                 'username', 'required'
@@ -34,6 +36,9 @@ class RegisterForm extends Model
             ],
             [
                 'password', 'string', 'min' => 6, 'max' => 64
+            ],
+            [
+                ['nickname', 'gender', 'age', 'name', 'homeAddress', 'workAddress'], 'safe'
             ]
         ];
     }
@@ -45,8 +50,11 @@ class RegisterForm extends Model
         }
 
         $user = new User();
+        $this->user = $user;
         $this->loadAttributes($user);
-
+        $user->password = $this->password;
+//        var_dump($user);
+//        var_dump($this);
         if (!$user->register()) {
             return false;
         }
@@ -54,9 +62,14 @@ class RegisterForm extends Model
         return true;
     }
 
+    public function getUserModelErrors()
+    {
+        return $this->user->getErrorSummary(true);
+    }
+
     protected function loadAttributes(User $user)
     {
-        $user->setAttributes($this->attributes);
+        $user->setAttributes($this->attributes, false);
     }
 
 }

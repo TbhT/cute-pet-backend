@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use dektrium\user\helpers\Password;
 use dektrium\user\models\User as BaseUser;
 use Yii;
 use yii\db\ActiveRecord;
@@ -28,6 +29,9 @@ class User extends BaseUser
         ]);
     }
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         $rules = parent::rules();
@@ -41,6 +45,9 @@ class User extends BaseUser
         ]);
     }
 
+    /**
+     * @return int|mixed|string
+     */
     public function getId()
     {
         return $this->getAttribute('userId');
@@ -57,5 +64,23 @@ class User extends BaseUser
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username]);
+    }
+
+    /**
+     * @param $password
+     * @return bool
+     */
+    public function validatePassword($password)
+    {
+        return Password::validate($password, $this->password_hash);
+    }
+
+    /**
+     * 获取用户的所有宠物信息
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPetsInfo()
+    {
+        return $this->hasMany(Pet::className(), ['userId' => 'userId']);
     }
 }
