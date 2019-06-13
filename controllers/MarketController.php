@@ -84,7 +84,8 @@ class MarketController extends Controller
      */
     public function actionJAll()
     {
-        $model = Market::find()->asArray()->all();
+        $offset = Yii::$app->request->post('offset');
+        $model = Market::find()->offset($offset)->limit(20)->asArray()->all();
         $result = new stdClass();
 
         $result->iRet = 0;
@@ -106,7 +107,7 @@ class MarketController extends Controller
 
         $result->iRet = 0;
         $result->msg = 'success';
-        $result->data= $model;
+        $result->data = $model;
 
         return $result;
     }

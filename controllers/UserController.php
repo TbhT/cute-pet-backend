@@ -72,6 +72,10 @@ class UserController extends SecurityController
             ];
         }
 
+        $result->data = [
+            'userId' => '915603350970730'
+        ];
+
         return $result;
     }
 
@@ -199,7 +203,8 @@ class UserController extends SecurityController
         $result->iRet = 0;
         $result->msg = 'success';
         $result->data = [
-
+            'userInfo' => $user->toArray(),
+            'pet' => $pet
         ];
     }
 
