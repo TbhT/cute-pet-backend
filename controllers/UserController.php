@@ -73,7 +73,7 @@ class UserController extends SecurityController
         }
 
         $result->data = [
-            'userId' => '915603350970730'
+            'userId' => null
         ];
 
         return $result;
@@ -137,7 +137,7 @@ class UserController extends SecurityController
         if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
             $result->iRet = 0;
             $result->message = 'success';
-            $result->data = null;
+            $result->data = $model->getUserInfo();
         } else {
             $userModelError = $model->getUserModelErrors();
 
