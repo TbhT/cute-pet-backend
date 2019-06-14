@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\utils\UploadImage;
 use Yii;
 
 /**
@@ -15,9 +16,12 @@ use Yii;
  * @property string $phoneNumber
  * @property string $createTime
  * @property string $updateTime
+ * @property bool|string image
  */
 class Market extends \yii\db\ActiveRecord
 {
+    public $picture;
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +43,7 @@ class Market extends \yii\db\ActiveRecord
             [['contact'], 'string', 'max' => 16],
             [['phoneNumber'], 'string', 'max' => 32],
             [['marketId'], 'unique'],
+            [['picture'], 'safe']
         ];
     }
 
@@ -66,5 +71,12 @@ class Market extends \yii\db\ActiveRecord
     public static function find()
     {
         return new MarketQuery(get_called_class());
+    }
+
+    public function save($runValidation = true, $attributeNames = null, $path = 'images')
+    {
+        $webImagePath = UploadImage::saveImage($this->picture, 'images');
+        $this->image = $webImagePath;
+        return parent::save($runValidation, $attributeNames);
     }
 }

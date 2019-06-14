@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use app\utils\UploadImage;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -19,9 +20,12 @@ use yii\db\ActiveRecord;
  * @property string $type
  * @property string $createTime
  * @property string $updateTime
+ * @property bool|string image
  */
 class Pet extends ActiveRecord
 {
+    public $picture;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +42,7 @@ class Pet extends ActiveRecord
         return [
             [['status', 'gender', 'age', 'vaccineStatus', 'petType'], 'integer'],
             [['nickname', 'type'], 'string', 'max' => 16],
+            [['picture'], 'safe']
         ];
     }
 
@@ -88,4 +93,12 @@ class Pet extends ActiveRecord
     {
         return new PetQuery(get_called_class());
     }
+
+    public function save($runValidation = true, $attributeNames = null, $path = 'images')
+    {
+        $webImagePath = UploadImage::saveImage($this->picture, 'images');
+        $this->image = $webImagePath;
+        return parent::save($runValidation, $attributeNames);
+    }
+
 }

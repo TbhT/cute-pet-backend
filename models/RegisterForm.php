@@ -3,6 +3,7 @@
 
 namespace app\models;
 
+use app\utils\UploadImage;
 use Throwable;
 use Yii;
 use yii\base\Model;
@@ -55,29 +56,8 @@ class RegisterForm extends Model
         $user->password = $this->password;
 
         // save image
-        try {
-            if ($this->picture) {
-                $file_array = explode(',', $this->picture);
-                $match = '|data:image/(\w+)|';
-                preg_match($match, $file_array[0], $image_extension);
-                $webImagePath = '/images/' . md5($file_array[1]) . '_' . time() . '.' . $image_extension[1];
-                $filename = Yii::getAlias('@webroot') . $webImagePath;
-                $user->image = $webImagePath;
-                $file = base64_decode($file_array[1]);
-                if (!file_put_contents($filename, $file)) {
-                    $result = new \stdClass();
-                    $result->iRet = 0;
-                    $result->msg = 'success';
-                    $result->data = [
-                        'filename' => $filename
-                    ];
-                    Yii::error($result);
-                    throw new \Error('图片保存失败');
-                }
-            }
-        } catch (Throwable $e) {
-            Yii::error($e);
-        }
+        $webImagePath = UploadImage::saveImage($this->picture, 'images');
+        $user->image = $webImagePath;
 
         if (!$user->register()) {
             return false;

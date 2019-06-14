@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\utils\UploadImage;
 use yii\behaviors\TimestampBehavior;
 use app\behaviors\GenerateIdBehavior;
 use yii\db\ActiveRecord;
@@ -23,7 +24,7 @@ use yii\db\Expression;
 class Tweet extends ActiveRecord
 {
     const NORMAL_STATUS = 0;
-
+    public $picture;
 
     /**
      * {@inheritdoc}
@@ -120,4 +121,12 @@ class Tweet extends ActiveRecord
     {
         return $this->hasMany(Comment::className(), ['tweetId' => 'tweetId']);
     }
+
+    public function save($runValidation = true, $attributeNames = null, $path = 'images')
+    {
+        $webImagePath = UploadImage::saveImage($this->picture, 'images');
+        $this->image = $webImagePath;
+        return parent::save($runValidation, $attributeNames);
+    }
+
 }

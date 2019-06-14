@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use app\utils\UploadImage;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
@@ -21,6 +22,7 @@ use yii\db\ActiveRecord;
  * @property string $place
  * @property string $createTime
  * @property string $updateTime
+ * @property bool|string image
  */
 class Activity extends ActiveRecord
 {
@@ -30,6 +32,8 @@ class Activity extends ActiveRecord
 
     const REVIEW_STATUS = 2;
     const SUBMIT_STATUS = 1;
+
+    public $picture;
 
     /**
      * {@inheritdoc}
@@ -50,6 +54,8 @@ class Activity extends ActiveRecord
             [['place'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
+            [['image'], 'string', 'max' => 256],
+            [['picture'], 'safe']
         ];
     }
 
@@ -102,5 +108,12 @@ class Activity extends ActiveRecord
     public static function find()
     {
         return new ActivityQuery(get_called_class());
+    }
+
+    public function save($runValidation = true, $attributeNames = null, $path = 'images')
+    {
+        $webImagePath = UploadImage::saveImage($this->picture, 'images');
+        $this->image = $webImagePath;
+        return parent::save($runValidation, $attributeNames);
     }
 }

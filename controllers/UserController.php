@@ -73,7 +73,7 @@ class UserController extends SecurityController
         }
 
         $result->data = [
-            'userId' => null
+            'userId' => 1231123123
         ];
 
         return $result;

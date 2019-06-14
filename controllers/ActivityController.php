@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\ActivityUser;
+use app\utils\UploadImage;
 use stdClass;
 use Yii;
 use app\models\Activity;
