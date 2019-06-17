@@ -24,7 +24,7 @@ class UserController extends SecurityController
             $parent['access']['rules'],
             [
                 'allow' => true,
-                'actions' => ['j-login', 'j-sign-up', 'j-status', 'j-all-pets', 'j-all-tweets'],
+                'actions' => ['j-login', 'j-sign-up', 'j-status', 'j-all-pets', 'j-all-tweets', 'j-info'],
                 'roles' => ['?']
             ]
         );
@@ -43,7 +43,7 @@ class UserController extends SecurityController
             [
                 [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status', 'j-all-pets', 'j-all-tweets'],
+                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status', 'j-all-pets', 'j-all-tweets', 'j-info'],
                     'formats' => [
                         'application/json' => Response::FORMAT_JSON
                     ]
@@ -197,15 +197,37 @@ class UserController extends SecurityController
     {
         $result = new stdClass();
         $userId = Yii::$app->user->id;
+        $userId = '915607537198007';
         $user = User::findOne(['userId' => $userId]);
-        $pet = $user->getPetsInfo()->orderBy('createTime DESC')->one();
+
+        if ($user) {
+            $pet = $user->getPetsInfo()->orderBy('createTime DESC')->one();
+            if ($pet) {
+                $pet = [
+                    'petId' => $pet->petId,
+                    'image' => $pet->image,
+                    'nickname' => $pet->nickname
+                ];
+            }
+            $userInfo = [
+                'userId' => $user->userId,
+                'image' => $user->image,
+                'nickname' => $user->nickname,
+            ];
+        } else {
+            $pet = null;
+            $userInfo = null;
+
+        }
 
         $result->iRet = 0;
         $result->msg = 'success';
         $result->data = [
-            'userInfo' => $user->toArray(),
+            'userInfo' => $userInfo,
             'pet' => $pet
         ];
+
+        return $result;
     }
 
     /**

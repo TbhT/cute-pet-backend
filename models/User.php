@@ -56,7 +56,7 @@ class User extends BaseUser
 
         try {
             $this->confirmed_at = $this->module->enableConfirmation ? null : time();
-            $this->password     = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
+            $this->password = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
 
             $this->trigger(self::BEFORE_REGISTER);
 
@@ -117,9 +117,11 @@ class User extends BaseUser
     /**
      * 获取用户的所有宠物信息
      * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
      */
     public function getPetsInfo()
     {
-        return $this->hasMany(Pet::className(), ['userId' => 'userId']);
+        return $this->hasMany(Pet::className(), ['petId' => 'petId'])
+            ->viaTable('user_pet', ['userId' => 'userId']);
     }
 }

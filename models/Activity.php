@@ -55,7 +55,7 @@ class Activity extends ActiveRecord
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['image'], 'string', 'max' => 256],
-            [['picture'], 'safe']
+            [['picture', 'totalCount', 'totalCost'], 'safe']
         ];
     }
 
