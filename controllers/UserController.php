@@ -239,9 +239,26 @@ class UserController extends SecurityController
         $userId = Yii::$app->user->id;
         $user = User::findOne(['userId' => $userId]);
 
+        if ($user) {
+            $userInfo = [
+                'phoneNumber' => $user->username,
+                'name' => $user->name,
+                'nickname' => $user->nickname,
+                'age' => $user->age,
+                'gender' => $user->gender,
+                'homeAddress' => $user->homeAddress,
+                'workAddress' => $user->workAddress,
+                'image' => $user->image
+            ];
+        } else {
+            $userInfo = null;
+        }
+
         $result->iRet = 0;
         $result->msg = 'success';
-        $result->data = [];
+        $result->data = $userInfo;
+
+        return $result;
     }
 
 }

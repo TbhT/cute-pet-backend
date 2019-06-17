@@ -62,7 +62,7 @@ class ActivityController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-join', 'j-create', 'j-activities'],
+                'only' => ['j-join', 'j-create', 'j-activities', 'j-detail'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -210,6 +210,42 @@ class ActivityController extends Controller
             $result->msg = 'join activity failed';
             $result->iRet = -4;
         }
+
+        return $result;
+    }
+
+    /**
+     * 获取活动的详情
+     * @return stdClass
+     */
+    public function actionJDetail()
+    {
+        $activityId = Yii::$app->request->post('activityId');
+        $model = Activity::find()->getDetail($activityId);
+        $result = new stdClass();
+
+        if ($model) {
+            $detail = [
+                'name' => $model->name,
+                'beginTime' => $model->beginTime,
+                'endTime' => $model->endTime,
+                'joinBeginTime' => $model->joinBeginTime,
+                'joinEndTime' => $model->joinEndTime,
+                'organizer' => $model->organizer,
+                'coorganizer' => $model->coorganizer,
+                'place' => $model->place,
+                'type' => $model->type,
+                'image' => $model->image,
+                'totalCount' => $model->totalCount,
+                'totalCost' => $model->totalCost
+            ];
+        } else {
+            $detail = null;
+        }
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = $detail;
 
         return $result;
     }

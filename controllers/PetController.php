@@ -131,10 +131,23 @@ class PetController extends Controller
         $petId = Yii::$app->request->post('petId');
         $result = new stdClass();
 
-        $data = Pet::find()->getPetDetail($petId)->asArray();
+        $model = Pet::find()->getPetDetail($petId)->one();
+        if ($model) {
+            $detail = [
+                'nickname' => $model->nickname,
+                'gender' => $model->gender,
+                'age' => $model->age,
+                'vaccineStatus' => $model->vaccineStatus,
+                'petType' => $model->petType,
+                'type' => $model->type,
+                'image' => $model->image
+            ];
+        } else {
+            $detail = null;
+        }
 
         $result->iRet = 0;
-        $result->data = $data;
+        $result->data = $detail;
         $result->msg = 'success';
 
         return $result;
