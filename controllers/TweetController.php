@@ -113,11 +113,12 @@ class TweetController extends Controller
     {
         $model = new Tweet();
         $result = new stdClass();
+        $model->userId = Yii::$app->user->id;
 
         if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
             $result->iRet = 0;
             $result->msg = 'success';
-            $result->data = $model->getAttributes();
+            $result->data = null;
         } else {
             $result->iRet = -1;
             $result->msg = 'create tweet failed';

@@ -3,8 +3,10 @@
 namespace app\models;
 
 use app\utils\UploadImage;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use app\behaviors\GenerateIdBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 
@@ -40,10 +42,10 @@ class Tweet extends ActiveRecord
     public function rules()
     {
         return [
-            [['text'], 'required'],
             [['status', 'commentCount', 'likeCount'], 'integer'],
             [['text'], 'string'],
             [['image'], 'string', 'max' => 512],
+            [['picture'], 'safe']
         ];
     }
 
@@ -90,14 +92,14 @@ class Tweet extends ActiveRecord
      * {@inheritdoc}
      * @return TweetQuery the active query used by this AR class.
      */
-    public static function  find()
+    public static function find()
     {
         return new TweetQuery(get_called_class());
     }
 
     /**
      * 获取tweet对应的用户信息
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
@@ -106,7 +108,7 @@ class Tweet extends ActiveRecord
 
     /**
      * 获取tweet对应的赞总数
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getLikes()
     {
@@ -114,8 +116,20 @@ class Tweet extends ActiveRecord
     }
 
     /**
+     * 获取当前用户对某条推特的点赞状态
+     * @return ActiveQuery
+     */
+    public function getUserLikeStatus()
+    {
+        return $this->hasOne(LikeTweet::className(), [
+            'tweetId' => 'tweetId',
+            'userId' => Yii::$app->user->id
+        ]);
+    }
+
+    /**
      * 获取tweet对应的评论总数
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getComments()
     {

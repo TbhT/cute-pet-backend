@@ -60,7 +60,10 @@ $config = [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false
+            'showScriptName' => false,
+            'rules' => [
+                'api/<controller>/<action>' => '<controller>/<action>',
+            ]
         ],
     ],
     'modules' => [
@@ -76,6 +79,7 @@ $config = [
             'enableConfirmation' => false,
             'cost' => 12,
             'admins' => ['19011110000'],
+            'urlPrefix' => 'api/user',
             'urlRules' => [
                 '<controller:(person)>/<action>' => 'security/<action>'
             ]

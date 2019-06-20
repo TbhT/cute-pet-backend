@@ -72,10 +72,6 @@ class UserController extends SecurityController
             ];
         }
 
-        $result->data = [
-            'userId' => 1231123123
-        ];
-
         return $result;
     }
 
@@ -181,7 +177,10 @@ class UserController extends SecurityController
         $userId = Yii::$app->user->id;
         $offset = Yii::$app->request->post('offset');
 
-        $data = Tweet::find()->getTweetsByUserId($userId, $offset);
+        $data = Tweet::find()
+            ->getTweetsByUserId($userId, $offset)
+            ->asArray()
+            ->all();
 
         $result->iRet = 0;
         $result->data = $data;
@@ -192,12 +191,12 @@ class UserController extends SecurityController
 
     /**
      * 获取用户的基本信息
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionJInfo()
     {
         $result = new stdClass();
         $userId = Yii::$app->user->id;
-        $userId = '915607537198007';
         $user = User::findOne(['userId' => $userId]);
 
         if ($user) {
@@ -209,6 +208,7 @@ class UserController extends SecurityController
                     'nickname' => $pet->nickname
                 ];
             }
+
             $userInfo = [
                 'userId' => $user->userId,
                 'image' => $user->image,

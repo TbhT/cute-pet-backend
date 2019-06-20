@@ -44,6 +44,8 @@ class TweetQuery extends ActiveQuery
     public function getTweetsByUserId($userId, $offset = 0, $num = 20)
     {
         return $this->andOnCondition(['userId' => $userId])
+            ->innerJoinWith('user')
+            ->innerJoinWith('userLikeStatus')
             ->limit($num)
             ->offset($offset);
     }
