@@ -10,11 +10,11 @@ use yii\web\AssetBundle;
 class SPAAsset extends AssetBundle
 {
     public $basePath = '@webroot';
-    public $baseUrl = '@web';
+    public $baseUrl = '/';
 
     public $css = [
         'css/1.app.css',
-        'app.css'
+        'css/app.css'
     ];
 
     public $js = [
