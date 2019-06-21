@@ -38,7 +38,7 @@ class TweetController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['view'],
+                        'actions' => ['view', 'j-create', 'j-all-tweets', 'j-like'],
                         'roles' => ['@']
                     ],
                     [
@@ -50,7 +50,6 @@ class TweetController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-//                todo: 需要添加角色给 j-create
                 'only' => ['j-create', 'j-all-tweets', 'j-like'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
@@ -197,15 +196,32 @@ class TweetController extends Controller
         }
 
         $query = Tweet::find()
+            ->innerJoinWith('user')
+            ->joinWith('userLikeStatus')
             ->orderBy('createTime DESC')
             ->limit(20)
             ->offset($offset - 1);
 
         $data = $query->asArray()->all();
+        $tweets = [];
+        foreach ($data as $d) {
+            array_push($tweets, [
+                'commentCount' => $d['commentCount'],
+                'createTime' => $d['createTime'],
+                'image' => $d['image'],
+                'likeCount' => $d['likeCount'],
+                'text' => $d['text'],
+                'tweetId' => $d['tweetId'],
+                'userId' => $d['userId'],
+                'liked' => !empty($d['userLikeStatus']),
+                'nickname' => $d['user']['nickname'],
+                'avatar' => $d['user']['image']
+            ]);
+        }
 
         $result->iRet = 0;
         $result->msg = 'success';
-        $result->data = $data;
+        $result->data = $tweets;
 
         return $result;
     }

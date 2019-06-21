@@ -123,7 +123,7 @@ class Tweet extends ActiveRecord
     {
         return $this->hasOne(LikeTweet::className(), [
             'tweetId' => 'tweetId',
-            'userId' => Yii::$app->user->id
+            'userId' => 'userId'
         ]);
     }
 
@@ -138,8 +138,11 @@ class Tweet extends ActiveRecord
 
     public function save($runValidation = true, $attributeNames = null, $path = 'images')
     {
-        $webImagePath = UploadImage::saveImage($this->picture, 'images');
-        $this->image = $webImagePath;
+        if ($this->picture) {
+            $webImagePath = UploadImage::saveImage($this->picture, 'images');
+            $this->image = $webImagePath;
+        }
+
         return parent::save($runValidation, $attributeNames);
     }
 

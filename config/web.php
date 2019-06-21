@@ -4,10 +4,8 @@ $params = require __DIR__ . '/params.php';
 
 if (defined('YII_ENV') && (YII_ENV === 'test' || YII_ENV === 'dev')) {
     $db = require __DIR__ . '/db-local.php';
-    $enableCsrfValidation = false;
 } else {
     $db = require __DIR__ . '/db.php';
-    $enableCsrfValidation = true;
 }
 
 $config = [
@@ -26,7 +24,7 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '1ab53b152b4b06986e0726a8f7feaedb',
-            'enableCsrfValidation' => $enableCsrfValidation,
+            'enableCsrfValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser'
             ]

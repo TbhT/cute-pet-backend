@@ -179,16 +179,31 @@ class UserController extends SecurityController
     public function actionJAllTweets()
     {
         $result = new stdClass();
-        $userId = Yii::$app->user->id;
+        $user = Yii::$app->user->identity;
         $offset = Yii::$app->request->post('offset');
 
         $data = Tweet::find()
-            ->getTweetsByUserId($userId, $offset)
+            ->getTweetsByUserId($user->userId, $offset - 1)
             ->asArray()
             ->all();
 
+        $tweets = [];
+        foreach ($data as $d) {
+            array_push($tweets, [
+                'commentCount' => $d['commentCount'],
+                'createTime' => $d['createTime'],
+                'image' => $d['image'],
+                'likeCount' => $d['likeCount'],
+                'text' => $d['text'],
+                'tweetId' => $d['tweetId'],
+                'userId' => $user->userId,
+                'avatar' => $user->image,
+                'liked' => !empty($d['userLikeStatus'])
+            ]);
+        }
+
         $result->iRet = 0;
-        $result->data = $data;
+        $result->data = $tweets;
         $result->msg = 'success';
 
         return $result;
