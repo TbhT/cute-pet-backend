@@ -16,6 +16,7 @@ const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|
 
 class User extends BaseUser
 {
+
     public function behaviors()
     {
         $parent = parent::behaviors();
@@ -92,6 +93,11 @@ class User extends BaseUser
         return $this->getAttribute('userId');
     }
 
+    public static function findIdentity($id)
+    {
+        return static::findOne(['userId' => $id]);
+    }
+
     public function attributeLabels()
     {
         return [
@@ -123,5 +129,10 @@ class User extends BaseUser
     {
         return $this->hasMany(Pet::className(), ['petId' => 'petId'])
             ->viaTable('user_pet', ['userId' => 'userId']);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['auth_key' => $token]);
     }
 }

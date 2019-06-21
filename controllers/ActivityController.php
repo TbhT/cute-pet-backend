@@ -36,11 +36,11 @@ class ActivityController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['create', 'update', 'delete', 'index', 'view'],
                 'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'view'],
-                        'roles' => ['@']
-                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['create', 'view', 'j-detail', 'j-activities', 'j-create', 'j-join'],
+//                        'roles' => ['@']
+//                    ],
                     [
                         'allow' => true,
                         'actions' => ['update'],
@@ -171,7 +171,7 @@ class ActivityController extends Controller
 
     /**
      * 报名参加某项活动
-     * @return stdClass
+     * @return stdClass | Response
      */
     public function actionJJoin()
     {

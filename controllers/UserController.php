@@ -24,8 +24,13 @@ class UserController extends SecurityController
             $parent['access']['rules'],
             [
                 'allow' => true,
-                'actions' => ['j-login', 'j-sign-up', 'j-status', 'j-all-pets', 'j-all-tweets', 'j-info'],
+                'actions' => ['j-login', 'j-sign-up', 'j-status', 'j-info'],
                 'roles' => ['?']
+            ],
+            [
+                'allow' => true,
+                'actions' => ['j-all-pets', 'j-all-tweets', 'j-login', 'j-sign-up', 'j-status', 'j-info'],
+                'roles' => ['@']
             ]
         );
 
@@ -97,7 +102,7 @@ class UserController extends SecurityController
         } else {
             $result->iRet = -1;
             $result->message = 'login failed';
-            $result->data = $model->getErrorSummary(true);
+            $result->data = $model->getFirstErrors();
         }
 
         return $result;
@@ -197,6 +202,8 @@ class UserController extends SecurityController
     {
         $result = new stdClass();
         $userId = Yii::$app->user->id;
+//        var_dump(Yii::$app->user);
+//        return;
         $user = User::findOne(['userId' => $userId]);
 
         if ($user) {

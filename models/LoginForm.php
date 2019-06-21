@@ -17,7 +17,7 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
 
-    private $_user = false;
+    private $_user;
 
 
     /**
@@ -38,9 +38,6 @@ class LoginForm extends Model
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
-     *
-     * @param string $attribute the attribute currently being validated
-     * @param array $params the additional name-value pairs given in the rule
      */
     public function validatePassword()
     {
@@ -59,10 +56,21 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        if ($this->validate() && $this->_user) {
+            return Yii::$app->getUser()->login($this->_user, $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
+
         return false;
+    }
+
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            $this->_user = $this->getUser();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -72,7 +80,7 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false) {
+        if (!$this->_user) {
             $this->_user = User::findByUsername($this->username);
         }
 
