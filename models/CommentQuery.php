@@ -41,4 +41,17 @@ class CommentQuery extends \yii\db\ActiveQuery
     {
         return $this->andOnCondition(['commentId' => $commentId]);
     }
+
+    /**
+     * 获取动态下的所有评论
+     * @param $tweetId
+     * @param int $offset
+     * @return CommentQuery
+     */
+    public function getTweetAllComment($tweetId, $offset = 0)
+    {
+        return $this->andOnCondition(['tweetId' => $tweetId])
+            ->limit(20)
+            ->offset($offset);
+    }
 }

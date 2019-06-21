@@ -2,12 +2,15 @@
 
 namespace app\models;
 
+use Yii;
+use yii\db\ActiveQuery;
+
 /**
  * This is the ActiveQuery class for [[Activity]].
  *
  * @see Activity
  */
-class ActivityQuery extends \yii\db\ActiveQuery
+class ActivityQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -50,5 +53,14 @@ class ActivityQuery extends \yii\db\ActiveQuery
     public function getActivities($type)
     {
         return $this->andOnCondition(['type' => $type]);
+    }
+
+    /**
+     * 获取用户参加过的活动
+     * @return ActivityQuery
+     */
+    public function getUserActivities()
+    {
+        return $this->andOnCondition(['userId' => Yii::$app->user->id]);
     }
 }

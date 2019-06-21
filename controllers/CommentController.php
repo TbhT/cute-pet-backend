@@ -33,11 +33,11 @@ class CommentController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
+                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-tweet'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'view'],
+                        'actions' => ['create', 'view', 'j-create', 'j-tweet'],
                         'roles' => ['@']
                     ],
                     [
@@ -49,7 +49,7 @@ class CommentController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create'],
+                'only' => ['j-create', 'j-tweet'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -109,7 +109,19 @@ class CommentController extends Controller
     public function actionJTweet()
     {
         $tweetId = Yii::$app->request->post('tweetId');
+        $offset = Yii::$app->request->post('offset');
+        $result = new stdClass();
 
+        $data = Comment::find()
+            ->getTweetAllComment($tweetId, $offset - 1)
+            ->asArray()
+            ->all();
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = $data;
+
+        return $result;
     }
 
     /**
@@ -174,6 +186,8 @@ class CommentController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Activity;
 use app\models\Pet;
 use app\models\RegisterForm;
 use app\models\Tweet;
@@ -29,7 +30,7 @@ class UserController extends SecurityController
             ],
             [
                 'allow' => true,
-                'actions' => ['j-all-pets', 'j-all-tweets', 'j-login', 'j-sign-up', 'j-status', 'j-info'],
+                'actions' => ['j-all-pets', 'j-all-tweets', 'j-login', 'j-sign-up', 'j-status', 'j-info', 'j-activities'],
                 'roles' => ['@']
             ]
         );
@@ -48,7 +49,7 @@ class UserController extends SecurityController
             [
                 [
                     'class' => ContentNegotiator::className(),
-                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status', 'j-all-pets', 'j-all-tweets', 'j-info'],
+                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status', 'j-all-pets', 'j-all-tweets', 'j-info', 'j-activities'],
                     'formats' => [
                         'application/json' => Response::FORMAT_JSON
                     ]
@@ -163,7 +164,11 @@ class UserController extends SecurityController
     public function actionJAllPets()
     {
         $result = new stdClass();
-        $data = Pet::find()->getAllPersonPets(Yii::$app->user->id)->asArray();
+        $data = Pet::find()
+            ->getAllPersonPets(Yii::$app->user->id)
+            ->asArray()
+            ->limit(10)
+            ->all();
 
         $result->iRet = 0;
         $result->msg = 'success';
@@ -210,6 +215,31 @@ class UserController extends SecurityController
     }
 
     /**
+     * 获取用户参加过的活动
+     * @return stdClass
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionJActivities()
+    {
+        $result = new stdClass();
+        $userId = Yii::$app->user->id;
+        $offset = Yii::$app->request->post('offset');
+
+        $activities = User::findOne(['userId' => $userId])
+            ->getJoinActivities()
+            ->limit(20)
+            ->offset($offset - 1)
+            ->asArray()
+            ->all();
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = $activities;
+
+        return $result;
+    }
+
+    /**
      * 获取用户的基本信息
      * @throws \yii\base\InvalidConfigException
      */
@@ -217,8 +247,7 @@ class UserController extends SecurityController
     {
         $result = new stdClass();
         $userId = Yii::$app->user->id;
-//        var_dump(Yii::$app->user);
-//        return;
+
         $user = User::findOne(['userId' => $userId]);
 
         if ($user) {

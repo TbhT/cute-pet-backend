@@ -131,6 +131,16 @@ class User extends BaseUser
             ->viaTable('user_pet', ['userId' => 'userId']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getJoinActivities()
+    {
+        return $this->hasMany(Activity::className(), ['activityId' => 'activityId'])
+            ->viaTable('activity_user', ['userId' => 'userId']);
+    }
+
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['auth_key' => $token]);
