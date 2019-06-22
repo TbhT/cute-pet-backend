@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "banner".
@@ -35,6 +38,21 @@ class Banner extends \yii\db\ActiveRecord
             [['bannerId'], 'unique'],
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ],
+                'value' => new Expression('NOW()')
+            ]
+        ];
+    }
+
 
     /**
      * {@inheritdoc}

@@ -5,6 +5,7 @@ namespace app\models;
 use app\behaviors\GenerateIdBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 
 /**
@@ -44,7 +45,8 @@ class LikeTweet extends ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime'],
+                    'value' => new Expression('NOW()')
                 ]
             ],
             [

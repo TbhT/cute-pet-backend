@@ -138,7 +138,8 @@ class ActivityController extends Controller
             ->getActivities($type)
             ->limit(20)
             ->offset($offset - 1)
-            ->asArray()->all();
+            ->asArray()
+            ->all();
 
         $result->iRet = 0;
         $result->msg = 'success';
@@ -221,7 +222,7 @@ class ActivityController extends Controller
     public function actionJDetail()
     {
         $activityId = Yii::$app->request->post('activityId');
-        $model = Activity::find()->getDetail($activityId);
+        $model = Activity::find()->getDetail($activityId)->one();
         $result = new stdClass();
 
         if ($model) {

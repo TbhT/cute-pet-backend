@@ -114,12 +114,28 @@ class CommentController extends Controller
 
         $data = Comment::find()
             ->getTweetAllComment($tweetId, $offset - 1)
+            ->orderBy('createTime DESC')
+            ->innerJoinWith('userInfo')
             ->asArray()
             ->all();
 
+        $tweetInfo = [];
+
+        foreach ($data as $d) {
+            array_push($tweetInfo, [
+                'commentId' => $d['commentId'],
+                'createTime' => $d['createTime'],
+                'text' => $d['text'],
+                'tweetId' => $d['tweetId'],
+                'userId' => $d['userId'],
+                'nickname' => $d['userInfo']['nickname'],
+                'avatar' => $d['userInfo']['image']
+            ]);
+        }
+
         $result->iRet = 0;
         $result->msg = 'success';
-        $result->data = $data;
+        $result->data = $tweetInfo;
 
         return $result;
     }
@@ -140,7 +156,7 @@ class CommentController extends Controller
             if (!$tweet) {
                 $result->iRet = -3;
                 $result->msg = 'tweet is not exist';
-                $result->data = $tweet->getErrorSummary(true);
+                $result->data = null;
                 return $result;
             } else {
                 $tweet->commentCount += 1;

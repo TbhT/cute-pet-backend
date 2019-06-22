@@ -2,9 +2,12 @@
 
 namespace app\models;
 
+use app\behaviors\GenerateIdBehavior;
 use app\utils\UploadImage;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "market".
@@ -47,6 +50,28 @@ class Market extends ActiveRecord
             [['intro', 'place'], 'string', 'max' => 512],
         ];
     }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ],
+                'value' => new Expression('NOW()')
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['marketId']
+                ],
+                'idType' => GenerateIdBehavior::MARKET_ID_TYPE
+            ]
+        ];
+    }
+
 
     /**
      * {@inheritdoc}

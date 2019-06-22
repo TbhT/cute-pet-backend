@@ -8,22 +8,22 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "activity_user".
+ * This is the model class for table "user_pet".
  *
- * @property string $auId
- * @property string $activityId 活动id
- * @property string $userId 用户id
+ * @property int $id
+ * @property string $userId
+ * @property string $petId
  * @property string $createTime
  * @property string $updateTime
  */
-class ActivityUser extends ActiveRecord
+class UserPet extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'activity_user';
+        return 'user_pet';
     }
 
     /**
@@ -32,9 +32,23 @@ class ActivityUser extends ActiveRecord
     public function rules()
     {
         return [
-            [['activityId', 'userId'], 'required'],
-            [['activityId', 'userId'], 'integer'],
+            [['userId', 'petId'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
+            [['userId', 'petId'], 'unique', 'targetAttribute' => ['userId', 'petId']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'userId' => 'User ID',
+            'petId' => 'Pet ID',
+            'createTime' => 'Create Time',
+            'updateTime' => 'Update Time',
         ];
     }
 
@@ -52,26 +66,13 @@ class ActivityUser extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'auId' => 'Au ID',
-            'activityId' => 'Activity ID',
-            'userId' => 'User ID',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
-        ];
-    }
 
     /**
      * {@inheritdoc}
-     * @return ActivityUserQuery the active query used by this AR class.
+     * @return UserPetQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new ActivityUserQuery(get_called_class());
+        return new UserPetQuery(get_called_class());
     }
 }

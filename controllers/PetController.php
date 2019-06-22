@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\UserPet;
 use stdClass;
 use Yii;
 use app\models\Pet;
@@ -111,9 +112,21 @@ class PetController extends Controller
         $result = new stdClass();
 
         if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-            $result->iRet = 0;
-            $result->msg = 'success';
-            $result->data = null;
+            $concatModel = new UserPet();
+            $concatModel->userId = Yii::$app->user->id;
+            $concatModel->petId = $model->petId;
+
+            if ($concatModel->save()) {
+                $result->iRet = 0;
+                $result->msg = 'success';
+                $result->data = null;
+            } else {
+                Yii::error("添加宠物和人的关联关系失败 {$concatModel->userId}|{$concatModel->petId}");
+                $result->iRet = -3;
+                $result->msg = 'save pet relation failed';
+                $result->data = $concatModel->getErrorSummary(true);
+            }
+
         } else {
             $result->iRet = -1;
             $result->msg = 'create pet failed';

@@ -6,6 +6,7 @@ use app\behaviors\GenerateIdBehavior;
 use app\utils\UploadImage;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "pet".
@@ -54,7 +55,8 @@ class Pet extends ActiveRecord
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
-                ]
+                ],
+                'value' => new Expression('NOW()')
             ],
             [
                 'class' => GenerateIdBehavior::className(),

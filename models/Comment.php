@@ -5,6 +5,7 @@ namespace app\models;
 use yii\behaviors\TimestampBehavior;
 use app\behaviors\GenerateIdBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "comment".
@@ -48,7 +49,8 @@ class Comment extends ActiveRecord
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
-                ]
+                ],
+                'value' => new Expression('NOW()')
             ],
             [
                 'class' => GenerateIdBehavior::className(),
@@ -85,8 +87,11 @@ class Comment extends ActiveRecord
         return new CommentQuery(get_called_class());
     }
 
-    public function a()
+    /**
+     * 获取评论对应的用户信息
+     */
+    public function getUserInfo()
     {
-
+        return $this->hasOne(User::className(), ['userId' => 'userId']);
     }
 }

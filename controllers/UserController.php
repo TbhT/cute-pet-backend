@@ -160,12 +160,14 @@ class UserController extends SecurityController
     /**
      * 获取所有的宠物
      * @return stdClass
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionJAllPets()
     {
         $result = new stdClass();
-        $data = Pet::find()
-            ->getAllPersonPets(Yii::$app->user->id)
+
+        $data = User::findOne(['userId' => Yii::$app->user->id])
+            ->getPetsInfo()
             ->asArray()
             ->limit(10)
             ->all();

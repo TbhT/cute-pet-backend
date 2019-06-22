@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "topic".
@@ -31,6 +34,20 @@ class Topic extends \yii\db\ActiveRecord
             [['text'], 'required'],
             [['text'], 'string'],
             [['createTime', 'updateTime'], 'safe'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ],
+                'value' => new Expression('NOW()')
+            ]
         ];
     }
 
