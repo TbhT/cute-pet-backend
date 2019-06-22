@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\utils\UploadImage;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "market".
@@ -18,7 +19,7 @@ use Yii;
  * @property string $updateTime
  * @property bool|string image
  */
-class Market extends \yii\db\ActiveRecord
+class Market extends ActiveRecord
 {
     public $picture;
 
@@ -36,13 +37,12 @@ class Market extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['marketId', 'userId'], 'required'],
-            [['marketId', 'userId', 'status'], 'integer'],
+            [['userId'], 'required'],
+            [['userId', 'status'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
             [['name'], 'string', 'max' => 128],
             [['contact'], 'string', 'max' => 16],
             [['phoneNumber'], 'string', 'max' => 32],
-            [['marketId'], 'unique'],
             [['picture'], 'safe']
         ];
     }
@@ -77,6 +77,8 @@ class Market extends \yii\db\ActiveRecord
     {
         $webImagePath = UploadImage::saveImage($this->picture, 'images');
         $this->image = $webImagePath;
+        $this->userId = Yii::$app->user->id;
+
         return parent::save($runValidation, $attributeNames);
     }
 }

@@ -35,12 +35,17 @@ class MarketController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
+                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-detail', 'j-all'],
                 'rules' => [
                     [
                         'allow' => true,
                         'roles' => ['admin']
                     ],
+                    [
+                        'allow' => true,
+                        'actions' => ['j-create', 'j-detail', 'j-all'],
+                        'roles' => ['@']
+                    ]
                 ]
             ],
             [
@@ -77,6 +82,8 @@ class MarketController extends Controller
             $result->msg = 'create market failed';
             $result->data = $model->getErrorSummary(true);
         }
+
+        return $result;
     }
 
     /**
@@ -85,7 +92,7 @@ class MarketController extends Controller
     public function actionJAll()
     {
         $offset = Yii::$app->request->post('offset');
-        $model = Market::find()->offset($offset)->limit(20)->asArray()->all();
+        $model = Market::find()->offset($offset - 1)->limit(20)->asArray()->all();
         $result = new stdClass();
 
         $result->iRet = 0;
