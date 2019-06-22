@@ -43,7 +43,8 @@ class Market extends ActiveRecord
             [['name'], 'string', 'max' => 128],
             [['contact'], 'string', 'max' => 16],
             [['phoneNumber'], 'string', 'max' => 32],
-            [['picture'], 'safe']
+            [['picture', 'serveType'], 'safe'],
+            [['intro', 'place'], 'string', 'max' => 512],
         ];
     }
 
@@ -58,6 +59,9 @@ class Market extends ActiveRecord
             'status' => 'Status',
             'name' => 'Name',
             'contact' => 'Contact',
+            'intro' => '简介',
+            'serveType' => '服务类型',
+            'workTime' => '工作时间',
             'phoneNumber' => 'Phone Number',
             'createTime' => 'Create Time',
             'updateTime' => 'Update Time',
