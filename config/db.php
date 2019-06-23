@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=172.16.8.128;dbname=db_cute_pet',
-    'username' => 'upchina',
-    'password' => 'upchina2016',
+    'dsn' => 'mysql:host=127.0.0.1;dbname=db_cute_pet',
+    'username' => 'root',
+    'password' => 'upchina333',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
