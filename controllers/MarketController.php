@@ -45,6 +45,11 @@ class MarketController extends Controller
                         'allow' => true,
                         'actions' => ['j-create', 'j-detail', 'j-all'],
                         'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['j-all'],
+                        'roles' => ['?']
                     ]
                 ]
             ],
