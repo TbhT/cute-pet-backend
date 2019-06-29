@@ -36,4 +36,9 @@ class LikeTweetQuery extends \yii\db\ActiveQuery
     {
         return $this->andOnCondition(['likeId' => $likeId]);
     }
+
+    public function likeTweets($userId)
+    {
+        return $this->andOnCondition(['userId' => $userId]);
+    }
 }

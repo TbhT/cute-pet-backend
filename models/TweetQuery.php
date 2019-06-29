@@ -90,4 +90,15 @@ class TweetQuery extends ActiveQuery
             'like', 'text', $topic->text
         ]);
     }
+
+    /**
+     *
+     * @param $userId
+     * @return TweetQuery
+     */
+    public function likeTweetStatus($userId)
+    {
+       return $this->leftJoin('like_tweet', ['like_tweet.userId' => $userId])
+           ->where(['userId', 'tweetId']);
+    }
 }

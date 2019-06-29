@@ -10,6 +10,7 @@ use app\models\Tweet;
 use app\models\TweetSearch;
 use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -186,6 +187,7 @@ class TweetController extends Controller
     {
         $offset = Yii::$app->request->post('offset');
         $result = new stdClass();
+        $userId = Yii::$app->user->id;
 
         if (!is_numeric($offset)) {
             $result->iRet = -2;
@@ -197,10 +199,18 @@ class TweetController extends Controller
 
         $query = Tweet::find()
             ->innerJoinWith('user')
-            ->joinWith('userLikeStatus')
             ->orderBy('createTime DESC')
             ->limit(20)
             ->offset($offset - 1);
+
+        if ($userId) {
+            $likeTweets = LikeTweet::find()->likeTweets($userId)->asArray()->all();
+            $likeTweets = array_map(function ($val) {
+                return $val['tweetId'];
+            }, $likeTweets);
+        } else {
+            $likeTweets = [];
+        }
 
         $data = $query->asArray()->all();
         $tweets = [];
@@ -213,7 +223,7 @@ class TweetController extends Controller
                 'text' => $d['text'],
                 'tweetId' => $d['tweetId'],
                 'userId' => $d['userId'],
-                'liked' => !empty($d['userLikeStatus']),
+                'liked' => ArrayHelper::isIn($d['tweetId'], $likeTweets),
                 'nickname' => $d['user']['nickname'],
                 'avatar' => $d['user']['image']
             ]);

@@ -116,7 +116,7 @@ class Tweet extends ActiveRecord
     }
 
     /**
-     * 获取当前用户对某条推特的点赞状态
+     * 获取推特发表用户对本条推特的点赞状态
      * @return ActiveQuery
      */
     public function getUserLikeStatus()
