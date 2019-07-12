@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%banner}}`.
+ * Class m190709_053538_add_banner_table
  */
-class m190531_090259_create_banner_table extends Migration
+class m190709_053538_add_banner_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -21,6 +21,7 @@ class m190531_090259_create_banner_table extends Migration
         ]);
 
         $this->createIndex('idx-banner-bannerId', '{{%banner}}', 'bannerId');
+
     }
 
     /**
@@ -28,8 +29,21 @@ class m190531_090259_create_banner_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropIndex('idx-banner-bannerId', '{{%banner}}');
-
         $this->dropTable('{{%banner}}');
     }
+
+    /*
+    // Use up()/down() to run migration code without a transaction.
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+        echo "m190709_053538_add_banner_table cannot be reverted.\n";
+
+        return false;
+    }
+    */
 }

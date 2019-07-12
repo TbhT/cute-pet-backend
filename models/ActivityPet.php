@@ -5,23 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "user_pet".
+ * This is the model class for table "activity_pet".
  *
  * @property int $id
- * @property string $userId
  * @property string $petId
- * @property int $status 关系
+ * @property string $activityId
  * @property string $createTime 创建时间
  * @property string $updateTime 更新时间
  */
-class UserPet extends \yii\db\ActiveRecord
+class ActivityPet extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'user_pet';
+        return 'activity_pet';
     }
 
     /**
@@ -30,9 +29,9 @@ class UserPet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userId', 'petId', 'status'], 'integer'],
+            [['petId', 'activityId'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
-            [['userId', 'petId'], 'unique', 'targetAttribute' => ['userId', 'petId']],
+            [['activityId', 'petId'], 'unique', 'targetAttribute' => ['activityId', 'petId']],
         ];
     }
 
@@ -43,9 +42,8 @@ class UserPet extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userId' => 'User ID',
             'petId' => 'Pet ID',
-            'status' => '关系',
+            'activityId' => 'Activity ID',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
         ];
@@ -53,10 +51,10 @@ class UserPet extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return UserPetQuery the active query used by this AR class.
+     * @return ActivityPetQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new UserPetQuery(get_called_class());
+        return new ActivityPetQuery(get_called_class());
     }
 }

@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m190608_131340_add_topic_table
+ * Class m190712_104533_add_topic_table
  */
-class m190608_131340_add_topic_table extends Migration
+class m190712_104533_add_topic_table extends Migration
 {
     /**
      * {@inheritdoc}
@@ -14,9 +14,9 @@ class m190608_131340_add_topic_table extends Migration
     {
         $this->createTable('{{%topic}}', [
             'topicId' => $this->primaryKey()->unsigned(),
-            'text' => $this->text()->notNull(),
-            'createTime' => $this->dateTime()->defaultExpression('current_timestamp()'),
-            'updateTime' => $this->dateTime()->defaultExpression('current_timestamp()'),
+            'text' => $this->string(255)->defaultValue('')->comment('话题文本'),
+            'createTime' => $this->dateTime()->defaultExpression('current_timestamp()')->comment('创建时间'),
+            'updateTime' => $this->dateTime()->defaultExpression('current_timestamp()')->comment('更新时间'),
         ]);
     }
 
@@ -37,7 +37,7 @@ class m190608_131340_add_topic_table extends Migration
 
     public function down()
     {
-        echo "m190608_131340_add_topic_table cannot be reverted.\n";
+        echo "m190712_104533_add_topic_table cannot be reverted.\n";
 
         return false;
     }

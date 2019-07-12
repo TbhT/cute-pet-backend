@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[Pet]].
+ * This is the ActiveQuery class for [[ActivityPet]].
  *
- * @see Pet
+ * @see ActivityPet
  */
-class PetQuery extends \yii\db\ActiveQuery
+class ActivityPetQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class PetQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Pet[]|array
+     * @return ActivityPet[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class PetQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Pet|array|null
+     * @return ActivityPet|array|null
      */
     public function one($db = null)
     {

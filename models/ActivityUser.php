@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -10,13 +9,17 @@ use yii\db\Expression;
 /**
  * This is the model class for table "activity_user".
  *
- * @property string $auId
+ * @property int $id
+ * @property string $userId
+ * @property string $name 随行人姓名
+ * @property string $phone 随行人电话
+ * @property string $relation 随行人关系
+ * @property string $size 随行人尺寸
  * @property string $activityId 活动id
- * @property string $userId 用户id
  * @property string $createTime
  * @property string $updateTime
  */
-class ActivityUser extends ActiveRecord
+class ActivityUser extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -32,9 +35,28 @@ class ActivityUser extends ActiveRecord
     public function rules()
     {
         return [
-            [['activityId', 'userId'], 'required'],
-            [['activityId', 'userId'], 'integer'],
+            [['userId', 'activityId'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
+            [['name', 'phone', 'relation', 'size'], 'string', 'max' => 32],
+            [['userId', 'activityId'], 'unique', 'targetAttribute' => ['userId', 'activityId']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'userId' => 'User ID',
+            'name' => '随行人姓名',
+            'phone' => '随行人电话',
+            'relation' => '随行人关系',
+            'size' => '随行人尺寸',
+            'activityId' => '活动id',
+            'createTime' => 'Create Time',
+            'updateTime' => 'Update Time',
         ];
     }
 
@@ -52,19 +74,6 @@ class ActivityUser extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'auId' => 'Au ID',
-            'activityId' => 'Activity ID',
-            'userId' => 'User ID',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
-        ];
-    }
 
     /**
      * {@inheritdoc}

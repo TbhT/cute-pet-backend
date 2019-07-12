@@ -3,19 +3,27 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
-use dektrium\user\helpers\Password;
-use dektrium\user\models\Token;
-use dektrium\user\models\User as BaseUser;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
+use yii\web\IdentityInterface;
 
 
 const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|9[89])\\d{8}$/';
 
 
-class User extends BaseUser
+class User extends ActiveRecord implements IdentityInterface
 {
+
+    public function getAuthKey()
+    {
+        return $this->getAttribute('auth_key');
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAttribute('auth_key') === $authKey;
+    }
 
     public function behaviors()
     {
@@ -36,52 +44,46 @@ class User extends BaseUser
      */
     public function rules()
     {
-        $rules = parent::rules();
-        unset($rules['emailRequired']);
-        return ArrayHelper::merge($rules, [
-            [
-                'username',
-                'match',
-                'pattern' => PHONE_REGEXP
-            ]
-        ]);
+        return [
+            []
+        ];
     }
 
     public function register()
     {
-        if ($this->getIsNewRecord() == false) {
-            throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
-        }
-
-        $transaction = $this->getDb()->beginTransaction();
-
-        try {
-            $this->confirmed_at = $this->module->enableConfirmation ? null : time();
-            $this->password = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
-
-            $this->trigger(self::BEFORE_REGISTER);
-
-            if (!$this->save()) {
-                $transaction->rollBack();
-                return false;
-            }
-
-            if ($this->module->enableConfirmation) {
-                /** @var Token $token */
-                $token = \Yii::createObject(['class' => Token::className(), 'type' => Token::TYPE_CONFIRMATION]);
-                $token->link('user', $this);
-            }
-
-            $this->trigger(self::AFTER_REGISTER);
-
-            $transaction->commit();
-
-            return true;
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            \Yii::warning($e->getMessage());
-            throw $e;
-        }
+//        if ($this->getIsNewRecord() == false) {
+//            throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
+//        }
+//
+//        $transaction = $this->getDb()->beginTransaction();
+//
+//        try {
+//            $this->confirmed_at = $this->module->enableConfirmation ? null : time();
+//            $this->password = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
+//
+//            $this->trigger(self::BEFORE_REGISTER);
+//
+//            if (!$this->save()) {
+//                $transaction->rollBack();
+//                return false;
+//            }
+//
+//            if ($this->module->enableConfirmation) {
+//                /** @var Token $token */
+//                $token = \Yii::createObject(['class' => Token::className(), 'type' => Token::TYPE_CONFIRMATION]);
+//                $token->link('user', $this);
+//            }
+//
+//            $this->trigger(self::AFTER_REGISTER);
+//
+//            $transaction->commit();
+//
+//            return true;
+//        } catch (\Exception $e) {
+//            $transaction->rollBack();
+//            \Yii::warning($e->getMessage());
+//            throw $e;
+//        }
     }
 
 
@@ -96,6 +98,11 @@ class User extends BaseUser
     public static function findIdentity($id)
     {
         return static::findOne(['userId' => $id]);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['auth_key' => $token]);
     }
 
     public function attributeLabels()
@@ -141,8 +148,4 @@ class User extends BaseUser
             ->viaTable('activity_user', ['userId' => 'userId']);
     }
 
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['auth_key' => $token]);
-    }
 }
