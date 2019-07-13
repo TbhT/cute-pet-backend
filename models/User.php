@@ -27,8 +27,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function behaviors()
     {
-        $parent = parent::behaviors();
-        return ArrayHelper::merge($parent, [
+        return [
             [
                 'class' => GenerateIdBehavior::className(),
                 'attributes' => [
@@ -36,18 +35,9 @@ class User extends ActiveRecord implements IdentityInterface
                 ],
                 'idType' => GenerateIdBehavior::USER_ID_TYPE
             ]
-        ]);
-    }
-
-    /**
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            []
         ];
     }
+
 
     public function register()
     {
@@ -113,10 +103,6 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username]);
-    }
 
     /**
      * @param $password

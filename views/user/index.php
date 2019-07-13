@@ -1,9 +1,55 @@
 <?php
-/* @var $this yii\web\View */
-?>
-<h1>user/index</h1>
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\UserSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Users';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="user-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'userId',
+            'mobile',
+            'avatar',
+            'name',
+            'nickname',
+            //'birth',
+            //'gender',
+            //'age',
+            //'city',
+            //'province',
+            //'address',
+            //'idCard',
+            //'high',
+            //'status',
+            //'password_hash',
+            //'auth_key',
+            //'createTime',
+            //'updateTime',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
+    <?php Pjax::end(); ?>
+
+</div>

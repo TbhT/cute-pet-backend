@@ -2,316 +2,187 @@
 
 namespace app\controllers;
 
-use app\models\Activity;
-use app\models\Pet;
-use app\models\RegisterForm;
-use app\models\Tweet;
-use app\models\User;
-use dektrium\user\controllers\SecurityController;
+use app\models\LoginForm;
 use stdClass;
 use Yii;
+use app\models\User;
+use app\models\UserSearch;
+use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
-use yii\helpers\ArrayHelper;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 use yii\web\Response;
-use app\models\LoginForm;
 
 
-class UserController extends SecurityController
+/**
+ * UserController implements the CRUD actions for User model.
+ */
+class UserController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
-        $parent = parent::behaviors();
-        array_push(
-            $parent['access']['rules'],
-            [
-                'allow' => true,
-                'actions' => ['j-login', 'j-sign-up', 'j-status', 'j-info'],
-                'roles' => ['?']
-            ],
-            [
-                'allow' => true,
-                'actions' => ['j-all-pets', 'j-all-tweets', 'j-login', 'j-sign-up', 'j-status', 'j-info', 'j-activities'],
-                'roles' => ['@']
-            ]
-        );
-
-        $parent['verbs']['actions'] = ArrayHelper::merge(
-            $parent['verbs']['actions'],
-            [
-                'j-login' => ['post'],
-                'j-logout' => ['post'],
-                'j-sign-up' => ['post']
-            ]
-        );
-
-        return ArrayHelper::merge(
-            $parent,
-            [
-                [
-                    'class' => ContentNegotiator::className(),
-                    'only' => ['j-login', 'j-sign-up', 'j-logout', 'j-status', 'j-all-pets', 'j-all-tweets', 'j-info', 'j-activities'],
-                    'formats' => [
-                        'application/json' => Response::FORMAT_JSON
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login-with-user', 'login'],
+                        'roles' => ['?']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
+                        'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
+                        'roles' => ['admin']
                     ]
                 ]
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                    'login-with-user' => ['post'],
+                    'delete' => ['post']
+                ]
+            ],
+            [
+                'class' => ContentNegotiator::className(),
+                'only' => ['login-with-pwd'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
+                ]
             ]
-        );
+        ];
     }
 
-    /**
-     * 获取用户的登录状态
-     * @return stdClass
-     */
-    public function actionJStatus()
+    public function actionLogin()
     {
-        $result = new stdClass();
-        $result->iRet = 0;
-        $result->msg = 'success';
+        $model = new LoginForm();
 
-        if (Yii::$app->user->identity) {
-            $result->data = [
-                'userId' => Yii::$app->user->id
-            ];
-        } else {
-            $result->data = [
-                'userId' => null
-            ];
-        }
-
-        return $result;
+        return $this->render('login', [
+            'model' => $model
+        ]);
     }
 
-    /**
-     * 用户登录
-     * @return stdClass
-     */
-    public function actionJLogin()
+    public function actionLoginWithUser()
     {
         $model = new LoginForm();
         $result = new stdClass();
 
         if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
-            $user = User::findOne(['username' => $model->username]);
-            $result->iRet = 0;
-            $result->message = 'success';
-            $result->data = [
-                'userId' => $user->userId,
-                'name' => $user->name,
-                'nickname' => $user->nickname,
-                'gender' => $user->gender
-            ];
-        } else {
-            $result->iRet = -1;
-            $result->message = 'login failed';
-            $result->data = $model->getFirstErrors();
+            $user = User::findOne([]);
+        }
+    }
+
+    public function actionLogout()
+    {
+
+    }
+
+    /**
+     * Lists all User models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single User model.
+     * @param string $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new User model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new User();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->userId]);
         }
 
-        return $result;
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * 用户退出
-     * @return stdClass
+     * Updates an existing User model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionJLogout()
+    public function actionUpdate($id)
     {
-        $result = new stdClass();
-        Yii::$app->getUser()->logout();
+        $model = $this->findModel($id);
 
-        $result->iRet = 0;
-        $result->message = 'success';
-        $result->data = null;
-
-        return $result;
-    }
-
-    /**
-     * 注册
-     * @return stdClass
-     * @throws \yii\base\ExitException
-     */
-    public function actionJSignUp()
-    {
-        $model = new RegisterForm();
-        $this->performAjaxValidation($model);
-        $result = new stdClass();
-
-        if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
-            $result->iRet = 0;
-            $result->message = 'success';
-            $result->data = $model->getUserInfo();
-        } else {
-            $userModelError = $model->getUserModelErrors();
-
-            if (!empty($userModelError)) {
-                $result->iRet = -2;
-                $result->message = 'user error';
-                $result->data = $userModelError;
-            } else {
-                $result->iRet = -1;
-                $result->message = 'sign up failed';
-                $result->data = $model->getErrorSummary(true);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->userId]);
         }
 
-        return $result;
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * 获取所有的宠物
-     * @return stdClass
-     * @throws \yii\base\InvalidConfigException
+     * Deletes an existing User model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public function actionJAllPets()
+    public function actionDelete($id)
     {
-        $result = new stdClass();
+        $this->findModel($id)->delete();
 
-        $data = User::findOne(['userId' => Yii::$app->user->id])
-            ->getPetsInfo()
-            ->asArray()
-            ->limit(10)
-            ->all();
-
-        $result->iRet = 0;
-        $result->msg = 'success';
-        $result->data = $data;
-
-        return $result;
+        return $this->redirect(['index']);
     }
 
     /**
-     * 获取用户所有的动态信息
-     * @return stdClass
+     * Finds the User model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return User the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionJAllTweets()
+    protected function findModel($id)
     {
-        $result = new stdClass();
-        $user = Yii::$app->user->identity;
-        $offset = Yii::$app->request->post('offset');
-
-        $data = Tweet::find()
-            ->getTweetsByUserId($user->userId, $offset - 1)
-            ->asArray()
-            ->all();
-
-        $tweets = [];
-        foreach ($data as $d) {
-            array_push($tweets, [
-                'commentCount' => $d['commentCount'],
-                'createTime' => $d['createTime'],
-                'image' => $d['image'],
-                'likeCount' => $d['likeCount'],
-                'text' => $d['text'],
-                'tweetId' => $d['tweetId'],
-                'userId' => $user->userId,
-                'avatar' => $user->image,
-                'liked' => !empty($d['userLikeStatus'])
-            ]);
+        if (($model = User::findOne($id)) !== null) {
+            return $model;
         }
 
-        $result->iRet = 0;
-        $result->data = $tweets;
-        $result->msg = 'success';
-
-        return $result;
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    /**
-     * 获取用户参加过的活动
-     * @return stdClass
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionJActivities()
-    {
-        $result = new stdClass();
-        $userId = Yii::$app->user->id;
-        $offset = Yii::$app->request->post('offset');
-
-        $activities = User::findOne(['userId' => $userId])
-            ->getJoinActivities()
-            ->limit(20)
-            ->offset($offset - 1)
-            ->asArray()
-            ->all();
-
-        $result->iRet = 0;
-        $result->msg = 'success';
-        $result->data = $activities;
-
-        return $result;
-    }
-
-    /**
-     * 获取用户的基本信息
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionJInfo()
-    {
-        $result = new stdClass();
-        $userId = Yii::$app->user->id;
-
-        $user = User::findOne(['userId' => $userId]);
-
-        if ($user) {
-            $pet = $user->getPetsInfo()->orderBy('createTime DESC')->one();
-            if ($pet) {
-                $pet = [
-                    'petId' => $pet->petId,
-                    'image' => $pet->image,
-                    'nickname' => $pet->nickname
-                ];
-            }
-
-            $userInfo = [
-                'userId' => $user->userId,
-                'image' => $user->image,
-                'nickname' => $user->nickname,
-            ];
-        } else {
-            $pet = null;
-            $userInfo = null;
-
-        }
-
-        $result->iRet = 0;
-        $result->msg = 'success';
-        $result->data = [
-            'userInfo' => $userInfo,
-            'pet' => $pet
-        ];
-
-        return $result;
-    }
-
-    /**
-     * 获取用户的详细信息
-     */
-    public function actionJDetailInfo()
-    {
-        $result = new stdClass();
-        $userId = Yii::$app->user->id;
-        $user = User::findOne(['userId' => $userId]);
-
-        if ($user) {
-            $userInfo = [
-                'phoneNumber' => $user->username,
-                'name' => $user->name,
-                'nickname' => $user->nickname,
-                'age' => $user->age,
-                'gender' => $user->gender,
-                'homeAddress' => $user->homeAddress,
-                'workAddress' => $user->workAddress,
-                'image' => $user->image
-            ];
-        } else {
-            $userInfo = null;
-        }
-
-        $result->iRet = 0;
-        $result->msg = 'success';
-        $result->data = $userInfo;
-
-        return $result;
-    }
-
 }

@@ -29,6 +29,9 @@ $config = [
                 'application/json' => 'yii\web\JsonParser'
             ]
         ],
+        'user' => [
+            'identityClass' => 'app\models\User'
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -54,33 +57,10 @@ $config = [
         'db' => $db,
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                'api/<controller>/<action>' => '<controller>/<action>',
-            ]
-        ],
-    ],
-    'modules' => [
-        'user' => [
-            'class' => 'dektrium\user\Module',
-            'modelMap' => [
-                'User' => 'app\models\User'
-            ],
-            'controllerMap' => [
-                'security' => 'app\controllers\UserController'
-            ],
-            'enableUnconfirmedLogin' => true,
-            'enableConfirmation' => false,
-            'cost' => 12,
-            'admins' => ['19011110000'],
-            'urlPrefix' => 'api/user',
-            'urlRules' => [
-                '<controller:(person)>/<action>' => 'security/<action>'
-            ]
+            'showScriptName' => false
         ],
     ],
     'params' => $params,
