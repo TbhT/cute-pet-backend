@@ -57,6 +57,7 @@ $config = [
         'db' => $db,
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['user']
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

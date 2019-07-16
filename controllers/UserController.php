@@ -37,7 +37,7 @@ class UserController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'logout-with-user'],
                         'roles' => ['@']
                     ],
                     [
@@ -52,6 +52,7 @@ class UserController extends Controller
                 'actions' => [
                     'logout' => ['post'],
                     'login-with-user' => ['post'],
+                    'logout-with-user' => ['post'],
                     'delete' => ['post']
                 ]
             ],
@@ -73,6 +74,7 @@ class UserController extends Controller
     public function actionLogin()
     {
         $model = new LoginForm();
+        $userId = Yii::$app->user->id;
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -82,8 +84,14 @@ class UserController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-//            todo: 这里需要区分管理员和普通用户
-            return $this->goBack();
+            $auth = Yii::$app->authManager;
+            $adminRole = $auth->getRole('admin');
+
+            if ($auth->getAssignment($adminRole, $userId)) {
+                return $this->redirect('/user/index');
+            } else {
+                return $this->redirect('/');
+            }
         }
 
         return $this->render('login', ['model' => $model]);
