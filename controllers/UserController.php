@@ -13,6 +13,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 
 /**
@@ -56,7 +57,7 @@ class UserController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['login-with-pwd'],
+                'only' => ['login-with-user'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -64,28 +65,77 @@ class UserController extends Controller
         ];
     }
 
+    /**
+     * 普通用户进行登录
+     * @return string|Response
+     * @throws \yii\base\ExitException
+     */
     public function actionLogin()
     {
         $model = new LoginForm();
 
-        return $this->render('login', [
-            'model' => $model
-        ]);
+        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            Yii::$app->response->data = ActiveForm::validate($model);
+            Yii::$app->response->send();
+            Yii::$app->end();
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            todo: 这里需要区分管理员和普通用户
+            return $this->goBack();
+        }
+
+        return $this->render('login', ['model' => $model]);
     }
 
+    /**
+     * 普通用户进行登录
+     * @return stdClass
+     */
     public function actionLoginWithUser()
     {
         $model = new LoginForm();
         $result = new stdClass();
 
         if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
-            $user = User::findOne([]);
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -2;
+            $result->sMsg = 'error';
+            $result->data = $model->getErrorSummary(true);
         }
+
+        return $result;
     }
 
+    /**
+     * 普通用户进行退出操作
+     * @return stdClass
+     */
+    public function actionLogoutWithUser()
+    {
+        Yii::$app->getUser()->logout();
+        $result = new stdClass();
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = null;
+
+        return $result;
+    }
+
+    /**
+     * 管理员进行退出
+     * @return Response
+     */
     public function actionLogout()
     {
+        Yii::$app->getUser()->logout();
 
+        return $this->goHome();
     }
 
     /**

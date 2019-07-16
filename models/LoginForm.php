@@ -27,7 +27,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['login'], 'required'],
+            [['login'], 'required', 'message' => '手机号不能为空'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -45,7 +45,7 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError('password', 'Incorrect username or password.');
+                $this->addError('password', '验证码不正确');
             }
         }
     }
@@ -56,7 +56,12 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate() && $this->_user) {
+        if ($this->validate()) {
+            if (!$this->_user) {
+                $this->addError('login', '手机号不正确');
+                return false;
+            }
+
             return Yii::$app->getUser()->login($this->_user, $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
 
@@ -74,7 +79,7 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds user by [[username]]
+     * Finds user by [[mobile]]
      *
      * @return User|null
      */

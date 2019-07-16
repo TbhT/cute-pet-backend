@@ -17,8 +17,8 @@ $this->title = '登录';
                 <?php $form = ActiveForm::begin([
                     'id' => 'login-form',
                     'enableAjaxValidation' => true,
-                    'enableClientValidation' => false,
-                    'validateOnBlur' => false,
+                    'enableClientValidation' => true,
+                    'validateOnBlur' => true,
                     'validateOnType' => false,
                     'validateOnChange' => false,
                 ]) ?>
@@ -26,7 +26,13 @@ $this->title = '登录';
                 <?= $form->field(
                     $model,
                     'login',
-                    ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']])
+                    [
+                        'inputOptions' => [
+                            'autofocus' => 'autofocus',
+                            'class' => 'form-control',
+                            'tabindex' => '1'
+                        ]
+                    ])
                     ->label('手机号');
                 ?>
 
@@ -34,15 +40,20 @@ $this->title = '登录';
                     $model,
                     'password',
                     ['inputOptions' => ['class' => 'form-control', 'tabindex' => '2']])
-                    ->passwordInput()
-                    ->label('密码') ?>
+                    ->textInput()
+                    ->label('验证码')
+                ?>
 
-                <?= $form->field($model, 'rememberMe')->checkbox(['tabindex' => '3']) ?>
+                <?= $form->field(
+                    $model,
+                    'rememberMe')
+                    ->checkbox(['tabindex' => '3', 'label' => '记住我'])
+                ?>
 
                 <?= Html::submitButton(
                     '登录',
-                    ['class' => 'btn btn-primary btn-block', 'tabindex' => '4']
-                ) ?>
+                    ['class' => 'btn btn-primary btn-block', 'tabindex' => '4'])
+                ?>
 
                 <?php ActiveForm::end(); ?>
             </div>
