@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 
+
 /**
  * This is the model class for table "activity".
  *
@@ -46,7 +47,8 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['status'], 'integer'],
-            [['activityId', 'beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'createTime', 'updateTime'], 'safe'],
+            [['name', 'beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'organizer', 'coorganizer', 'place'], 'required'],
+            [['activityId', 'createTime', 'updateTime'], 'safe'],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],
@@ -72,6 +74,7 @@ class Activity extends \yii\db\ActiveRecord
             'place' => '活动地点',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
+            'image' => '活动图片'
         ];
     }
 

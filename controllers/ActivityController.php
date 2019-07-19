@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\ActivityUser;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
@@ -54,6 +55,7 @@ class ActivityController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'type' => 2
         ]);
     }
 
@@ -65,13 +67,15 @@ class ActivityController extends Controller
     public function actionCreate()
     {
         $model = new Activity();
+        $activityUserModel = new ActivityUser();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save() && $activityUserModel->save()) {
             return $this->redirect(['view', 'id' => $model->activityId]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'activityUserModel' => $activityUserModel
         ]);
     }
 
