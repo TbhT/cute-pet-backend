@@ -26,6 +26,11 @@ use yii\db\Expression;
  */
 class Activity extends \yii\db\ActiveRecord
 {
+    // 待审核
+    const UN_REVIEWED = 1;
+    // 过审
+    const PASSED = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -40,9 +45,8 @@ class Activity extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['activityId'], 'required'],
-            [['activityId', 'status'], 'integer'],
-            [['beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'createTime', 'updateTime'], 'safe'],
+            [['status'], 'integer'],
+            [['activityId', 'beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'createTime', 'updateTime'], 'safe'],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],

@@ -18,7 +18,6 @@ class SPAAsset extends AssetBundle
     ];
 
     public $js = [
-        '1.app.js',
-        'app.js'
+        'js/vendors~main.app.js'
     ];
 }

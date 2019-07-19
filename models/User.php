@@ -5,7 +5,6 @@ namespace app\models;
 use app\behaviors\GenerateIdBehavior;
 use Yii;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 
@@ -83,6 +82,17 @@ class User extends ActiveRecord implements IdentityInterface
     public function getId()
     {
         return $this->getAttribute('userId');
+    }
+
+    /**
+     * 查询一个用户是否是管理员
+     * @return bool
+     */
+    public function getIsAdmin()
+    {
+        $auth = Yii::$app->authManager;
+        $userIds = $auth->getUserIdsByRole('admin');
+        return in_array($this->userId, $userIds);
     }
 
     public static function findIdentity($id)

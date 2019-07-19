@@ -12,10 +12,6 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'activityId')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'beginTime')->textInput() ?>
@@ -32,12 +28,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'place')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'createTime')->textInput() ?>
-
-    <?= $form->field($model, 'updateTime')->textInput() ?>
-
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -8,7 +8,7 @@ SPAAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
     <!DOCTYPE html>
-    <html>
+    <html lang="zh-cn">
     <head>
         <meta charset="utf-8">
         <!--
@@ -28,8 +28,8 @@ SPAAsset::register($this);
         <meta name="theme-color" content="#f7b453">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
+        <?php $this->registerCsrfMetaTags() ?>
         <title>CutePet</title>
-
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <link rel="apple-touch-icon" href="static/icons/apple-touch-icon.png">
@@ -37,16 +37,15 @@ SPAAsset::register($this);
         <link rel="manifest" href="/manifest.json">
 
         <!-- built styles file will be auto injected -->
+        <?php $this->head() ?>
     </head>
 
     <body>
     <?php $this->beginBody() ?>
+
     <?= $content ?>
 
     <!-- built script files will be auto injected -->
-    <script type="text/javascript" src="vendors~main.app.js"></script>
-    <script type="text/javascript" src="app.js"></script>
-
     <?php $this->endBody() ?>
     </body>
     </html>
