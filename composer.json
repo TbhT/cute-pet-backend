@@ -26,7 +26,8 @@
     "ext-json": "*",
     "yiisoft/yii2-authclient": "^2.2",
     "kartik-v/yii2-widget-datetimepicker": "dev-master",
-    "kartik-v/yii2-widget-fileinput": "dev-master"
+    "kartik-v/yii2-widget-fileinput": "dev-master",
+    "kartik-v/yii2-widget-select2": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

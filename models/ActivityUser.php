@@ -21,6 +21,15 @@ use yii\db\Expression;
  */
 class ActivityUser extends \yii\db\ActiveRecord
 {
+    // 两人一宠
+    const TYPE_TWO_ONE = 1;
+    // 两人两宠
+    const TYPE_TWO_TWO = 2;
+    // 一人两宠
+    const TYPE_ONE_TWO = 3;
+    // 一人一宠
+    const TYPE_ONE_ONE = 4;
+
     /**
      * {@inheritdoc}
      */
@@ -36,6 +45,8 @@ class ActivityUser extends \yii\db\ActiveRecord
     {
         return [
             [['userId', 'activityId'], 'integer'],
+            [['amount'], 'double'],
+            [['type', 'amount'], 'required'],
             [['createTime', 'updateTime'], 'safe'],
             [['name', 'phone', 'relation', 'size'], 'string', 'max' => 32],
             [['userId', 'activityId'], 'unique', 'targetAttribute' => ['userId', 'activityId']],
@@ -55,6 +66,9 @@ class ActivityUser extends \yii\db\ActiveRecord
             'relation' => '随行人关系',
             'size' => '随行人尺寸',
             'activityId' => '活动id',
+            'tag' => '参与人必填字段',
+            'type' => '支付类型',
+            'amount' => '金额',
             'createTime' => 'Create Time',
             'updateTime' => 'Update Time',
         ];

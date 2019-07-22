@@ -8,10 +8,20 @@ if ($type === 2) {
         ],
         'initialPreviewAsData' => true,
         'overwriteInitial' => false,
-        'showUpload' => false
+        'showUpload' => false,
+        'showCaption' => false,
+        'language' => 'zh',
+        'browseLabel' => '上传图片',
+        'removeLabel' => '清除'
     ];
 } else {
-    $array = [];
+    $array = [
+        'removeLabel' => '清除',
+        'language' => 'zh',
+        'overwriteInitial' => false,
+        'showUpload' => false,
+        'showCaption' => false,
+    ];
 }
 
 ?>
