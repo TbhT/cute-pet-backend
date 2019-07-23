@@ -32,6 +32,7 @@ if ($type === 2) {
             活动信息
         </div>
     </div>
+
     <div class="panel-body">
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -81,6 +82,32 @@ if ($type === 2) {
                 'format' => 'yyyy-mm-dd hh:ii:ss'
             ]
         ])
+        ?>
+
+        <?=
+        $form->field($model, 'province')->dropDownList(
+            $model->getProvinceList(),
+            [
+                'prompt' => '请选择省份',
+                'id' => 'me-activity-province'
+            ]
+        )
+        ?>
+
+        <?=
+        $form->field($model, 'city')->dropDownList([]);
+        ?>
+
+        <?=
+        $form->field($model, 'area')->dropDownList([])
+        ?>
+
+        <?=
+        $form->field($model, 'personUnitPrice')->textInput(['maxlength' => true])
+        ?>
+
+        <?=
+        $form->field($model, 'petUnitPrice')->textInput(['maxlength' => true])
         ?>
 
         <?= $form->field($model, 'organizer')->textInput(['maxlength' => true]) ?>

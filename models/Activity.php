@@ -7,6 +7,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 
 
 /**
@@ -47,11 +48,29 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['status'], 'integer'],
-            [['name', 'beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'organizer', 'coorganizer', 'place'], 'required'],
+            [
+                [
+                    'name',
+                    'beginTime',
+                    'endTime',
+                    'joinBeginTime',
+                    'joinEndTime',
+                    'organizer',
+                    'coorganizer',
+                    'place',
+                    'personUnitPrice',
+                    'petUnitPrice',
+                    'province',
+                    'city',
+                    'area'
+                ],
+                'required'
+            ],
             [['activityId', 'createTime', 'updateTime'], 'safe'],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],
+            [['personUnitPrice', 'petUnitPrice'], 'double'],
             [['activityId'], 'unique'],
         ];
     }
@@ -72,6 +91,11 @@ class Activity extends \yii\db\ActiveRecord
             'organizer' => '主办方',
             'coorganizer' => '协办方',
             'place' => '活动地点',
+            'personUnitPrice' => '元/人',
+            'petUnitPrice' => '元/宠',
+            'province' => '省',
+            'city' => '市',
+            'area' => '区',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
             'image' => '活动图片'
@@ -108,4 +132,40 @@ class Activity extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * 获取省份列表
+     * @return Activity[]|array
+     */
+    public function getProvinceList()
+    {
+        $data = City::find()->groupBy('pId')->asArray()->all();
+        $newData = [];
+        array_map(function ($obj) use (&$newData) {
+            $newData["{$obj['pId']}"] = $obj['province'];
+        }, $data);
+
+        return $newData;
+    }
+
+    public static function getCityList($pid)
+    {
+        $data = static::find()->andOnCondition(['pId' => $pid])->asArray()->all();
+        $newData = [];
+
+        array_map(function ($obj) use (&$newData) {
+            $newData["{$obj['cId']}"] = $obj['city'];
+        }, $data);
+
+        return $newData;
+    }
+
+    public static function getAreaList($pid, $cid)
+    {
+        $data = static::find()->andOnCondition(['pId' => $pid, 'cId' => $cid]);
+        $newData = [];
+
+        array_map(function ($obj) use (&$newData) {
+            $newData["{$obj['pId']}"];
+        }, $data);
+    }
 }

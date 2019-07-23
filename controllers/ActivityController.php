@@ -6,9 +6,11 @@ use app\models\ActivityUser;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
+use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -27,6 +29,14 @@ class ActivityController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            [
+                'class' => ContentNegotiator::className(),
+                'only' => ['activity-list', 'area-list'],
+                'formats' => [
+                    'application/json' => Response::FORMAT_JSON
+                ]
+            ]
+
         ];
     }
 
@@ -129,5 +139,18 @@ class ActivityController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionCityList()
+    {
+        $pId = Yii::$app->request->post('pId');
+        return Activity::getCityList($pId);
+    }
+
+    public function actionAreaList()
+    {
+        $pId = Yii::$app->request->post('pId');
+        $cId = Yii::$app->request->post('cId');
+        return Activity::getAreaList($pId, $cId);
     }
 }

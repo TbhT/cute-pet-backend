@@ -44,20 +44,6 @@ $model->tag = ['name', 'mobile', 'gender'];
             ?>
 
             <?=
-            $form->field($model, 'type')->dropDownList(
-                [
-                    1 => '两人一宠',
-                    2 => '两人两宠',
-                    3 => '一人两宠',
-                    4 => '一人一宠'
-                ],
-                [
-                    'prompt' => '选择支付类型'
-                ]
-            )
-            ?>
-
-            <?=
             $form->field($model, 'amount')->textInput();
             ?>
 
