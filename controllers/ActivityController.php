@@ -3,9 +3,12 @@
 namespace app\controllers;
 
 use app\models\ActivityUser;
+use stdClass;
+use Throwable;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
+use yii\db\StaleObjectException;
 use yii\filters\ContentNegotiator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -31,7 +34,7 @@ class ActivityController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['activity-list', 'area-list'],
+                'only' => ['city-list', 'area-list', 'province-list'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -115,8 +118,8 @@ class ActivityController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -141,16 +144,40 @@ class ActivityController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    public function actionProvinceList()
+    {
+        $result = new stdClass();
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = Activity::getProvinceList();
+
+        return $result;
+    }
+
     public function actionCityList()
     {
         $pId = Yii::$app->request->post('pId');
-        return Activity::getCityList($pId);
+
+        $result = new stdClass();
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = Activity::getCityList($pId);
+
+        return $result;
     }
 
     public function actionAreaList()
     {
+        $result = new stdClass();
+
         $pId = Yii::$app->request->post('pId');
         $cId = Yii::$app->request->post('cId');
-        return Activity::getAreaList($pId, $cId);
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = Activity::getAreaList($pId, $cId);
+
+        return $result;
     }
 }

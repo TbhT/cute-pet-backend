@@ -86,20 +86,32 @@ if ($type === 2) {
 
         <?=
         $form->field($model, 'province')->dropDownList(
-            $model->getProvinceList(),
+            [],
             [
                 'prompt' => '请选择省份',
                 'id' => 'me-activity-province'
             ]
-        )
+        );
         ?>
 
         <?=
-        $form->field($model, 'city')->dropDownList([]);
+        $form->field($model, 'city')->dropDownList(
+            [],
+            [
+                'prompt' => '请选择城市',
+                'id' => 'me-activity-city'
+            ]
+        );
         ?>
 
         <?=
-        $form->field($model, 'area')->dropDownList([])
+        $form->field($model, 'area')->dropDownList(
+            [],
+            [
+                'prompt' => '请输入市区',
+                'id' => 'me-activity-area'
+            ]
+        );
         ?>
 
         <?=

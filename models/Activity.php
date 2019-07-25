@@ -136,7 +136,7 @@ class Activity extends \yii\db\ActiveRecord
      * 获取省份列表
      * @return Activity[]|array
      */
-    public function getProvinceList()
+    public static function getProvinceList()
     {
         $data = City::find()->groupBy('pId')->asArray()->all();
         $newData = [];
@@ -149,7 +149,7 @@ class Activity extends \yii\db\ActiveRecord
 
     public static function getCityList($pid)
     {
-        $data = static::find()->andOnCondition(['pId' => $pid])->asArray()->all();
+        $data = City::find()->andOnCondition(['pId' => $pid])->asArray()->all();
         $newData = [];
 
         array_map(function ($obj) use (&$newData) {
@@ -161,11 +161,13 @@ class Activity extends \yii\db\ActiveRecord
 
     public static function getAreaList($pid, $cid)
     {
-        $data = static::find()->andOnCondition(['pId' => $pid, 'cId' => $cid]);
+        $data = City::find()->andOnCondition(['pId' => $pid, 'cId' => $cid])->asArray()->all();
         $newData = [];
 
         array_map(function ($obj) use (&$newData) {
-            $newData["{$obj['pId']}"];
+            $newData["{$obj['pId']}"] = $obj['area'];
         }, $data);
+
+        return $newData;
     }
 }
