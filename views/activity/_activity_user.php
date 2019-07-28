@@ -43,10 +43,6 @@ $model->tag = ['name', 'mobile', 'gender'];
             ])
             ?>
 
-            <?=
-            $form->field($model, 'amount')->textInput();
-            ?>
-
         </div>
     </div>
 </div>

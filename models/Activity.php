@@ -159,13 +159,13 @@ class Activity extends \yii\db\ActiveRecord
         return $newData;
     }
 
-    public static function getAreaList($pid, $cid)
+    public static function getAreaList($cid)
     {
-        $data = City::find()->andOnCondition(['pId' => $pid, 'cId' => $cid])->asArray()->all();
+        $data = City::find()->andOnCondition(['cId' => $cid])->asArray()->all();
         $newData = [];
 
         array_map(function ($obj) use (&$newData) {
-            $newData["{$obj['pId']}"] = $obj['area'];
+            $newData[] = $obj['area'];
         }, $data);
 
         return $newData;

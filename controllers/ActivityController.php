@@ -171,12 +171,12 @@ class ActivityController extends Controller
     {
         $result = new stdClass();
 
-        $pId = Yii::$app->request->post('pId');
+//        $pId = Yii::$app->request->post('pId');
         $cId = Yii::$app->request->post('cId');
 
         $result->iRet = 0;
         $result->sMsg = 'success';
-        $result->data = Activity::getAreaList($pId, $cId);
+        $result->data = Activity::getAreaList($cId);
 
         return $result;
     }
