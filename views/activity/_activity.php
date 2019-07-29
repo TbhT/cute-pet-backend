@@ -85,6 +85,35 @@ if ($type === 2) {
         ?>
 
         <?=
+        $form->field($model, 'personUnitPrice')->textInput(['maxlength' => true])
+        ?>
+
+        <?=
+        $form->field($model, 'petUnitPrice')->textInput(['maxlength' => true])
+        ?>
+
+        <?= $form->field($model, 'organizer')->textInput(['maxlength' => true]) ?>
+
+        <?= $form->field($model, 'coorganizer')->textInput(['maxlength' => true]) ?>
+
+        <?=
+        $form->field($model, 'image')->widget('kartik\file\FileInput', [
+            'options' => ['accept' => 'image/*'],
+            'pluginOptions' => $array,
+        ])
+        ?>
+    </div>
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="panel-title">
+            活动地点
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <?=
         $form->field($model, 'province')->dropDownList(
             [],
             [
@@ -114,26 +143,7 @@ if ($type === 2) {
         );
         ?>
 
-        <?=
-        $form->field($model, 'personUnitPrice')->textInput(['maxlength' => true])
-        ?>
-
-        <?=
-        $form->field($model, 'petUnitPrice')->textInput(['maxlength' => true])
-        ?>
-
-        <?= $form->field($model, 'organizer')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'coorganizer')->textInput(['maxlength' => true]) ?>
-
         <?= $form->field($model, 'place')->textInput(['maxlength' => true]) ?>
 
-        <?=
-        $form->field($model, 'image')->widget('kartik\file\FileInput', [
-            'options' => ['accept' => 'image/*'],
-            'pluginOptions' => $array,
-        ])
-        ?>
     </div>
 </div>
-

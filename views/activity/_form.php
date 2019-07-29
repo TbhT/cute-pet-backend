@@ -17,7 +17,7 @@ if ($type === 2) {
             $model->image
         ],
         'initialPreviewAsData' => true,
-        'overwriteInitial' => false
+        'overwriteInitial' => false,
     ];
 }
 

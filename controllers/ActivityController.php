@@ -82,8 +82,11 @@ class ActivityController extends Controller
         $model = new Activity();
         $activityUserModel = new ActivityUser();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save() && $activityUserModel->save()) {
-            return $this->redirect(['view', 'id' => $model->activityId]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $activityUserModel->activityId = $model->activityId;
+            if ($activityUserModel->save()) {
+                return $this->redirect(['view', 'id' => $model->activityId]);
+            }
         }
 
         return $this->render('create', [

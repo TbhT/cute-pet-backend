@@ -46,7 +46,7 @@ class ActivityUser extends \yii\db\ActiveRecord
         return [
             [['userId', 'activityId'], 'integer'],
             [['amount'], 'double'],
-            [['type', 'amount'], 'required'],
+//            [['type', 'amount'], 'required'],
             [['createTime', 'updateTime'], 'safe'],
             [['name', 'phone', 'relation', 'size'], 'string', 'max' => 32],
             [['userId', 'activityId'], 'unique', 'targetAttribute' => ['userId', 'activityId']],
@@ -60,7 +60,7 @@ class ActivityUser extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userId' => 'User ID',
+            'userId' => '用户id',
             'name' => '随行人姓名',
             'phone' => '随行人电话',
             'relation' => '随行人关系',
@@ -69,8 +69,8 @@ class ActivityUser extends \yii\db\ActiveRecord
             'tag' => '参与人必填字段',
             'type' => '支付类型',
             'amount' => '金额',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 
