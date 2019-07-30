@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\LikeTweet;
-use dektrium\user\helpers\Password;
 use stdClass;
 use Yii;
 use app\models\Tweet;

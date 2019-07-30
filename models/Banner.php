@@ -33,6 +33,7 @@ class Banner extends \yii\db\ActiveRecord
         return [
             [['bannerId'], 'required'],
             [['bannerId'], 'integer'],
+            [['name'], 'string'],
             [['createTime', 'updateTime'], 'safe'],
             [['image'], 'string', 'max' => 512],
             [['bannerId'], 'unique'],
@@ -61,9 +62,10 @@ class Banner extends \yii\db\ActiveRecord
     {
         return [
             'bannerId' => 'Banner ID',
-            'image' => 'Image',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'image' => '图片地址',
+            'name' => '轮播图名称',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

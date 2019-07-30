@@ -12,16 +12,26 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'bannerId')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'createTime')->textInput() ?>
-
-    <?= $form->field($model, 'updateTime')->textInput() ?>
+    <?= $form->field($model, 'image')->widget('kartik\file\FileInput', [
+        'options' => ['accept' => 'image/*'],
+        'pluginOptions' => [
+            'initialPreview' => [
+                $model->image
+            ],
+            'initialPreviewAsData' => true,
+            'overwriteInitial' => false,
+            'showUpload' => false,
+            'showCaption' => false,
+            'language' => 'zh',
+            'browseLabel' => '上传图片',
+            'removeLabel' => '清除'
+        ],
+    ]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
