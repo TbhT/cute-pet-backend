@@ -84,7 +84,7 @@ class ActivityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $activityUserModel->activityId = $model->activityId;
-            if ($activityUserModel->save()) {
+            if ($activityUserModel->load(Yii::$app->request->post()) && $activityUserModel->save()) {
                 return $this->redirect(['view', 'id' => $model->activityId]);
             }
         }
@@ -105,6 +105,7 @@ class ActivityController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $activityUserModel = ActivityUser::findOne(['activityId' => $id]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->activityId]);
@@ -112,6 +113,7 @@ class ActivityController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'activityUserModel' => $activityUserModel
         ]);
     }
 

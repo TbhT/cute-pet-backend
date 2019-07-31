@@ -134,38 +134,44 @@ class Activity extends \yii\db\ActiveRecord
 
     /**
      * 获取省份列表
+     * @param int $type
      * @return Activity[]|array
      */
-    public static function getProvinceList()
+    public static function getProvinceList($type = 1)
     {
         $data = City::find()->groupBy('pId')->asArray()->all();
         $newData = [];
-        array_map(function ($obj) use (&$newData) {
-            $newData["{$obj['pId']}"] = $obj['province'];
+        array_map(function ($obj) use (&$newData, $type) {
+            $type === 1 ? $newData["{$obj['pId']}"] = $obj['province'] : $newData["{$obj['province']}"] = $obj['province'];
         }, $data);
 
         return $newData;
     }
 
-    public static function getCityList($pid)
+    /**
+     * @param $pid
+     * @param int $type
+     * @return array
+     */
+    public static function getCityList($pid, $type = 1)
     {
         $data = City::find()->andOnCondition(['pId' => $pid])->asArray()->all();
         $newData = [];
 
-        array_map(function ($obj) use (&$newData) {
-            $newData["{$obj['cId']}"] = $obj['city'];
+        array_map(function ($obj) use (&$newData, $type) {
+            $type === 1 ? $newData["{$obj['cId']}"] = $obj['city'] : $newData["{$obj['city']}"] = $newData["${$obj['city']}"];
         }, $data);
 
         return $newData;
     }
 
-    public static function getAreaList($cid)
+    public static function getAreaList($cid, $type = 1)
     {
         $data = City::find()->andOnCondition(['cId' => $cid])->asArray()->all();
         $newData = [];
 
-        array_map(function ($obj) use (&$newData) {
-            $newData[] = $obj['area'];
+        array_map(function ($obj) use (&$newData, $type) {
+            $type === 1 ? $newData[] = $obj['area'] : $newData["{$obj['area']}"] = $obj['area'];
         }, $data);
 
         return $newData;

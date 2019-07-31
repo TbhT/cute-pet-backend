@@ -49,6 +49,16 @@ if ($type === 2) {
         ?>
 
         <?=
+        $form->field($model, 'status')->dropDownList(
+            [
+                1 => '未审核',
+                2 => '已审核'
+            ]
+        );
+        ?>
+
+
+        <?=
         $form->field($model, 'endTime')->widget('kartik\datetime\DateTimePicker', [
             'name' => 'endTime',
             'value' => $model->endTime,
