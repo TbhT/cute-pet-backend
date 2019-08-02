@@ -16,17 +16,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php $form = ActiveForm::begin() ?>
+
     <?=
-    $this->render('_activity', [
+    $this->render('_basic_info', [
         'model' => $model,
-        'form' => $form,
-        'type' => 2
+        'form' => $form
     ])
     ?>
 
     <?=
-    $this->render('_activity_user', [
-        'model' => $activityUserModel,
+    $this->render('_place', [
+        'model' => $model,
         'form' => $form
     ])
     ?>

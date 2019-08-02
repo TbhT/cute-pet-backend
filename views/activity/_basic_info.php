@@ -1,28 +1,4 @@
 <?php
-/* @var $type number */
-
-if ($type === 2) {
-    $array = [
-        'initialPreview' => [
-            $model->image
-        ],
-        'initialPreviewAsData' => true,
-        'overwriteInitial' => false,
-        'showUpload' => false,
-        'showCaption' => false,
-        'language' => 'zh',
-        'browseLabel' => '上传图片',
-        'removeLabel' => '清除'
-    ];
-} else {
-    $array = [
-        'removeLabel' => '清除',
-        'language' => 'zh',
-        'overwriteInitial' => false,
-        'showUpload' => false,
-        'showCaption' => false,
-    ];
-}
 
 ?>
 
@@ -108,54 +84,8 @@ if ($type === 2) {
         <?=
         $form->field($model, 'image')->widget('kartik\file\FileInput', [
             'options' => ['accept' => 'image/*'],
-            'pluginOptions' => $array,
+            'pluginOptions' => [],
         ])
         ?>
-    </div>
-</div>
-
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <div class="panel-title">
-            活动地点
-        </div>
-    </div>
-
-    <div class="panel-body">
-        <?=
-        $form->field($model, 'province')->dropDownList(
-            [],
-            [
-                'prompt' => '请选择省份',
-                'id' => 'me-activity-province',
-                'data-province' => $model->province
-            ]
-        );
-        ?>
-
-        <?=
-        $form->field($model, 'city')->dropDownList(
-            [],
-            [
-                'prompt' => '请选择城市',
-                'id' => 'me-activity-city',
-                'data-city' => $model->city
-            ]
-        );
-        ?>
-
-        <?=
-        $form->field($model, 'area')->dropDownList(
-            [],
-            [
-                'prompt' => '请输入市区',
-                'id' => 'me-activity-area',
-                'data-area' => $model->area
-            ]
-        );
-        ?>
-
-        <?= $form->field($model, 'place')->textInput(['maxlength' => true]) ?>
-
     </div>
 </div>

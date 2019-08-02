@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\ActivityUser;
+use app\models\AreaCode;
 use stdClass;
 use Throwable;
 use Yii;
@@ -10,6 +11,7 @@ use app\models\Activity;
 use app\models\ActivitySearch;
 use yii\db\StaleObjectException;
 use yii\filters\ContentNegotiator;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -149,40 +151,35 @@ class ActivityController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionProvinceList()
+    public function actionCities()
     {
-        $result = new stdClass();
+        Yii::info($_POST);
+        $out = [];
+        if (isset($_POST['depdrop_all_params'])) {
+            $parent_id = $_POST['depdrop_all_params']['provinceId'];
+            $selected_id = $_POST['depdrop_all_params']['selectedCityId'];
+            $out = Yii::$app->db->cache(function ($db) use ($parent_id) {
+                return AreaCode::find()->select(['id', 'name'])->where(['parent_id' => $parent_id])->asArray()->all();
+            }, YII_DEBUG ? 3 : 24 * 3600);
+            return Json::encode(['output' => $out, 'selected' => $selected_id]);
+        }
 
-        $result->iRet = 0;
-        $result->sMsg = 'success';
-        $result->data = Activity::getProvinceList();
-
-        return $result;
+        return Json::encode(['output' => '', 'selected' => '']);
     }
 
-    public function actionCityList()
+    public function actionArea()
     {
-        $pId = Yii::$app->request->post('pId');
+        Yii::info($_POST);
+        $out = [];
+        if (isset($_POST['depdrop_all_params'])) {
+            $parent_id = $_POST['depdrop_all_params']['cityId'];
+            $selected_id = $_POST['depdrop_all_params']['selectedAreaId'];
+            $out = Yii::$app->db->cache(function ($db) use ($parent_id) {
+                return AreaCode::find()->select(['id', 'name'])->where(['parent_id' => $parent_id])->asArray()->all();
+            }, YII_DEBUG ? 3 : 24 * 3600);
+            return Json::encode(['output' => $out, 'selected' => $selected_id]);
+        }
 
-        $result = new stdClass();
-        $result->iRet = 0;
-        $result->sMsg = 'success';
-        $result->data = Activity::getCityList($pId);
-
-        return $result;
-    }
-
-    public function actionAreaList()
-    {
-        $result = new stdClass();
-
-//        $pId = Yii::$app->request->post('pId');
-        $cId = Yii::$app->request->post('cId');
-
-        $result->iRet = 0;
-        $result->sMsg = 'success';
-        $result->data = Activity::getAreaList($cId);
-
-        return $result;
+        return Json::encode(['output' => '', 'selected' => '']);
     }
 }

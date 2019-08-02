@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Activity */
-/** @var $activityUserModel app\models\ActivityUserModel */
+/** @var $activityUserModel app\models\ActivityUser */
 
 
 $this->title = '更新活动' . $model->name;
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = '更新';
 <div class="activity-update">
 
     <?php $form = ActiveForm::begin() ?>
+
     <?=
     $this->render('_activity', [
         'model' => $model,
@@ -34,5 +35,7 @@ $this->params['breadcrumbs'][] = '更新';
     <div class="form-group">
         <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>
     </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>
