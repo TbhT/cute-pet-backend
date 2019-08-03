@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use app\widgets\Alert;
@@ -37,20 +38,29 @@ AppAsset::register($this);
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            Yii::$app->user->isGuest ? (
-                ['label' => '登录', 'url' => ['/user/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/user/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->mobile . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+        'items' =>
+            Yii::$app->user->isGuest ?
+                ([
+                    ['label' => '登录', 'url' => '/user/login'],
+                    ['label' => '活动管理', 'url' => '/activity'],
+                    ['label' => '动态管理', 'url' => '/tweet'],
+                    ['label' => '轮播图管理', 'url' => '/banner'],
+                    ['label' => '评论管理', 'url' => '/comment'],
+                    ['label' => '宠物管理', 'url' => '/pet'],
+                ])
+                :
+                [
+                    (
+                        '<li>'
+                        . Html::beginForm(['/user/logout'], 'post')
+                        . Html::submitButton(
+                            '退出 (' . Yii::$app->user->identity->mobile . ')',
+                            ['class' => 'btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        . '</li>'
+                    )
+                ]
     ]);
     NavBar::end();
     ?>
@@ -66,7 +76,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-<!--        <p class="pull-left">&copy; My Company --><?//= date('Y') ?><!--</p>-->
+        <!--        <p class="pull-left">&copy; My Company --><? //= date('Y') ?><!--</p>-->
     </div>
 </footer>
 
