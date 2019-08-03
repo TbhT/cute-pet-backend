@@ -1,7 +1,10 @@
 <?php
 
-?>
+use kartik\file\FileInput;
 
+/* @var $pictureForm app\models\UploadForm */
+
+?>
 <div class="panel panel-info">
     <div class="panel-heading">
         <div class="panel-title">
@@ -81,10 +84,12 @@
 
         <?= $form->field($model, 'coorganizer')->textInput(['maxlength' => true]) ?>
 
+        <?= $form->field($model, 'personCount')->textInput() ?>
+
         <?=
-        $form->field($model, 'image')->widget('kartik\file\FileInput', [
+        $form->field($pictureForm, 'imageFile')->widget(FileInput::className(), [
             'options' => ['accept' => 'image/*'],
-            'pluginOptions' => [],
+            'pluginOptions' => $array,
         ])
         ?>
     </div>

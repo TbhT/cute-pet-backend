@@ -39,7 +39,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'organizer',
             'coorganizer',
             'place',
-        ],
+            [
+                'attribute' => 'image',
+                'value' => $model->image,
+                'format' => [
+                    'image',
+                    ['width' => 100, 'height' => 100]
+                ]
+            ]
+        ]
     ]) ?>
 
 </div>

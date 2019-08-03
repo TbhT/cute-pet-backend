@@ -4,12 +4,14 @@ namespace app\controllers;
 
 use app\models\ActivityUser;
 use app\models\AreaCode;
+use app\models\UploadForm;
 use stdClass;
 use Throwable;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
 use yii\db\StaleObjectException;
+use yii\debug\Panel;
 use yii\filters\ContentNegotiator;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -82,18 +84,20 @@ class ActivityController extends Controller
     public function actionCreate()
     {
         $model = new Activity();
-        $activityUserModel = new ActivityUser();
+        $pictureForm = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $activityUserModel->activityId = $model->activityId;
-            if ($activityUserModel->load(Yii::$app->request->post()) && $activityUserModel->save()) {
-                return $this->redirect(['view', 'id' => $model->activityId]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($pictureForm->upload()) {
+                $model->image = $pictureForm->path;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->activityId]);
+                }
             }
         }
 
         return $this->render('create', [
             'model' => $model,
-            'activityUserModel' => $activityUserModel
+            'pictureForm' => $pictureForm
         ]);
     }
 
@@ -107,15 +111,23 @@ class ActivityController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $activityUserModel = ActivityUser::findOne(['activityId' => $id]);
+        $pictureForm = new UploadForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($pictureForm->upload()) {
+                $model->image = $pictureForm->path;
+
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->activityId]);
+                }
+            }
+
             return $this->redirect(['view', 'id' => $model->activityId]);
         }
 
         return $this->render('update', [
             'model' => $model,
-            'activityUserModel' => $activityUserModel
+            'pictureForm' => $pictureForm
         ]);
     }
 

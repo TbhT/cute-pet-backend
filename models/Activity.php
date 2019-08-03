@@ -3,11 +3,13 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use app\utils\UploadImage;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
 
 /**
@@ -62,7 +64,8 @@ class Activity extends \yii\db\ActiveRecord
                     'petUnitPrice',
                     'province',
                     'city',
-                    'area'
+                    'area',
+                    'personCount'
                 ],
                 'required'
             ],
@@ -70,7 +73,7 @@ class Activity extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],
-            [['personUnitPrice', 'petUnitPrice'], 'double'],
+            [['personUnitPrice', 'petUnitPrice', 'personCount'], 'double'],
             [['activityId'], 'unique'],
         ];
     }
@@ -91,14 +94,16 @@ class Activity extends \yii\db\ActiveRecord
             'organizer' => '主办方',
             'coorganizer' => '协办方',
             'place' => '活动地点',
-            'personUnitPrice' => '元/人',
-            'petUnitPrice' => '元/宠',
+            'personUnitPrice' => '人单价 元/人',
+            'petUnitPrice' => '宠物单价 元/宠',
             'province' => '省',
             'city' => '市',
             'area' => '区',
+            'personCount' => '参与总人数',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
-            'image' => '活动图片'
+            'image' => '活动图片',
+            'picture' => '活动封面图'
         ];
     }
 
