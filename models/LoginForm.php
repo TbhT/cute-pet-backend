@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use function GuzzleHttp\Promise\all;
 use Yii;
 use yii\base\Model;
 
@@ -19,6 +20,7 @@ class LoginForm extends Model
 
     private $_user;
 
+    const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|9[89])\\d{8}$/';
 
     /**
      * @return array the validation rbac.
@@ -28,10 +30,12 @@ class LoginForm extends Model
         return [
             // username and password are both required
             [['login'], 'required', 'message' => '手机号不能为空'],
+            ['login', 'match', 'pattern' => static::PHONE_REGEXP, 'message' => '手机号无效'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            ['password', 'required', 'message' => '验证码不能为空']
         ];
     }
 
@@ -44,7 +48,7 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user || !$user->validatePassword($this->password, $this->login)) {
                 $this->addError('password', '验证码不正确');
             }
         }
@@ -87,6 +91,15 @@ class LoginForm extends Model
     {
         if (!$this->_user) {
             $this->_user = User::findOne(['mobile' => $this->login]);
+            if (!$this->_user) {
+                $user = new User();
+                $user->mobile = $this->login;
+                if ($user->save()) {
+                    $this->_user = $user;
+                } else {
+                    Yii::error($user->getErrorSummary(true));
+                }
+            }
         }
 
         return $this->_user;

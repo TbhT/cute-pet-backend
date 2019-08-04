@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\utils\SendSms;
 use stdClass;
 use Yii;
 use app\models\User;
@@ -32,7 +33,7 @@ class UserController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login-with-user', 'login'],
+                        'actions' => ['login-with-user', 'login', 'validate-code'],
                         'roles' => ['?']
                     ],
                     [
@@ -53,12 +54,13 @@ class UserController extends Controller
                     'logout' => ['post'],
                     'login-with-user' => ['post'],
                     'logout-with-user' => ['post'],
-                    'delete' => ['post']
+                    'delete' => ['post'],
+                    'validate-code' => ['post']
                 ]
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['login-with-user'],
+                'only' => ['login-with-user', 'validate-code'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -66,8 +68,9 @@ class UserController extends Controller
         ];
     }
 
+
     /**
-     * 普通用户进行登录
+     * 管理员登录
      * @return string|Response
      * @throws \yii\base\ExitException
      */
@@ -95,6 +98,25 @@ class UserController extends Controller
         }
 
         return $this->render('login', ['model' => $model]);
+    }
+
+    public function actionValidateCode()
+    {
+        $res = new stdClass();
+        $phone = Yii::$app->request->post('username');
+        $result = SendSms::send($phone);
+
+        if ($result === false) {
+            $res->iRet = -1;
+            $res->sMsg = 'validate code error';
+            $res->data = $result;
+        } else {
+            $res->iRet = 0;
+            $res->sMsg = 'success';
+            $res->data = $result;
+        }
+
+        return $res;
     }
 
     /**

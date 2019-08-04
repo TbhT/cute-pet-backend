@@ -14,6 +14,15 @@ const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|
 class User extends ActiveRecord implements IdentityInterface
 {
 
+    public function rules()
+    {
+        return [
+            [
+                'mobile', 'match', 'pattern' => PHONE_REGEXP
+            ]
+        ];
+    }
+
     public function getAuthKey()
     {
         return $this->getAttribute('auth_key');
@@ -108,7 +117,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'username' => '手机号',
+            'mobile' => '手机号',
             'password' => '密码'
         ];
     }
@@ -118,9 +127,16 @@ class User extends ActiveRecord implements IdentityInterface
      * @param $password
      * @return bool
      */
-    public function validatePassword($password)
+    public function validatePassword($password, $phone)
     {
-        return Password::validate($password, $this->password_hash);
+        $sms = Sms::findOne(['phoneNumber' => $phone, 'code' => $password]);
+        if ($sms) {
+            $sms->code = '';
+            $sms->save();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

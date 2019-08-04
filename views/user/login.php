@@ -30,8 +30,8 @@ $this->title = '登录';
                         'inputOptions' => [
                             'autofocus' => 'autofocus',
                             'class' => 'form-control',
-                            'tabindex' => '1'
-                        ]
+                            'tabindex' => '1',
+                        ],
                     ])
                     ->label('手机号');
                 ?>
@@ -42,6 +42,13 @@ $this->title = '登录';
                     ['inputOptions' => ['class' => 'form-control', 'tabindex' => '2']])
                     ->textInput()
                     ->label('验证码')
+                ?>
+
+                <?=
+                Html::a('发送验证码', null, [
+                    'class' => 'btn btn-primary',
+                    'id' => 'me-user-login-validate-code'
+                ])
                 ?>
 
                 <?= $form->field(

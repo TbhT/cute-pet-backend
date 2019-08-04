@@ -14,6 +14,7 @@ class m190802_084348_add_sms_table extends Migration
     {
         $this->createTable('{{%sms}}', [
             'id' => $this->primaryKey()->unsigned()->unique(),
+            'reqId' => $this->string(255),
             'phoneNumber' => $this->string(32),
             'code' => $this->string(255),
             'createTime' => $this->dateTime()->defaultExpression('current_timestamp()')->comment('创建时间'),
@@ -26,7 +27,8 @@ class m190802_084348_add_sms_table extends Migration
      */
     public function safeDown()
     {
-
+        $this->dropTable('{{%sms}}');
+        return true;
     }
 
     /*
