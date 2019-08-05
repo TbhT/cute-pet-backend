@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\UploadForm;
 use stdClass;
 use Yii;
 use app\models\Banner;
@@ -95,13 +96,20 @@ class BannerController extends Controller
     public function actionCreate()
     {
         $model = new Banner();
+        $pictureForm = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->bannerId]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($pictureForm->upload()) {
+                $model->image = $pictureForm->path;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->bannerId]);
+                }
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'pictureForm' => $pictureForm
         ]);
     }
 
@@ -115,13 +123,21 @@ class BannerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $pictureForm = new UploadForm();
+
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->bannerId]);
+            if ($pictureForm->upload()) {
+                $model->image = $pictureForm->path;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->bannerId]);
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'pictureForm' => $pictureForm
         ]);
     }
 
