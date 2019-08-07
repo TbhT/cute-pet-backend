@@ -22,6 +22,11 @@ use yii\db\Expression;
  */
 class Market extends \yii\db\ActiveRecord
 {
+    // 待审核
+    const UN_REVIEWED = 1;
+    // 过审
+    const PASSED = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +43,7 @@ class Market extends \yii\db\ActiveRecord
         return [
             [['marketId', 'userId', 'status'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
+            [['name', 'contact', 'phone', 'place'], 'required'],
             [['name'], 'string', 'max' => 256],
             [['contact', 'phone'], 'string', 'max' => 64],
         ];
@@ -51,10 +57,12 @@ class Market extends \yii\db\ActiveRecord
         return [
             'marketId' => 'Market ID',
             'userId' => 'User ID',
-            'status' => 'Status',
+            'status' => '商家状态',
             'name' => '商家名称',
             'contact' => '联系人',
             'phone' => '联系方式',
+            'place' => '地点',
+            'image' => '商家图片',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
         ];

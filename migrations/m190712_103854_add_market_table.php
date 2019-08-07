@@ -21,6 +21,7 @@ class m190712_103854_add_market_table extends Migration
             'phone' => $this->string(64)->comment('联系方式'),
             'createTime' => $this->dateTime()->defaultExpression('current_timestamp()')->comment('创建时间'),
             'updateTime' => $this->dateTime()->defaultExpression('current_timestamp()')->comment('更新时间'),
+            'PRIMARY KEY(marketId)'
         ]);
     }
 

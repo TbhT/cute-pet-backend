@@ -47,6 +47,7 @@ AppAsset::register($this);
                     ['label' => '轮播图管理', 'url' => '/banner'],
                     ['label' => '评论管理', 'url' => '/comment'],
                     ['label' => '宠物管理', 'url' => '/pet'],
+                    ['label' => '商家管理', 'url' => '/market'],
                 ])
                 :
                 [

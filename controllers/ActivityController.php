@@ -89,6 +89,7 @@ class ActivityController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             if ($pictureForm->upload()) {
                 $model->image = $pictureForm->path;
+
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->activityId]);
                 }
@@ -121,8 +122,6 @@ class ActivityController extends Controller
                     return $this->redirect(['view', 'id' => $model->activityId]);
                 }
             }
-
-            return $this->redirect(['view', 'id' => $model->activityId]);
         }
 
         return $this->render('update', [
