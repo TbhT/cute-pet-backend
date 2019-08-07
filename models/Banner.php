@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\behaviors\GenerateIdBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -31,7 +32,6 @@ class Banner extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bannerId'], 'required'],
             [['bannerId'], 'integer'],
             [['name'], 'string'],
             [['createTime', 'updateTime'], 'safe'],
@@ -50,6 +50,13 @@ class Banner extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ],
                 'value' => new Expression('NOW()')
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['bannerId']
+                ],
+                'idType' => GenerateIdBehavior::ACTIVITY_ID_TYPE
             ]
         ];
     }

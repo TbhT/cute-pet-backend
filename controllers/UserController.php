@@ -36,11 +36,11 @@ class UserController extends Controller
                         'actions' => ['login-with-user', 'login', 'validate-code'],
                         'roles' => ['?']
                     ],
-                    [
-                        'allow' => true,
-                        'actions' => ['logout', 'logout-with-user'],
-                        'roles' => ['@']
-                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['logout', 'logout-with-user'],
+//                        'roles' => ['@']
+//                    ],
                     [
                         'allow' => true,
                         'actions' => ['create', 'index', 'view', 'update', 'delete'],
@@ -60,7 +60,7 @@ class UserController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['login-with-user', 'validate-code'],
+                'only' => ['login-with-user', 'validate-code', 'update-data'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -100,10 +100,14 @@ class UserController extends Controller
         return $this->render('login', ['model' => $model]);
     }
 
+    /**
+     * 获取验证码接口
+     * @return stdClass
+     */
     public function actionValidateCode()
     {
         $res = new stdClass();
-        $phone = Yii::$app->request->post('username');
+        $phone = Yii::$app->request->post('mobile');
         $result = SendSms::send($phone);
 
         if ($result === false) {
@@ -121,6 +125,7 @@ class UserController extends Controller
 
     /**
      * 普通用户进行登录
+     * 手机号 + 验证码
      * @return stdClass
      */
     public function actionLoginWithUser()
@@ -166,6 +171,29 @@ class UserController extends Controller
         Yii::$app->getUser()->logout();
 
         return $this->goHome();
+    }
+
+    /**
+     * 更新用户数据
+     * @return stdClass
+     */
+    public function actionUpdateData()
+    {
+        $userId = Yii::$app->user->id;
+        $user = User::findOne(['userId' => $userId]);
+        $result = new stdClass();
+
+        if ($user->load(Yii::$app->request->post(), '') && $user->save()) {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -3;
+            $result->sMsg = 'update failed';
+            $result->data = $user->getErrorSummary(true);
+        }
+
+        return $result;
     }
 
     /**

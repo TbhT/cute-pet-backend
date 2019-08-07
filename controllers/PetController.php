@@ -137,6 +137,7 @@ class PetController extends Controller
     }
 
     /**
+     * 获取宠物的详情
      * @return stdClass
      */
     public function actionJDetail()
