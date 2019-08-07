@@ -14,6 +14,12 @@ const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|
 class User extends ActiveRecord implements IdentityInterface
 {
 
+    public static function tableName()
+    {
+        return 'user';
+    }
+
+
     public function rules()
     {
         return [
@@ -117,7 +123,21 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
+            'userId' => '用户唯一标识',
             'mobile' => '手机号',
+            'avatar' => '头像地址',
+            'name' => '姓名',
+            'nickname' => '昵称',
+            'birth' => '出生年月',
+            'gender' => '性别',
+            'age' => '年纪',
+            'city' => '城市',
+            'province' => '省份',
+            'address' => '家庭详细住址',
+            'idCard' => '身份证号',
+            'high' => '身高',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
             'password' => '密码'
         ];
     }

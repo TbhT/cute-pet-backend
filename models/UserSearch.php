@@ -8,24 +8,6 @@ use app\models\User;
 
 /**
  * UserSearch represents the model behind the search form of `app\models\User`.
- * @property mixed userId
- * @property mixed birth
- * @property mixed gender
- * @property mixed age
- * @property mixed high
- * @property mixed status
- * @property mixed createTime
- * @property mixed updateTime
- * @property mixed avatar
- * @property mixed mobile
- * @property mixed name
- * @property mixed nickname
- * @property mixed city
- * @property mixed province
- * @property mixed address
- * @property mixed idCard
- * @property mixed password_hash
- * @property mixed auth_key
  */
 class UserSearch extends User
 {

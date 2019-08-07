@@ -7,16 +7,10 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = '用户';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,23 +23,22 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'userId',
             'mobile',
-            'avatar',
+//            'avatar',
             'name',
             'nickname',
-            //'birth',
-            //'gender',
-            //'age',
-            //'city',
-            //'province',
-            //'address',
-            //'idCard',
-            //'high',
-            //'status',
+//            'birth',
+            'gender',
+            'age',
+//            'city',
+//            'province',
+            'address',
+            'idCard',
+            'high',
+//            'status',
             //'password_hash',
             //'auth_key',
-            //'createTime',
-            //'updateTime',
-
+//            'createTime',
+            'updateTime',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

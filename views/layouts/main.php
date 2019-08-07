@@ -31,7 +31,7 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => '后台管理系统',
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => '/activity',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
@@ -48,7 +48,8 @@ AppAsset::register($this);
                     ['label' => '评论管理', 'url' => '/comment'],
                     ['label' => '宠物管理', 'url' => '/pet'],
                     ['label' => '商家管理', 'url' => '/market'],
-                    ['label' => '话题管理', 'url' => '/topic']
+                    ['label' => '话题管理', 'url' => '/topic'],
+                    ['label' => '用户管理', 'url' => '/user']
                 ])
                 :
                 [
