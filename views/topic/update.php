@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Topic */
 
-$this->title = 'Update Topic: ' . $model->topicId;
-$this->params['breadcrumbs'][] = ['label' => 'Topics', 'url' => ['index']];
+$this->title = '更新话题: ' . $model->topicId;
+$this->params['breadcrumbs'][] = ['label' => '话题', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->topicId, 'url' => ['view', 'id' => $model->topicId]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = '更新';
 ?>
 <div class="topic-update">
 

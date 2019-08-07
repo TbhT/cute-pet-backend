@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\TopicSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Topics';
+$this->title = '话题';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="topic-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Topic', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新建话题', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>

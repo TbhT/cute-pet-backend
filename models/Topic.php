@@ -57,10 +57,10 @@ class Topic extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'topicId' => 'Topic ID',
-            'text' => 'Text',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'topicId' => '话题 ID',
+            'text' => '话题详情',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

@@ -68,7 +68,7 @@ class Banner extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'bannerId' => 'Banner ID',
+            'bannerId' => '轮播图 ID',
             'image' => '图片地址',
             'name' => '轮播图名称',
             'createTime' => '创建时间',

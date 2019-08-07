@@ -31,22 +31,22 @@ class PetController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'view'],
-                        'roles' => ['@']
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['update', 'delete', 'index'],
-                        'roles' => ['admin']
-                    ]
-                ]
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['create', 'update', 'delete', 'index', 'view'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['create', 'view'],
+//                        'roles' => ['@']
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['update', 'delete', 'index'],
+//                        'roles' => ['admin']
+//                    ]
+//                ]
+//            ],
             [
                 'class' => ContentNegotiator::className(),
                 'only' => ['j-create', 'j-detail'],

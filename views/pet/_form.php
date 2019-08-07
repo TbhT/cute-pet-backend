@@ -24,8 +24,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'petType')->textInput() ?>
 
-    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'createTime')->textInput() ?>
 
     <?= $form->field($model, 'updateTime')->textInput() ?>

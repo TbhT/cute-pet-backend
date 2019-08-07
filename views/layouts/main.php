@@ -48,6 +48,7 @@ AppAsset::register($this);
                     ['label' => '评论管理', 'url' => '/comment'],
                     ['label' => '宠物管理', 'url' => '/pet'],
                     ['label' => '商家管理', 'url' => '/market'],
+                    ['label' => '话题管理', 'url' => '/topic']
                 ])
                 :
                 [

@@ -7,16 +7,11 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\TweetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tweets';
+$this->title = '动态';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tweet-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Tweet', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -26,16 +21,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'tweetId',
             'userId',
             'status',
             'text:ntext',
             'image',
-            //'commentCount',
-            //'likeCount',
-            //'createTime',
-            //'updateTime',
+            'commentCount',
+            'likeCount',
+            'createTime',
+            'updateTime',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

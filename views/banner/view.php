@@ -30,8 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'bannerId',
-            'image',
             'name',
+            [
+                'attribute' => 'image',
+                'value' => $model->image,
+                'format' => [
+                    'image',
+                    ['width' => 100, 'height' => 100]
+                ]
+            ],
             'createTime',
             'updateTime',
         ],
