@@ -49,7 +49,7 @@ class TweetController extends Controller
 //            ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create', 'j-all-tweets', 'j-like'],
+                'only' => ['j-create', 'j-all-tweets', 'j-like', 'j-user-status'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -224,6 +224,26 @@ class TweetController extends Controller
 
         return $result;
     }
+
+
+    /**
+     * 获取用户登录状态
+     */
+    public function actionJUserStatus()
+    {
+        $result = new stdClass();
+
+        if (Yii::$app->user->isGuest) {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = Yii::$app->user->id;
+        }
+    }
+
 
     /**
      * Updates an existing Tweet model.

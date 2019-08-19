@@ -41,7 +41,10 @@ AppAsset::register($this);
         'items' =>
             Yii::$app->user->isGuest ?
                 ([
-                    ['label' => '登录', 'url' => '/user/login'],
+                    ['label' => '登录', 'url' => '/user/login']
+                ])
+                :
+                [
                     ['label' => '活动管理', 'url' => '/activity'],
                     ['label' => '动态管理', 'url' => '/tweet'],
                     ['label' => '轮播图管理', 'url' => '/banner'],
@@ -49,10 +52,7 @@ AppAsset::register($this);
                     ['label' => '宠物管理', 'url' => '/pet'],
                     ['label' => '商家管理', 'url' => '/market'],
                     ['label' => '话题管理', 'url' => '/topic'],
-                    ['label' => '用户管理', 'url' => '/user']
-                ])
-                :
-                [
+                    ['label' => '用户管理', 'url' => '/user'],
                     (
                         '<li>'
                         . Html::beginForm(['/user/logout'], 'post')

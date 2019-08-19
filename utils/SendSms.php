@@ -23,29 +23,36 @@ class SendSms
         $result = false;
 
         try {
+            $std = new \stdClass();
+            $code = Generate::validateCodeId();
+            $std->code = $code;
+
             AlibabaCloud::accessKeyClient(static::$accessKeyId, static::$accessKeySecret)
                 ->regionId('cn-hangzhou')
                 ->asDefaultClient();
 
             $result = AlibabaCloud::rpc()
                 ->product('Dysmsapi')
-            ->version('2017-05-25')
-            ->action('SendSms')
-            ->method('POST')
-            ->host('dysmsapi.aliyuncs.com')
-            ->options([
-                'query' => [
-                    'RegionId' => 'default',
-                    'PhoneNumbers' => $phoneNumber,
-                    'TemplateCode' => static::$templateCode
-                ]
-            ])
-            ->request();
+                ->version('2017-05-25')
+                ->action('SendSms')
+                ->method('POST')
+                ->host('dysmsapi.aliyuncs.com')
+                ->options([
+                    'query' => [
+                        'RegionId' => 'default',
+                        'PhoneNumbers' => $phoneNumber,
+                        'TemplateCode' => static::$templateCode,
+                        'SignName' => '宠伢',
+                        'TemplateParam' => json_encode($std)
+                    ]
+                ])
+                ->request();
 
             if ($result->Code === 'OK') {
                 $model = new Sms();
                 $model->phoneNumber = $phoneNumber;
                 $model->reqId = $result->RequestId;
+                $model->code = $code;
                 $model->save();
             } else {
                 Yii::error($result);

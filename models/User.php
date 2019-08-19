@@ -145,14 +145,16 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * @param $password
+     * @param $phone
      * @return bool
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function validatePassword($password, $phone)
     {
         $sms = Sms::findOne(['phoneNumber' => $phone, 'code' => $password]);
         if ($sms) {
-            $sms->code = '';
-            $sms->save();
+            $sms->delete();
             return true;
         } else {
             return false;
