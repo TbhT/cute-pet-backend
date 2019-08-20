@@ -12,6 +12,11 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
+
+$auth = Yii::$app->authManager;
+$userIds = $auth->getUserIdsByRole('admin');
+$isAdmin = in_array(Yii::$app->user->id, $userIds);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -36,10 +41,11 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' =>
-            Yii::$app->user->isGuest ?
+            !$isAdmin ?
                 ([
                     ['label' => '登录', 'url' => '/user/login']
                 ])

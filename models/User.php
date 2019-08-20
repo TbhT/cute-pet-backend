@@ -3,8 +3,14 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use DateTime;
+use DateTimeZone;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
 use yii\web\IdentityInterface;
 
 
@@ -147,15 +153,27 @@ class User extends ActiveRecord implements IdentityInterface
      * @param $password
      * @param $phone
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
      */
     public function validatePassword($password, $phone)
     {
-        $sms = Sms::findOne(['phoneNumber' => $phone, 'code' => $password]);
+        $sms = Sms::find()
+            ->where(['phoneNumber' => $phone, 'code' => $password])
+            ->orderBy('createTime DESC')
+            ->limit(1)
+            ->one();
+
         if ($sms) {
-            $sms->delete();
-            return true;
+            $timezone = new DateTimeZone('asia/shanghai');
+            $createTime = new DateTime($sms->createTime, $timezone);
+            $now = new DateTime('now', $timezone);
+            $diff = $now->diff($createTime);
+
+            if ($diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0 && $diff->i <= 5) {
+                return true;
+            }
+
+            return false;
         } else {
             return false;
         }
@@ -163,8 +181,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * 获取用户的所有宠物信息
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getPetsInfo()
     {
@@ -173,8 +191,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     * @throws \yii\base\InvalidConfigException
+     * @return ActiveQuery
+     * @throws InvalidConfigException
      */
     public function getJoinActivities()
     {
