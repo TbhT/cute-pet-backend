@@ -88,12 +88,14 @@ class MarketController extends Controller
     }
 
     /**
-     * 列出所有商家
+     * 列出所有商家,已经通过审核的
      */
     public function actionJAll()
     {
         $offset = Yii::$app->request->post('offset');
-        $model = Market::find()->offset($offset - 1)->limit(20)->asArray()->all();
+        $offset = $offset ?? 1;
+
+        $model = Market::find(['status' => 1])->offset($offset - 1)->limit(20)->asArray()->all();
         $result = new stdClass();
 
         $result->iRet = 0;

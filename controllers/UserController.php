@@ -60,7 +60,7 @@ class UserController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['login-with-user', 'validate-code', 'update-data'],
+                'only' => ['login-with-user', 'validate-code', 'update-data', 'j-user-status', 'j-user-info'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -136,7 +136,9 @@ class UserController extends Controller
         if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
             $result->iRet = 0;
             $result->sMsg = 'success';
-            $result->data = null;
+            $result->data = [
+                'userId' => Yii::$app->user->id
+            ];
         } else {
             $result->iRet = -2;
             $result->sMsg = 'error';
@@ -158,6 +160,67 @@ class UserController extends Controller
         $result->iRet = 0;
         $result->sMsg = 'success';
         $result->data = null;
+
+        return $result;
+    }
+
+    /**
+     * 获取用户登录状态
+     * @return stdClass
+     */
+    public function actionJUserStatus()
+    {
+        $result = new stdClass();
+
+        if (Yii::$app->user->isGuest) {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+            return $result;
+        }
+
+        $userId = Yii::$app->user->id;
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = [
+            'userId' => $userId
+        ];
+
+        return $result;
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public function actionJUserInfo()
+    {
+        $result = new stdClass();
+
+        if (Yii::$app->user->isGuest) {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+            return $result;
+        }
+
+        $user = User::findOne(['userId' => Yii::$app->user->id]);
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = [
+            'userId' => $user->userId,
+            'mobile' => $user->mobile,
+            'avatar' => $user->avatar,
+            'name' => $user->name,
+            'nickname' => $user->nickname,
+            'birth' => $user->birth,
+            'gender' => $user->gender,
+            'age' => $user->age,
+            'city' => $user->city,
+            'province' => $user->province,
+            'address' => $user->address,
+            'idCard' => $user->idCard,
+            'high' => $user->high
+        ];
 
         return $result;
     }

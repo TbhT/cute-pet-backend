@@ -46,7 +46,7 @@ class BannerController extends Controller
      */
     public function actionJGet()
     {
-        $banners = Banner::find()->asArray()->all();
+        $banners = Banner::find(['status' => 1])->asArray()->all();
         $result = new stdClass();
         $result->iRet = 0;
         $result->msg = 'success';
