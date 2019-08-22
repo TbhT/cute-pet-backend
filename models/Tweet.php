@@ -136,10 +136,10 @@ class Tweet extends ActiveRecord
         return $this->hasMany(Comment::className(), ['tweetId' => 'tweetId']);
     }
 
-    public function save($runValidation = true, $attributeNames = null, $path = 'images')
+    public function save($runValidation = true, $attributeNames = null, $path = '/images')
     {
         if ($this->picture) {
-            $webImagePath = UploadImage::saveImage($this->picture, 'images');
+            $webImagePath = UploadImage::saveImage($this->picture, $path);
             $this->image = $webImagePath;
         }
 

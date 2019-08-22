@@ -215,7 +215,8 @@ class TweetController extends Controller
                 'userId' => $d['userId'],
                 'liked' => !empty($d['userLikeStatus']),
                 'nickname' => $d['user']['nickname'],
-                'avatar' => $d['user']['image']
+                'avatar' => $d['user']['avatar'],
+                'mobile' => $d['user']['mobile']
             ]);
         }
 
