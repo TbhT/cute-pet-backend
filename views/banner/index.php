@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BannerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -28,6 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'bannerId',
             'image',
             'name',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->status == 1 ? '已审核' : '未审核';
+                }
+            ],
             'createTime',
             'updateTime',
 

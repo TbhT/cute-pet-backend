@@ -184,6 +184,7 @@ class TweetController extends Controller
     public function actionJAllTweets()
     {
         $offset = Yii::$app->request->post('offset');
+        $offset = $offset ?? 1;
         $result = new stdClass();
 
         if (!is_numeric($offset)) {

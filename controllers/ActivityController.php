@@ -38,13 +38,93 @@ class ActivityController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['city-list', 'area-list', 'province-list'],
+                'only' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
             ]
 
         ];
+    }
+
+    /**
+     * 获取类型活动
+     * @return stdClass
+     */
+    public function actionJActivity()
+    {
+        $type = Yii::$app->request->post('type');
+        $offset = Yii::$app->request->post('offset');
+
+        $result = new stdClass();
+
+        if (!$type || !$offset) {
+            $result->iRet = -2;
+            $result->sMsg = 'invalid parameter';
+            $result->data = null;
+            return $result;
+        }
+
+        $models = Activity::find()
+            ->getActivities($type)
+            ->limit(20)
+            ->offset($offset - 1)
+            ->asArray()
+            ->all();
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = $models;
+
+        return $result;
+    }
+
+    /**
+     * 用户参加活动
+     * @return stdClass
+     */
+    public function actionJJoin()
+    {
+        $activityId = Yii::$app->request->post('activityId');
+        $userId = Yii::$app->user->id;
+        $activity = Activity::findOne(['activityId' => $activityId]);
+        $result = new stdClass();
+
+        if (!$activity) {
+            $result->iRet = -3;
+            $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $hasJoinModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
+        if ($hasJoinModel) {
+            $result->iRet = -4;
+            $result->sMsg = 'has join activity';
+            $result->data = $hasJoinModel;
+            return $result;
+        }
+
+        $hasJoinModel = new ActivityUser();
+        $hasJoinModel->activityId = $activityId;
+        $hasJoinModel->userId = $userId;
+
+        if ($hasJoinModel->save()) {
+            $activity->hasJoin += 1;
+            $activity->save(false);
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+            return $result;
+        }
+
+        $result->iRet = -1;
+        $result->sMsg = 'join failed';
+        $result->data = $hasJoinModel->getErrorSummary(true);
+
+        Yii::error($hasJoinModel->getErrorSummary(true));
+
+        return $result;
     }
 
     /**
@@ -116,7 +196,9 @@ class ActivityController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($pictureForm->upload()) {
-                $model->image = $pictureForm->path;
+                if ($pictureForm->path) {
+                    $model->image = $pictureForm->path;
+                }
 
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->activityId]);

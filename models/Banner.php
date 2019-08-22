@@ -71,6 +71,7 @@ class Banner extends \yii\db\ActiveRecord
             'bannerId' => '轮播图 ID',
             'image' => '图片地址',
             'name' => '轮播图名称',
+            'status' => '审核状态',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
         ];

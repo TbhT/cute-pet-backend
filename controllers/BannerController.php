@@ -46,7 +46,7 @@ class BannerController extends Controller
      */
     public function actionJGet()
     {
-        $banners = Banner::find(['status' => 1])->asArray()->all();
+        $banners = Banner::findAll(['status' => 1]);
         $result = new stdClass();
         $result->iRet = 0;
         $result->msg = 'success';
@@ -100,7 +100,10 @@ class BannerController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if ($pictureForm->upload()) {
-                $model->image = $pictureForm->path;
+                if ($pictureForm->path) {
+                    $model->image = $pictureForm->path;
+                }
+
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->bannerId]);
                 }

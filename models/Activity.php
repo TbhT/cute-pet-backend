@@ -31,9 +31,9 @@ use yii\web\UploadedFile;
 class Activity extends \yii\db\ActiveRecord
 {
     // 待审核
-    const UN_REVIEWED = 1;
+    const UN_REVIEWED = 0;
     // 过审
-    const PASSED = 2;
+    const PASSED = 1;
 
     /**
      * {@inheritdoc}
@@ -84,7 +84,7 @@ class Activity extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'activityId' => 'Activity ID',
+            'activityId' => '活动id',
             'status' => '活动审核状态',
             'name' => '活动名称',
             'beginTime' => '活动开始时间',

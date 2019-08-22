@@ -16,6 +16,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'status')->dropDownList(
+        [
+            0 => '未审核',
+            1 => '已审核'
+        ]
+    ) ?>
+
     <?= $form->field($pictureForm, 'imageFile')->widget('kartik\file\FileInput', [
         'options' => ['accept' => 'image/*'],
         'pluginOptions' => $array,

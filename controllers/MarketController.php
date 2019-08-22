@@ -95,7 +95,12 @@ class MarketController extends Controller
         $offset = Yii::$app->request->post('offset');
         $offset = $offset ?? 1;
 
-        $model = Market::find(['status' => 1])->offset($offset - 1)->limit(20)->asArray()->all();
+        $model = Market::find(['status' => 1])
+            ->offset($offset - 1)
+            ->limit(20)
+            ->asArray()
+            ->all();
+
         $result = new stdClass();
 
         $result->iRet = 0;

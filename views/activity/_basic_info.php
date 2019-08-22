@@ -66,8 +66,8 @@ use kartik\file\FileInput;
         <?=
         $form->field($model, 'status')->dropDownList(
             [
-                1 => '未审核',
-                2 => '已审核'
+                0 => '未审核',
+                1 => '已审核'
             ]
         );
         ?>

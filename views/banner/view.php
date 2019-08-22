@@ -39,6 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['width' => 100, 'height' => 100]
                 ]
             ],
+            [
+                'attribute' => 'status',
+                'value' => $model->status == 1 ? '已审核' : '未审核'
+            ],
             'createTime',
             'updateTime',
         ],
