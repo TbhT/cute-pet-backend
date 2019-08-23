@@ -129,7 +129,8 @@ class CommentController extends Controller
                 'tweetId' => $d['tweetId'],
                 'userId' => $d['userId'],
                 'nickname' => $d['userInfo']['nickname'],
-                'avatar' => $d['userInfo']['image']
+                'mobile' => $d['userInfo']['mobile'],
+                'avatar' => $d['userInfo']['avatar']
             ]);
         }
 

@@ -65,11 +65,12 @@ class Activity extends \yii\db\ActiveRecord
                     'province',
                     'city',
                     'area',
-                    'personCount'
+                    'personCount',
+                    'type'
                 ],
                 'required'
             ],
-            [['activityId', 'createTime', 'updateTime'], 'safe'],
+            [['provinceName', 'cityName', 'areaName', 'activityId', 'createTime', 'updateTime'], 'safe'],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],
@@ -99,6 +100,7 @@ class Activity extends \yii\db\ActiveRecord
             'province' => '省',
             'city' => '市',
             'area' => '区',
+            'type' => '活动类型',
             'personCount' => '参与总人数',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',

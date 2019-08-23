@@ -30,7 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'activityId',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => $model->status == 1 ? '已审核' : '未审核'
+            ],
+            [
+                'attribute' => 'type',
+                'value' => $model->type == 1 ? '赛事类' : '非赛事类'
+            ],
             'name',
             'beginTime',
             'endTime',

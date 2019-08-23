@@ -38,7 +38,7 @@ class ActivityController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join'],
+                'only' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join', 'j-detail'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -65,6 +65,8 @@ class ActivityController extends Controller
             return $result;
         }
 
+        $type = $type == 1 ? 1 : 0;
+
         $models = Activity::find()
             ->getActivities($type)
             ->limit(20)
@@ -75,6 +77,54 @@ class ActivityController extends Controller
         $result->iRet = 0;
         $result->sMsg = 'success';
         $result->data = $models;
+
+        return $result;
+    }
+
+    /**
+     * 获取活动详情
+     */
+    public function actionJDetail()
+    {
+        $activityId = Yii::$app->request->post('activityId');
+        $result = new stdClass();
+        if (empty($activityId)) {
+            $result->iRet = -1;
+            $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $model = Activity::findOne(['activityId' => $activityId, 'status' => 1]);
+        if (empty($model)) {
+            $result->iRet = -1;
+            $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = [
+            'activityId' => $model->activityId,
+            'status' => $model->status,
+            'name' => $model->name,
+            'beginTime' => $model->beginTime,
+            'endTime' => $model->endTime,
+            'joinBeginTime' => $model->joinBeginTime,
+            'joinEndTime' => $model->joinEndTime,
+            'organizer' => $model->organizer,
+            'coorganizer' => $model->coorganizer,
+            'place' => $model->place,
+            'createTime' => $model->createTime,
+            'image' => $model->image,
+            'personUnitPrice' => $model->personUnitPrice,
+            'petUnitPrice' => $model->petUnitPrice,
+            'personCount' => $model->personCount,
+            'province' => $model->provinceName,
+            'city' => $model->cityName,
+            'area' => $model->areaName
+        ];
 
         return $result;
     }
@@ -168,7 +218,30 @@ class ActivityController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             if ($pictureForm->upload()) {
-                $model->image = $pictureForm->path;
+                if ($pictureForm->path) {
+                    $model->image = $pictureForm->path;
+                }
+
+                if ($model->province) {
+                    $_p = AreaCode::findOne(['id' => $model->province]);
+                    if ($_p) {
+                        $model->provinceName =  $_p->name;
+                    }
+                }
+
+                if ($model->city) {
+                    $_c = AreaCode::findOne(['id' => $model->city]);
+                    if ($_c) {
+                        $model->cityName = $_c->name;
+                    }
+                }
+
+                if ($model->area) {
+                    $_a = AreaCode::findOne(['id' => $model->area]);
+                    if ($_a) {
+                        $model->areaName = $_a->name;
+                    }
+                }
 
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->activityId]);
@@ -198,6 +271,27 @@ class ActivityController extends Controller
             if ($pictureForm->upload()) {
                 if ($pictureForm->path) {
                     $model->image = $pictureForm->path;
+                }
+
+                if ($model->province) {
+                    $_p = AreaCode::findOne(['id' => $model->province]);
+                    if ($_p) {
+                        $model->provinceName =  $_p->name;
+                    }
+                }
+
+                if ($model->city) {
+                    $_c = AreaCode::findOne(['id' => $model->city]);
+                    if ($_c) {
+                        $model->cityName = $_c->name;
+                    }
+                }
+
+                if ($model->area) {
+                    $_a = AreaCode::findOne(['id' => $model->area]);
+                    if ($_a) {
+                        $model->areaName = $_a->name;
+                    }
                 }
 
                 if ($model->save()) {

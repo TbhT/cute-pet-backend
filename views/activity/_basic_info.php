@@ -73,6 +73,15 @@ use kartik\file\FileInput;
         ?>
 
         <?=
+        $form->field($model, 'type')->dropDownList(
+            [
+                0 => '非赛事类',
+                1 => '赛事类'
+            ]
+        )
+        ?>
+
+        <?=
         $form->field($model, 'personUnitPrice')->textInput(['maxlength' => true])
         ?>
 

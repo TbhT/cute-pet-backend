@@ -40,7 +40,11 @@ class ActivityQuery extends \yii\db\ActiveQuery
      */
     public function getActivities($type)
     {
-        return $this->andOnCondition(['type' => $type, 'status' => Activity::PASSED]);
+        if ($type == 1) {
+            return $this->andOnCondition(['type' => $type,'status' => Activity::PASSED]);
+        } else {
+            return $this->andWhere('type != 1');
+        }
     }
 
     /**
