@@ -145,7 +145,8 @@ class PetController extends Controller
         $petId = Yii::$app->request->post('petId');
         $result = new stdClass();
 
-        $model = Pet::find()->getPetDetail($petId)->one();
+        $model = Pet::findOne(['petId' => $petId]);
+
         if ($model) {
             $detail = [
                 'nickname' => $model->nickname,
@@ -153,8 +154,8 @@ class PetController extends Controller
                 'age' => $model->age,
                 'vaccineStatus' => $model->vaccineStatus,
                 'petType' => $model->petType,
-                'type' => $model->type,
-                'image' => $model->image
+                'subtype' => $model->subtype,
+                'avatar' => $model->avatar
             ];
         } else {
             $detail = null;

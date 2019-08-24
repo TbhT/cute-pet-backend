@@ -117,7 +117,7 @@ class MarketController extends Controller
     public function actionJDetail()
     {
         $marketId = Yii::$app->request->post('marketId');
-        $model = Market::find()->detail($marketId)->one();
+        $model = Market::findOne(['marketId' => $marketId]);
         $result = new stdClass();
 
         $result->iRet = 0;

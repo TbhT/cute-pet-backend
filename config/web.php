@@ -61,7 +61,10 @@ $config = [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => false
+            'showScriptName' => false,
+            'rules' => [
+                '<controller:(admin)>' => 'user/index'
+            ]
         ],
     ],
     'params' => $params,

@@ -123,7 +123,8 @@ class ActivityController extends Controller
             'personCount' => $model->personCount,
             'province' => $model->provinceName,
             'city' => $model->cityName,
-            'area' => $model->areaName
+            'area' => $model->areaName,
+            'hasJoin' => $model->hasJoin
         ];
 
         return $result;

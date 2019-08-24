@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use app\utils\UploadImage;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -28,6 +29,8 @@ use yii\db\Expression;
  */
 class Pet extends \yii\db\ActiveRecord
 {
+    public $picture;
+
     /**
      * {@inheritdoc}
      */
@@ -42,10 +45,9 @@ class Pet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['petId'], 'required'],
-            [['petId', 'status', 'gender', 'age', 'vaccineStatus', 'petType', 'weight', 'neuter'], 'integer'],
-            [['createTime', 'updateTime'], 'safe'],
-            [['nickname', 'subtype'], 'string', 'max' => 16],
+            [['status', 'gender', 'age', 'vaccineStatus', 'petType', 'weight', 'neuter'], 'integer'],
+            [['petId', 'createTime', 'updateTime'], 'safe'],
+            [['nickname', 'subtype', 'avatar'], 'string', 'max' => 16],
             [['size', 'color'], 'string', 'max' => 64],
             [['petId'], 'unique'],
         ];
@@ -62,6 +64,7 @@ class Pet extends \yii\db\ActiveRecord
             'nickname' => '昵称',
             'gender' => '性别',
             'age' => '年龄',
+            'avatar' => '头像',
             'vaccineStatus' => '疫苗状态',
             'petType' => '宠物类别',
             'subtype' => '宠物品类',
@@ -102,5 +105,15 @@ class Pet extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PetQuery(get_called_class());
+    }
+
+    public function save($runValidation = true, $attributeNames = null, $path = '/images')
+    {
+        if ($this->picture) {
+            $webImagePath = UploadImage::saveImage($this->picture, $path);
+            $this->image = $webImagePath;
+        }
+
+        return parent::save($runValidation, $attributeNames);
     }
 }

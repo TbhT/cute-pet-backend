@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\models\Tweet;
 use app\utils\SendSms;
 use stdClass;
 use Yii;
@@ -60,7 +61,10 @@ class UserController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['login-with-user', 'validate-code', 'update-data', 'j-user-status', 'j-user-info'],
+                'only' => [
+                    'login-with-user', 'validate-code', 'update-data', 'j-user-status',
+                    'j-user-info', 'j-all-pet', 'j-all-tweets', 'j-all-activity'
+                ],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -77,7 +81,6 @@ class UserController extends Controller
     public function actionLogin()
     {
         $model = new LoginForm();
-        $userId = Yii::$app->user->id;
 
         if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -88,9 +91,9 @@ class UserController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             $auth = Yii::$app->authManager;
-            $adminRole = $auth->getRole('admin');
+            $userId = Yii::$app->user->id;
 
-            if ($auth->getAssignment($adminRole, $userId)) {
+            if ($auth->getAssignment('admin', $userId)) {
                 return $this->redirect('/user/index');
             } else {
                 return $this->redirect('/');
@@ -222,6 +225,83 @@ class UserController extends Controller
             'high' => $user->high
         ];
 
+        return $result;
+    }
+
+    /**
+     * 获取用户所有宠物信息
+     */
+    public function actionJAllPet()
+    {
+        $userId = Yii::$app->user->id;
+        $user = User::findOne(['userId' => $userId]);
+        $allPets = $user->petsInfo;
+        $result = new stdClass();
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = $allPets;
+
+        return $result;
+    }
+
+    public function actionJAllTweets()
+    {
+        $result = new stdClass();
+        $user = User::findOne(['userId' => Yii::$app->user->id]);
+        $offset = Yii::$app->request->post('offset');
+        $offset = $offset ?? 1;
+
+        $data = Tweet::find()
+            ->getTweetsByUserId(Yii::$app->user->id, $offset - 1)
+            ->asArray()
+            ->all();
+
+        $tweets = [];
+        foreach ($data as $d) {
+            array_push($tweets, [
+                'commentCount' => $d['commentCount'],
+                'createTime' => $d['createTime'],
+                'image' => $d['image'],
+                'likeCount' => $d['likeCount'],
+                'text' => $d['text'],
+                'tweetId' => $d['tweetId'],
+                'userId' => $user->userId,
+                'avatar' => $user->avatar,
+                'mobile' => $user->mobile,
+                'liked' => !empty($d['userLikeStatus'])
+            ]);
+        }
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = $tweets;
+
+        return $result;
+    }
+
+    /**
+     * 获取用户参加的活动
+     * @return stdClass
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionJAllActivity()
+    {
+        $result = new stdClass();
+        $userId = Yii::$app->user->id;
+        $offset = Yii::$app->request->post('offset');
+        $offset = $offset ?? 1;
+
+        $activities = User::findOne(['userId' => $userId])
+            ->getJoinActivities()
+            ->limit(20)
+            ->offset($offset - 1)
+            ->asArray()
+            ->all();
+
+        $result->iRet = 0;
+        $result->msg = 'success';
+        $result->data = $activities;
         return $result;
     }
 
