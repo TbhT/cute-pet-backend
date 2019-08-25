@@ -3,13 +3,16 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
+use app\utils\UploadImage;
 use DateTime;
 use DateTimeZone;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\db\StaleObjectException;
 use yii\web\IdentityInterface;
 
@@ -19,6 +22,8 @@ const PHONE_REGEXP = '/^(?=\\d{11}$)^1(?:3\\d|4[57]|5[^4\\D]|66|7[^249\\D]|8\\d|
 
 class User extends ActiveRecord implements IdentityInterface
 {
+
+    public $picture;
 
     public static function tableName()
     {
@@ -31,7 +36,34 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [
                 'mobile', 'match', 'pattern' => PHONE_REGEXP
-            ]
+            ],
+            [
+                [
+                    'name',
+                    'nickname',
+                    'birth',
+                    'city',
+                    'province',
+                    'address',
+                    'idCard'
+                ],
+                'string'
+            ],
+            [
+                [
+                    'age',
+                    'high',
+                    'gender'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'picture'
+                ],
+                'safe'
+            ],
+            [['userId'], 'unique']
         ];
     }
 
@@ -54,48 +86,17 @@ class User extends ActiveRecord implements IdentityInterface
                     ActiveRecord::EVENT_BEFORE_INSERT => ['userId']
                 ],
                 'idType' => GenerateIdBehavior::USER_ID_TYPE
-            ]
+            ],
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ],
+                'value' => new Expression('NOW()')
+            ],
         ];
     }
-
-
-    public function register()
-    {
-//        if ($this->getIsNewRecord() == false) {
-//            throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
-//        }
-//
-//        $transaction = $this->getDb()->beginTransaction();
-//
-//        try {
-//            $this->confirmed_at = $this->module->enableConfirmation ? null : time();
-//            $this->password = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
-//
-//            $this->trigger(self::BEFORE_REGISTER);
-//
-//            if (!$this->save()) {
-//                $transaction->rollBack();
-//                return false;
-//            }
-//
-//            if ($this->module->enableConfirmation) {
-//                /** @var Token $token */
-//                $token = \Yii::createObject(['class' => Token::className(), 'type' => Token::TYPE_CONFIRMATION]);
-//                $token->link('user', $this);
-//            }
-//
-//            $this->trigger(self::AFTER_REGISTER);
-//
-//            $transaction->commit();
-//
-//            return true;
-//        } catch (\Exception $e) {
-//            $transaction->rollBack();
-//            \Yii::warning($e->getMessage());
-//            throw $e;
-//        }
-    }
-
 
     /**
      * @return int|mixed|string
@@ -199,5 +200,16 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(Activity::className(), ['activityId' => 'activityId'])
             ->viaTable('activity_user', ['userId' => 'userId']);
     }
+
+    public function save($runValidation = true, $attributeNames = null, $path = '/images')
+    {
+        if ($this->picture) {
+            $webImagePath = UploadImage::saveImage($this->picture, $path);
+            $this->avatar = $webImagePath;
+        }
+
+        return parent::save($runValidation, $attributeNames);
+    }
+
 
 }
