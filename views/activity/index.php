@@ -1,21 +1,21 @@
 <?php
 
+use app\models\Activity;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ActivitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Activities';
+$this->title = '活动';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="activity-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Activity', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新建活动', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -26,21 +26,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'activityId',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return Activity::UN_REVIEWED === $model->status ? '待审核' : '已审核';
+                }
+            ],
             'name',
             'beginTime',
             'endTime',
-            //'joinBeginTime',
-            //'joinEndTime',
-            //'organizer',
-            //'coorganizer',
-            //'place',
-            //'createTime',
-            //'updateTime',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            'joinBeginTime',
+            'joinEndTime',
+            'organizer',
+            'coorganizer',
+            'place',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} {update} {delete}',
+                'header' => '活动操作'
+            ],
         ],
     ]); ?>
 

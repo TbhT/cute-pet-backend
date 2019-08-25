@@ -3,19 +3,18 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BannerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Banners';
+$this->title = '轮播图';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="banner-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Create Banner', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新建轮播图', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -29,6 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'bannerId',
             'image',
+            'name',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->status == 1 ? '已审核' : '未审核';
+                }
+            ],
             'createTime',
             'updateTime',
 

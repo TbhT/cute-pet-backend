@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -10,14 +9,27 @@ use yii\db\Expression;
 /**
  * This is the model class for table "activity_user".
  *
- * @property string $auId
+ * @property int $id
+ * @property string $userId
+ * @property string $name 随行人姓名
+ * @property string $phone 随行人电话
+ * @property string $relation 随行人关系
+ * @property string $size 随行人尺寸
  * @property string $activityId 活动id
- * @property string $userId 用户id
  * @property string $createTime
  * @property string $updateTime
  */
-class ActivityUser extends ActiveRecord
+class ActivityUser extends \yii\db\ActiveRecord
 {
+    // 两人一宠
+    const TYPE_TWO_ONE = 1;
+    // 两人两宠
+    const TYPE_TWO_TWO = 2;
+    // 一人两宠
+    const TYPE_ONE_TWO = 3;
+    // 一人一宠
+    const TYPE_ONE_ONE = 4;
+
     /**
      * {@inheritdoc}
      */
@@ -32,9 +44,33 @@ class ActivityUser extends ActiveRecord
     public function rules()
     {
         return [
-            [['activityId', 'userId'], 'required'],
-            [['activityId', 'userId'], 'integer'],
+            [['userId', 'activityId'], 'integer'],
+            [['amount'], 'double'],
+//            [['type', 'amount'], 'required'],
             [['createTime', 'updateTime'], 'safe'],
+            [['name', 'phone', 'relation', 'size'], 'string', 'max' => 32],
+            [['userId', 'activityId'], 'unique', 'targetAttribute' => ['userId', 'activityId']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'userId' => '用户id',
+            'name' => '随行人姓名',
+            'phone' => '随行人电话',
+            'relation' => '随行人关系',
+            'size' => '随行人尺寸',
+            'activityId' => '活动id',
+            'tag' => '参与人必填字段',
+            'type' => '支付类型',
+            'amount' => '金额',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 
@@ -52,19 +88,6 @@ class ActivityUser extends ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'auId' => 'Au ID',
-            'activityId' => 'Activity ID',
-            'userId' => 'User ID',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
-        ];
-    }
 
     /**
      * {@inheritdoc}

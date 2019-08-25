@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Activity */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Activities', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '活动', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->activityId], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->activityId], [
+        <?= Html::a('更新', ['update', 'id' => $model->activityId], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->activityId], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '确定要删除 该赛事/活动?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,7 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'activityId',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => $model->status == 1 ? '已审核' : '未审核'
+            ],
+            [
+                'attribute' => 'type',
+                'value' => $model->type == 1 ? '赛事类' : '非赛事类'
+            ],
             'name',
             'beginTime',
             'endTime',
@@ -39,9 +46,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'organizer',
             'coorganizer',
             'place',
-            'createTime',
-            'updateTime',
-        ],
+            [
+                'attribute' => 'image',
+                'value' => $model->image,
+                'format' => [
+                    'image',
+                    ['width' => 100, 'height' => 100]
+                ]
+            ]
+        ]
     ]) ?>
 
 </div>

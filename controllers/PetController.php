@@ -31,25 +31,25 @@ class PetController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'view'],
-                        'roles' => ['@']
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['update', 'delete', 'index'],
-                        'roles' => ['admin']
-                    ]
-                ]
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['create', 'update', 'delete', 'index', 'view'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['create', 'view'],
+//                        'roles' => ['@']
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['update', 'delete', 'index'],
+//                        'roles' => ['admin']
+//                    ]
+//                ]
+//            ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create', 'j-detail'],
+                'only' => ['j-create', 'j-detail', 'j-update'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -137,6 +137,29 @@ class PetController extends Controller
     }
 
     /**
+     * 更新宠物信息
+     */
+    public function actionJUpdate()
+    {
+        $petId = Yii::$app->request->post('petId');
+        $model = Pet::findOne(['petId' => $petId]);
+        $result = new stdClass();
+
+        if ($model && $model->load(Yii::$app->request->post(), '') && $model->save()) {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = -1;
+            $result->sMsg = 'update failed';
+            $result->data = $model->getErrorSummary(true);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取宠物的详情
      * @return stdClass
      */
     public function actionJDetail()
@@ -144,7 +167,8 @@ class PetController extends Controller
         $petId = Yii::$app->request->post('petId');
         $result = new stdClass();
 
-        $model = Pet::find()->getPetDetail($petId)->one();
+        $model = Pet::findOne(['petId' => $petId]);
+
         if ($model) {
             $detail = [
                 'nickname' => $model->nickname,
@@ -152,8 +176,12 @@ class PetController extends Controller
                 'age' => $model->age,
                 'vaccineStatus' => $model->vaccineStatus,
                 'petType' => $model->petType,
-                'type' => $model->type,
-                'image' => $model->image
+                'subType' => $model->subType,
+                'weight' => $model->weight,
+                'neuter' => $model->neuter,
+                'size' => $model->size,
+                'color' => $model->color,
+                'avatar' => $model->avatar
             ];
         } else {
             $detail = null;

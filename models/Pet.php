@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
 use app\utils\UploadImage;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -13,17 +14,20 @@ use yii\db\Expression;
  *
  * @property string $petId
  * @property int $status
- * @property string $nickname
- * @property int $gender
- * @property int $age
- * @property int $vaccineStatus
- * @property int $petType
- * @property string $type
- * @property string $createTime
- * @property string $updateTime
- * @property bool|string image
+ * @property string $nickname 昵称
+ * @property int $gender 性别
+ * @property int $age 年龄
+ * @property int $vaccineStatus 疫苗状态
+ * @property int $petType 宠物类别
+ * @property string $subtype 宠物品类
+ * @property int $weight 体重 kg
+ * @property int $neuter 是否绝育
+ * @property string $size 宠物尺寸大小
+ * @property string $color 花色
+ * @property string $createTime 创建时间
+ * @property string $updateTime 更新时间
  */
-class Pet extends ActiveRecord
+class Pet extends \yii\db\ActiveRecord
 {
     public $picture;
 
@@ -41,9 +45,35 @@ class Pet extends ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'gender', 'age', 'vaccineStatus', 'petType'], 'integer'],
-            [['nickname', 'type'], 'string', 'max' => 16],
-            [['picture'], 'safe']
+            [['status', 'gender', 'age', 'vaccineStatus', 'weight', 'neuter'], 'integer'],
+            [['avatar', 'petId', 'createTime', 'updateTime'], 'safe'],
+            [['nickname', 'subType'], 'string', 'max' => 16],
+            [['size', 'color', 'petType', ], 'string', 'max' => 64],
+            [['petId'], 'unique'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'petId' => 'Pet ID',
+            'status' => 'Status',
+            'nickname' => '昵称',
+            'gender' => '性别',
+            'age' => '年龄',
+            'avatar' => '头像',
+            'vaccineStatus' => '疫苗状态',
+            'petType' => '宠物类别',
+            'subType' => '宠物品类',
+            'weight' => '体重 kg',
+            'neuter' => '是否绝育',
+            'size' => '宠物尺寸大小',
+            'color' => '花色',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 
@@ -70,25 +100,6 @@ class Pet extends ActiveRecord
 
     /**
      * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'petId' => '宠物id',
-            'status' => '宠物状态',
-            'nickname' => '宠物昵称',
-            'gender' => '性别',
-            'age' => '年龄',
-            'vaccineStatus' => '疫苗状态',
-            'petType' => '宠物类型',
-            'type' => '品种',
-            'createTime' => '创建时间',
-            'updateTime' => '更新时间',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
      * @return PetQuery the active query used by this AR class.
      */
     public static function find()
@@ -96,11 +107,13 @@ class Pet extends ActiveRecord
         return new PetQuery(get_called_class());
     }
 
-    public function save($runValidation = true, $attributeNames = null, $path = 'images')
+    public function save($runValidation = true, $attributeNames = null, $path = '/images')
     {
-        $webImagePath = UploadImage::saveImage($this->picture, 'images');
-        $this->image = $webImagePath;
+        if ($this->picture) {
+            $webImagePath = UploadImage::saveImage($this->picture, $path);
+            $this->image = $webImagePath;
+        }
+
         return parent::save($runValidation, $attributeNames);
     }
-
 }

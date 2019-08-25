@@ -7,20 +7,18 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Market */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Markets', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '商家', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="market-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->marketId], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->marketId], [
+        <?= Html::a('更新', ['update', 'id' => $model->marketId], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->marketId], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '确定要删除商家?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,12 +27,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'marketId',
-            'userId',
             'status',
             'name',
             'contact',
-            'phoneNumber',
+            'phone',
+            'place',
+            [
+                'attribute' => 'image',
+                'value' => $model->image,
+                'format' => [
+                    'image',
+                    ['width' => 100, 'height' => 100]
+                ]
+            ],
             'createTime',
             'updateTime',
         ],

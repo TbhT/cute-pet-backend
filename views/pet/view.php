@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Pet */
 
 $this->title = $model->petId;
-$this->params['breadcrumbs'][] = ['label' => 'Pets', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '宠物', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->petId], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->petId], [
+        <?= Html::a('更新', ['update', 'id' => $model->petId], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->petId], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '确认删除?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'age',
             'vaccineStatus',
             'petType',
-            'type',
             'createTime',
             'updateTime',
         ],

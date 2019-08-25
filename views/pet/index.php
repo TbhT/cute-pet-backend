@@ -7,16 +7,12 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\PetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Pets';
+$this->title = '宠物';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pet-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Pet', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -32,10 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'nickname',
             'gender',
             'age',
-            //'vaccineStatus',
-            //'petType',
-            //'type',
-            //'createTime',
+            'vaccineStatus',
+            'petType',
+            'createTime',
             //'updateTime',
 
             ['class' => 'yii\grid\ActionColumn'],

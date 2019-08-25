@@ -17,8 +17,8 @@ class ActivitySearch extends Activity
     public function rules()
     {
         return [
-            [['activityId', 'name', 'beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'organizer', 'coorganizer', 'place', 'createTime', 'updateTime'], 'safe'],
-            [['status'], 'integer'],
+            [['activityId', 'status'], 'integer'],
+            [['name', 'beginTime', 'endTime', 'joinBeginTime', 'joinEndTime', 'organizer', 'coorganizer', 'place', 'createTime', 'updateTime'], 'safe'],
         ];
     }
 
@@ -58,6 +58,7 @@ class ActivitySearch extends Activity
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'activityId' => $this->activityId,
             'status' => $this->status,
             'beginTime' => $this->beginTime,
             'endTime' => $this->endTime,
@@ -67,8 +68,7 @@ class ActivitySearch extends Activity
             'updateTime' => $this->updateTime,
         ]);
 
-        $query->andFilterWhere(['like', 'activityId', $this->activityId])
-            ->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'organizer', $this->organizer])
             ->andFilterWhere(['like', 'coorganizer', $this->coorganizer])
             ->andFilterWhere(['like', 'place', $this->place]);

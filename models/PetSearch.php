@@ -17,8 +17,8 @@ class PetSearch extends Pet
     public function rules()
     {
         return [
-            [['petId', 'nickname', 'type', 'createTime', 'updateTime'], 'safe'],
-            [['status', 'gender', 'age', 'vaccineStatus', 'petType'], 'integer'],
+            [['petId', 'status', 'gender', 'age', 'vaccineStatus', 'petType', 'weight', 'neuter'], 'integer'],
+            [['nickname', 'subtype', 'size', 'color', 'createTime', 'updateTime'], 'safe'],
         ];
     }
 
@@ -58,18 +58,22 @@ class PetSearch extends Pet
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'petId' => $this->petId,
             'status' => $this->status,
             'gender' => $this->gender,
             'age' => $this->age,
             'vaccineStatus' => $this->vaccineStatus,
             'petType' => $this->petType,
+            'weight' => $this->weight,
+            'neuter' => $this->neuter,
             'createTime' => $this->createTime,
             'updateTime' => $this->updateTime,
         ]);
 
-        $query->andFilterWhere(['like', 'petId', $this->petId])
-            ->andFilterWhere(['like', 'nickname', $this->nickname])
-            ->andFilterWhere(['like', 'type', $this->type]);
+        $query->andFilterWhere(['like', 'nickname', $this->nickname])
+            ->andFilterWhere(['like', 'subtype', $this->subtype])
+            ->andFilterWhere(['like', 'size', $this->size])
+            ->andFilterWhere(['like', 'color', $this->color]);
 
         return $dataProvider;
     }

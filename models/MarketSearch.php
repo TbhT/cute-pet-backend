@@ -18,7 +18,7 @@ class MarketSearch extends Market
     {
         return [
             [['marketId', 'userId', 'status'], 'integer'],
-            [['name', 'contact', 'phoneNumber', 'createTime', 'updateTime'], 'safe'],
+            [['name', 'contact', 'phone', 'createTime', 'updateTime'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class MarketSearch extends Market
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'contact', $this->contact])
-            ->andFilterWhere(['like', 'phoneNumber', $this->phoneNumber]);
+            ->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }

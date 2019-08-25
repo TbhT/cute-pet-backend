@@ -3,11 +3,10 @@
 namespace app\models;
 
 use app\behaviors\GenerateIdBehavior;
-use app\utils\UploadImage;
-use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+
 
 /**
  * This is the model class for table "market".
@@ -15,16 +14,18 @@ use yii\db\Expression;
  * @property string $marketId
  * @property string $userId
  * @property int $status
- * @property string $name
- * @property string $contact
- * @property string $phoneNumber
- * @property string $createTime
- * @property string $updateTime
- * @property bool|string image
+ * @property string $name 商家名称
+ * @property string $contact 联系人
+ * @property string $phone 联系方式
+ * @property string $createTime 创建时间
+ * @property string $updateTime 更新时间
  */
-class Market extends ActiveRecord
+class Market extends \yii\db\ActiveRecord
 {
-    public $picture;
+    // 待审核
+    const UN_REVIEWED = 1;
+    // 过审
+    const PASSED = 2;
 
     /**
      * {@inheritdoc}
@@ -40,14 +41,30 @@ class Market extends ActiveRecord
     public function rules()
     {
         return [
-            [['userId'], 'required'],
-            [['userId', 'status'], 'integer'],
+            [['marketId', 'userId', 'status'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
-            [['name'], 'string', 'max' => 128],
-            [['contact'], 'string', 'max' => 16],
-            [['phoneNumber'], 'string', 'max' => 32],
-            [['picture', 'serveType'], 'safe'],
-            [['intro', 'place'], 'string', 'max' => 512],
+            [['name', 'contact', 'phone', 'place'], 'required'],
+            [['name'], 'string', 'max' => 256],
+            [['contact', 'phone'], 'string', 'max' => 64],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'marketId' => 'Market ID',
+            'userId' => 'User ID',
+            'status' => '商家状态',
+            'name' => '商家名称',
+            'contact' => '联系人',
+            'phone' => '联系方式',
+            'place' => '地点',
+            'image' => '商家图片',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 
@@ -72,27 +89,6 @@ class Market extends ActiveRecord
         ];
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels()
-    {
-        return [
-            'marketId' => 'Market ID',
-            'userId' => 'User ID',
-            'status' => 'Status',
-            'name' => 'Name',
-            'contact' => 'Contact',
-            'intro' => '简介',
-            'serveType' => '服务类型',
-            'workTime' => '工作时间',
-            'phoneNumber' => 'Phone Number',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
-        ];
-    }
-
     /**
      * {@inheritdoc}
      * @return MarketQuery the active query used by this AR class.
@@ -100,14 +96,5 @@ class Market extends ActiveRecord
     public static function find()
     {
         return new MarketQuery(get_called_class());
-    }
-
-    public function save($runValidation = true, $attributeNames = null, $path = 'images')
-    {
-        $webImagePath = UploadImage::saveImage($this->picture, 'images');
-        $this->image = $webImagePath;
-        $this->userId = Yii::$app->user->id;
-
-        return parent::save($runValidation, $attributeNames);
     }
 }

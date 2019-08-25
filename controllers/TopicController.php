@@ -32,14 +32,14 @@ class TopicController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
-                'rules' => [
-                    'allow' => true,
-                    'roles' => 'admin'
-                ]
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['create', 'update', 'delete', 'index', 'view'],
+//                'rules' => [
+//                    'allow' => true,
+//                    'roles' => 'admin'
+//                ]
+//            ],
             [
                 'class' => ContentNegotiator::className(),
                 'only' => ['j-all', 'j-list'],
@@ -75,10 +75,29 @@ class TopicController extends Controller
 
         $result->iRet = 0;
         $result->msg = 'success';
-        $result->data = Tweet::find()
+        $data = Tweet::find()
+            ->innerJoinWith('user')
             ->relatedTweets($topicId)
             ->asArray()
             ->all();
+
+        $resultData = [];
+
+        foreach ($data as $d) {
+            array_push($resultData, [
+                'commentCount' => $d['commentCount'],
+                'createTime' => $d['createTime'],
+                'image' => $d['image'],
+                'likeCount' => $d['likeCount'],
+                'status' => $d['status'],
+                'text' => $d['text'],
+                'tweetId' => $d['tweetId'],
+                'mobile' => $d['user']['mobile'],
+                'avatar' => $d['user']['avatar']
+            ]);
+        }
+
+        $result->data = $resultData;
 
         return $result;
     }

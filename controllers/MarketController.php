@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\behaviors\GenerateIdBehavior;
+use app\models\UploadForm;
 use stdClass;
 use Yii;
 use app\models\Market;
@@ -33,26 +34,21 @@ class MarketController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-detail', 'j-all'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['admin']
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['j-create', 'j-detail', 'j-all'],
-                        'roles' => ['@']
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['j-all'],
-                        'roles' => ['?']
-                    ]
-                ]
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-detail', 'j-all'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'roles' => ['admin']
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['j-create', 'j-detail', 'j-all'],
+//                        'roles' => ['@']
+//                    ]
+//                ]
+//            ],
             [
                 'class' => GenerateIdBehavior::className(),
                 'attributes' => [
@@ -92,12 +88,19 @@ class MarketController extends Controller
     }
 
     /**
-     * 列出所有商家
+     * 列出所有商家,已经通过审核的
      */
     public function actionJAll()
     {
         $offset = Yii::$app->request->post('offset');
-        $model = Market::find()->offset($offset - 1)->limit(20)->asArray()->all();
+        $offset = $offset ?? 1;
+
+        $model = Market::find(['status' => 1])
+            ->offset($offset - 1)
+            ->limit(20)
+            ->asArray()
+            ->all();
+
         $result = new stdClass();
 
         $result->iRet = 0;
@@ -114,7 +117,7 @@ class MarketController extends Controller
     public function actionJDetail()
     {
         $marketId = Yii::$app->request->post('marketId');
-        $model = Market::find()->detail($marketId)->one();
+        $model = Market::findOne(['marketId' => $marketId]);
         $result = new stdClass();
 
         $result->iRet = 0;
@@ -161,13 +164,20 @@ class MarketController extends Controller
     public function actionCreate()
     {
         $model = new Market();
+        $pictureForm = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->marketId]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($pictureForm->upload()) {
+                $model->image = $pictureForm->path;
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->marketId]);
+                }
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'pictureForm' => $pictureForm
         ]);
     }
 
@@ -181,13 +191,21 @@ class MarketController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $pictureForm = new UploadForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->marketId]);
+            if ($pictureForm->upload()) {
+                $model->image = $pictureForm->path;
+
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->marketId]);
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'pictureForm' => $pictureForm
         ]);
     }
 

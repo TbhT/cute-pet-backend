@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\behaviors\GenerateIdBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -31,8 +32,8 @@ class Banner extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bannerId'], 'required'],
             [['bannerId'], 'integer'],
+            [['name'], 'string'],
             [['createTime', 'updateTime'], 'safe'],
             [['image'], 'string', 'max' => 512],
             [['bannerId'], 'unique'],
@@ -49,6 +50,13 @@ class Banner extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
                 ],
                 'value' => new Expression('NOW()')
+            ],
+            [
+                'class' => GenerateIdBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['bannerId']
+                ],
+                'idType' => GenerateIdBehavior::ACTIVITY_ID_TYPE
             ]
         ];
     }
@@ -60,10 +68,12 @@ class Banner extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'bannerId' => 'Banner ID',
-            'image' => 'Image',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'bannerId' => '轮播图 ID',
+            'image' => '图片地址',
+            'name' => '轮播图名称',
+            'status' => '审核状态',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
 

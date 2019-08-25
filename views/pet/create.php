@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Pet */
 
-$this->title = 'Create Pet';
-$this->params['breadcrumbs'][] = ['label' => 'Pets', 'url' => ['index']];
+$this->title = '添加宠物';
+$this->params['breadcrumbs'][] = ['label' => '宠物', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pet-create">

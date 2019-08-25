@@ -8,6 +8,7 @@ use app\models\Banner;
 
 /**
  * BannerSearch represents the model behind the search form of `app\models\Banner`.
+ * @property mixed name
  */
 class BannerSearch extends Banner
 {
@@ -18,6 +19,7 @@ class BannerSearch extends Banner
     {
         return [
             [['bannerId'], 'integer'],
+            [['name'], 'string'],
             [['image', 'createTime', 'updateTime'], 'safe'],
         ];
     }
@@ -59,6 +61,7 @@ class BannerSearch extends Banner
         // grid filtering conditions
         $query->andFilterWhere([
             'bannerId' => $this->bannerId,
+            'name' => $this->name,
             'createTime' => $this->createTime,
             'updateTime' => $this->updateTime,
         ]);

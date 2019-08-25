@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\LikeTweet;
-use dektrium\user\helpers\Password;
 use stdClass;
 use Yii;
 use app\models\Tweet;
@@ -33,25 +32,25 @@ class TweetController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['view', 'j-create', 'j-all-tweets', 'j-like'],
-                        'roles' => ['@']
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'update', 'delete', 'index'],
-                        'roles' => ['admin']
-                    ]
-                ]
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['create', 'update', 'delete', 'index', 'view'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['view', 'j-create', 'j-all-tweets', 'j-like'],
+//                        'roles' => ['@']
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['create', 'update', 'delete', 'index'],
+//                        'roles' => ['admin']
+//                    ]
+//                ]
+//            ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create', 'j-all-tweets', 'j-like'],
+                'only' => ['j-create', 'j-all-tweets', 'j-like', 'j-user-status'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -186,6 +185,7 @@ class TweetController extends Controller
     public function actionJAllTweets()
     {
         $offset = Yii::$app->request->post('offset');
+        $offset = $offset ?? 1;
         $result = new stdClass();
         $userId = Yii::$app->user->id;
 
@@ -225,7 +225,8 @@ class TweetController extends Controller
                 'userId' => $d['userId'],
                 'liked' => ArrayHelper::isIn($d['tweetId'], $likeTweets),
                 'nickname' => $d['user']['nickname'],
-                'avatar' => $d['user']['image']
+                'avatar' => $d['user']['avatar'],
+                'mobile' => $d['user']['mobile']
             ]);
         }
 
@@ -235,6 +236,26 @@ class TweetController extends Controller
 
         return $result;
     }
+
+
+    /**
+     * 获取用户登录状态
+     */
+    public function actionJUserStatus()
+    {
+        $result = new stdClass();
+
+        if (Yii::$app->user->isGuest) {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+        } else {
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = Yii::$app->user->id;
+        }
+    }
+
 
     /**
      * Updates an existing Tweet model.

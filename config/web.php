@@ -24,10 +24,13 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '1ab53b152b4b06986e0726a8f7feaedb',
-            'enableCsrfValidation' => false,
+//            'enableCsrfValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser'
             ]
+        ],
+        'user' => [
+            'identityClass' => 'app\models\User'
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -54,32 +57,14 @@ $config = [
         'db' => $db,
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-
+            'defaultRoles' => ['user']
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'api/<controller>/<action>' => '<controller>/<action>',
-            ]
-        ],
-    ],
-    'modules' => [
-        'user' => [
-            'class' => 'dektrium\user\Module',
-            'modelMap' => [
-                'User' => 'app\models\User'
-            ],
-            'controllerMap' => [
-                'security' => 'app\controllers\UserController'
-            ],
-            'enableUnconfirmedLogin' => true,
-            'enableConfirmation' => false,
-            'cost' => 12,
-            'admins' => ['13300001111'],
-            'urlPrefix' => 'api/user',
-            'urlRules' => [
-                '<controller:(person)>/<action>' => 'security/<action>'
+                '<controller:(admin)>' => 'user/index',
+                'api/<controller>/<action>' => '<controller>/<action>'
             ]
         ],
     ],

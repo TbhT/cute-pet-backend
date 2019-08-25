@@ -31,22 +31,22 @@ class CommentController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-tweet'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'view', 'j-create', 'j-tweet'],
-                        'roles' => ['@']
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['update', 'delete', 'index'],
-                        'roles' => ['admin']
-                    ]
-                ]
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-tweet'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['create', 'view', 'j-create', 'j-tweet'],
+//                        'roles' => ['@']
+//                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['update', 'delete', 'index'],
+//                        'roles' => ['admin']
+//                    ]
+//                ]
+//            ],
             [
                 'class' => ContentNegotiator::className(),
                 'only' => ['j-create', 'j-tweet'],
@@ -129,7 +129,8 @@ class CommentController extends Controller
                 'tweetId' => $d['tweetId'],
                 'userId' => $d['userId'],
                 'nickname' => $d['userInfo']['nickname'],
-                'avatar' => $d['userInfo']['image']
+                'mobile' => $d['userInfo']['mobile'],
+                'avatar' => $d['userInfo']['avatar']
             ]);
         }
 

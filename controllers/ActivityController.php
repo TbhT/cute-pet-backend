@@ -3,13 +3,17 @@
 namespace app\controllers;
 
 use app\models\ActivityUser;
-use app\utils\UploadImage;
+use app\models\AreaCode;
+use app\models\UploadForm;
 use stdClass;
+use Throwable;
 use Yii;
 use app\models\Activity;
 use app\models\ActivitySearch;
-use yii\filters\AccessControl;
+use yii\db\StaleObjectException;
+use yii\debug\Panel;
 use yii\filters\ContentNegotiator;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -29,45 +33,159 @@ class ActivityController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST']
+                    'delete' => ['POST'],
                 ],
-            ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete', 'index', 'view'],
-                'rules' => [
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['create', 'view', 'j-detail', 'j-activities', 'j-create', 'j-join'],
-//                        'roles' => ['@']
-//                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['update'],
-                        'roles' => ['updateActivity'],
-                        'roleParams' => function () {
-                            return [
-                                'activity' => Activity::findOne([
-                                    'activityId' => Yii::$app->request->get('id')
-                                ])
-                            ];
-                        }
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['delete', 'update', 'index'],
-                        'roles' => ['admin']
-                    ]
-                ]
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-join', 'j-create', 'j-activities', 'j-detail'],
+                'only' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join', 'j-detail'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
             ]
+
         ];
+    }
+
+    /**
+     * 获取类型活动
+     * @return stdClass
+     */
+    public function actionJActivity()
+    {
+        $type = Yii::$app->request->post('type');
+        $offset = Yii::$app->request->post('offset');
+
+        $result = new stdClass();
+
+        if (!$type || !$offset) {
+            $result->iRet = -2;
+            $result->sMsg = 'invalid parameter';
+            $result->data = null;
+            return $result;
+        }
+
+        $type = $type == 1 ? 1 : 0;
+
+        $models = Activity::find()
+            ->getActivities($type)
+            ->limit(20)
+            ->offset($offset - 1)
+            ->asArray()
+            ->all();
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = $models;
+
+        return $result;
+    }
+
+    /**
+     * 获取活动详情
+     */
+    public function actionJDetail()
+    {
+        $activityId = Yii::$app->request->post('activityId');
+        $userId = Yii::$app->user->id;
+        $result = new stdClass();
+
+        if (empty($activityId)) {
+            $result->iRet = -1;
+            $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $model = Activity::findOne(['activityId' => $activityId, 'status' => 1]);
+        if (empty($model)) {
+            $result->iRet = -1;
+            $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $hasJoinModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
+
+        if (is_string($model->tag)) {
+            $model->tag = json_decode($model->tag);
+        }
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = [
+            'activityId' => $model->activityId,
+            'status' => $model->status,
+            'name' => $model->name,
+            'beginTime' => $model->beginTime,
+            'endTime' => $model->endTime,
+            'joinBeginTime' => $model->joinBeginTime,
+            'joinEndTime' => $model->joinEndTime,
+            'organizer' => $model->organizer,
+            'coorganizer' => $model->coorganizer,
+            'place' => $model->place,
+            'createTime' => $model->createTime,
+            'image' => $model->image,
+            'personUnitPrice' => $model->personUnitPrice,
+            'petUnitPrice' => $model->petUnitPrice,
+            'personCount' => $model->personCount,
+            'province' => $model->provinceName,
+            'city' => $model->cityName,
+            'area' => $model->areaName,
+            'hasJoin' => $model->hasJoin,
+            'tag' => $model->tag,
+            'userJoinStatus' => empty($hasJoinModel) ? -1 : 1
+        ];
+
+        return $result;
+    }
+
+    /**
+     * 用户参加活动
+     * @return stdClass
+     */
+    public function actionJJoin()
+    {
+        $activityId = Yii::$app->request->post('activityId');
+        $userId = Yii::$app->user->id;
+        $activity = Activity::findOne(['activityId' => $activityId]);
+        $result = new stdClass();
+
+        if (!$activity) {
+            $result->iRet = -3;
+            $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        $hasJoinModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
+        if ($hasJoinModel) {
+            $result->iRet = -4;
+            $result->sMsg = 'has join activity';
+            $result->data = $hasJoinModel;
+            return $result;
+        }
+
+        $hasJoinModel = new ActivityUser();
+        $hasJoinModel->activityId = $activityId;
+        $hasJoinModel->userId = $userId;
+
+        if ($hasJoinModel->save()) {
+            $activity->hasJoin += 1;
+            $activity->save(false);
+            $result->iRet = 0;
+            $result->sMsg = 'success';
+            $result->data = null;
+            return $result;
+        }
+
+        $result->iRet = -1;
+        $result->sMsg = 'join failed';
+        $result->data = $hasJoinModel->getErrorSummary(true);
+
+        Yii::error($hasJoinModel->getErrorSummary(true));
+
+        return $result;
     }
 
     /**
@@ -95,6 +213,7 @@ class ActivityController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'type' => 2
         ]);
     }
 
@@ -106,149 +225,49 @@ class ActivityController extends Controller
     public function actionCreate()
     {
         $model = new Activity();
+        $pictureForm = new UploadForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->activityId]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($pictureForm->upload()) {
+                if ($pictureForm->path) {
+                    $model->image = $pictureForm->path;
+                }
+
+                if (!empty($model->tag)) {
+                    $model->tag = json_encode($model->tag);
+                }
+
+                if ($model->province) {
+                    $_p = AreaCode::findOne(['id' => $model->province]);
+                    if ($_p) {
+                        $model->provinceName =  $_p->name;
+                    }
+                }
+
+                if ($model->city) {
+                    $_c = AreaCode::findOne(['id' => $model->city]);
+                    if ($_c) {
+                        $model->cityName = $_c->name;
+                    }
+                }
+
+                if ($model->area) {
+                    $_a = AreaCode::findOne(['id' => $model->area]);
+                    if ($_a) {
+                        $model->areaName = $_a->name;
+                    }
+                }
+
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->activityId]);
+                }
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'pictureForm' => $pictureForm
         ]);
-    }
-
-    /**
-     * 获取类型活动
-     * @return stdClass
-     */
-    public function actionJActivities()
-    {
-        $type = Yii::$app->request->post('type');
-        $offset = Yii::$app->request->post('offset');
-
-        $result = new stdClass();
-
-        if (!$type || !$offset) {
-            $result->iRet = -2;
-            $result->msg = 'invalid parameter';
-            $result->data = null;
-            return $result;
-        }
-
-        $models = Activity::find()
-            ->getActivities($type)
-            ->limit(20)
-            ->offset($offset - 1)
-            ->asArray()
-            ->all();
-
-        $result->iRet = 0;
-        $result->msg = 'success';
-        $result->data = $models;
-
-        return $result;
-    }
-
-    /**
-     * 用户新建活动
-     * @return stdClass
-     */
-    public function actionJCreate()
-    {
-        $model = new Activity();
-        $result = new stdClass();
-
-        if ($model->load(Yii::$app->request->post(), '') && $model->save()) {
-            $result->iRet = 0;
-            $result->msg = 'success';
-            $result->data = null;
-        } else {
-            $result->iRet = -1;
-            $result->msg = 'create activity failed';
-            $result->data = $model->getErrorSummary(true);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 报名参加某项活动
-     * @return stdClass | Response
-     */
-    public function actionJJoin()
-    {
-        $activityId = Yii::$app->request->post('activityId');
-        $userId = Yii::$app->user->id;
-        $model = Activity::findOne(['activityId' => $activityId]);
-        $result = new stdClass();
-
-        if (!$model) {
-            $result->iRet = -3;
-            $result->msg = 'activity is empty';
-            $result->data = null;
-            return $result;
-        }
-
-        $auModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
-
-        if (!$auModel) {
-//             已经参加过活动
-            $result->iRet = -4;
-            $result->msg = 'has joined activity';
-            $result->data = null;
-            return $result;
-        }
-
-        $auModel = new ActivityUser();
-        $auModel->activityId = $activityId;
-        $auModel->userId = $userId;
-
-        if ($auModel->save()) {
-            $result->iRet = 0;
-            $result->data = null;
-            $result->msg = 'success';
-        } else {
-            $result->data = $auModel->getErrorSummary(true);
-            $result->msg = 'join activity failed';
-            $result->iRet = -4;
-        }
-
-        return $result;
-    }
-
-    /**
-     * 获取活动的详情
-     * @return stdClass
-     */
-    public function actionJDetail()
-    {
-        $activityId = Yii::$app->request->post('activityId');
-        $model = Activity::find()->getDetail($activityId)->one();
-        $result = new stdClass();
-
-        if ($model) {
-            $detail = [
-                'name' => $model->name,
-                'beginTime' => $model->beginTime,
-                'endTime' => $model->endTime,
-                'joinBeginTime' => $model->joinBeginTime,
-                'joinEndTime' => $model->joinEndTime,
-                'organizer' => $model->organizer,
-                'coorganizer' => $model->coorganizer,
-                'place' => $model->place,
-                'type' => $model->type,
-                'image' => $model->image,
-                'totalCount' => $model->totalCount,
-                'totalCost' => $model->totalCost
-            ];
-        } else {
-            $detail = null;
-        }
-
-        $result->iRet = 0;
-        $result->msg = 'success';
-        $result->data = $detail;
-
-        return $result;
     }
 
     /**
@@ -261,13 +280,48 @@ class ActivityController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $pictureForm = new UploadForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->activityId]);
+            if ($pictureForm->upload()) {
+                if ($pictureForm->path) {
+                    $model->image = $pictureForm->path;
+                }
+
+                if ($model->province) {
+                    $_p = AreaCode::findOne(['id' => $model->province]);
+                    if ($_p) {
+                        $model->provinceName =  $_p->name;
+                    }
+                }
+
+                if ($model->city) {
+                    $_c = AreaCode::findOne(['id' => $model->city]);
+                    if ($_c) {
+                        $model->cityName = $_c->name;
+                    }
+                }
+
+                if ($model->area) {
+                    $_a = AreaCode::findOne(['id' => $model->area]);
+                    if ($_a) {
+                        $model->areaName = $_a->name;
+                    }
+                }
+
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->activityId]);
+                }
+            }
+        }
+
+        if (is_string($model->tag)) {
+            $model->tag = json_decode($model->tag);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'pictureForm' => $pictureForm
         ]);
     }
 
@@ -277,8 +331,8 @@ class ActivityController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -301,5 +355,37 @@ class ActivityController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionCities()
+    {
+        Yii::info($_POST);
+        $out = [];
+        if (isset($_POST['depdrop_all_params'])) {
+            $parent_id = $_POST['depdrop_all_params']['provinceId'];
+            $selected_id = $_POST['depdrop_all_params']['selectedCityId'];
+            $out = Yii::$app->db->cache(function ($db) use ($parent_id) {
+                return AreaCode::find()->select(['id', 'name'])->where(['parent_id' => $parent_id])->asArray()->all();
+            }, YII_DEBUG ? 3 : 24 * 3600);
+            return Json::encode(['output' => $out, 'selected' => $selected_id]);
+        }
+
+        return Json::encode(['output' => '', 'selected' => '']);
+    }
+
+    public function actionArea()
+    {
+        Yii::info($_POST);
+        $out = [];
+        if (isset($_POST['depdrop_all_params'])) {
+            $parent_id = $_POST['depdrop_all_params']['cityId'];
+            $selected_id = $_POST['depdrop_all_params']['selectedAreaId'];
+            $out = Yii::$app->db->cache(function ($db) use ($parent_id) {
+                return AreaCode::find()->select(['id', 'name'])->where(['parent_id' => $parent_id])->asArray()->all();
+            }, YII_DEBUG ? 3 : 24 * 3600);
+            return Json::encode(['output' => $out, 'selected' => $selected_id]);
+        }
+
+        return Json::encode(['output' => '', 'selected' => '']);
     }
 }

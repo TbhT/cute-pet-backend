@@ -2,14 +2,12 @@
 
 namespace app\models;
 
-use yii\db\ActiveQuery;
-
 /**
  * This is the ActiveQuery class for [[Pet]].
  *
  * @see Pet
  */
-class PetQuery extends ActiveQuery
+class PetQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -32,23 +30,5 @@ class PetQuery extends ActiveQuery
     public function one($db = null)
     {
         return parent::one($db);
-    }
-
-    /**
-     * @param $petId
-     * @return PetQuery
-     */
-    public function getPetDetail($petId)
-    {
-        return $this->andOnCondition(['petId' => $petId]);
-    }
-
-    /**
-     * @param $userId
-     * @return PetQuery
-     */
-    public function getAllPersonPets($userId)
-    {
-        return $this->andOnCondition(['userId' => $userId]);
     }
 }

@@ -3,9 +3,6 @@
 namespace app\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
 
 /**
  * This is the model class for table "user_pet".
@@ -13,8 +10,9 @@ use yii\db\Expression;
  * @property int $id
  * @property string $userId
  * @property string $petId
- * @property string $createTime
- * @property string $updateTime
+ * @property int $status 关系
+ * @property string $createTime 创建时间
+ * @property string $updateTime 更新时间
  */
 class UserPet extends \yii\db\ActiveRecord
 {
@@ -32,7 +30,7 @@ class UserPet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userId', 'petId'], 'integer'],
+            [['userId', 'petId', 'status'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
             [['userId', 'petId'], 'unique', 'targetAttribute' => ['userId', 'petId']],
         ];
@@ -47,25 +45,11 @@ class UserPet extends \yii\db\ActiveRecord
             'id' => 'ID',
             'userId' => 'User ID',
             'petId' => 'Pet ID',
-            'createTime' => 'Create Time',
-            'updateTime' => 'Update Time',
+            'status' => '关系',
+            'createTime' => '创建时间',
+            'updateTime' => '更新时间',
         ];
     }
-
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
-                ],
-                'value' => new Expression('NOW()')
-            ]
-        ];
-    }
-
 
     /**
      * {@inheritdoc}

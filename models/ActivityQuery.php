@@ -2,15 +2,13 @@
 
 namespace app\models;
 
-use Yii;
-use yii\db\ActiveQuery;
 
 /**
- * This is the ActiveQuery class for [[Activity]].
+ * This is the ActiveQuery class for [[ActivityPet]].
  *
  * @see Activity
  */
-class ActivityQuery extends ActiveQuery
+class ActivityQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -36,31 +34,26 @@ class ActivityQuery extends ActiveQuery
     }
 
     /**
-     * 获取活动详情
-     * @param $activityId
-     * @return ActivityQuery
-     */
-    public function getDetail($activityId)
-    {
-        return $this->andOnCondition(['activityId' => $activityId]);
-    }
-
-    /**
      * 获取某类型的活动
      * @param $type
      * @return ActivityQuery
      */
     public function getActivities($type)
     {
-        return $this->andOnCondition(['type' => $type]);
+        if ($type == 1) {
+            return $this->andOnCondition(['type' => $type,'status' => Activity::PASSED]);
+        } else {
+            return $this->andWhere('type != 1');
+        }
     }
 
     /**
-     * 获取用户参加过的活动
+     * 获取用户参加过的活动那个
+     * @param $userId
      * @return ActivityQuery
      */
-    public function getUserActivities()
+    public function getUserActivities($userId)
     {
-        return $this->andOnCondition(['userId' => Yii::$app->user->id]);
+        return $this->andOnCondition(['userId' => $userId, 'status' => Activity::PASSED]);
     }
 }

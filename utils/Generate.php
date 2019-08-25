@@ -59,5 +59,12 @@ class Generate
         return "5$id";
     }
 
+    public static function validateCodeId()
+    {
+        $id = random_int(1000, 9999);
+        $id = $id . '' . random_int(10, 99);
+        return "$id";
+    }
+
 
 }
