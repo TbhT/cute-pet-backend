@@ -70,7 +70,7 @@ class Activity extends \yii\db\ActiveRecord
                 ],
                 'required'
             ],
-            [['provinceName', 'cityName', 'areaName', 'activityId', 'createTime', 'updateTime'], 'safe'],
+            [['provinceName', 'cityName', 'areaName', 'activityId', 'createTime', 'updateTime', 'tag'], 'safe'],
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],
@@ -105,7 +105,8 @@ class Activity extends \yii\db\ActiveRecord
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
             'image' => '活动图片',
-            'picture' => '活动封面图'
+            'picture' => '活动封面图',
+            'tag' => '参与者必填字段'
         ];
     }
 
@@ -182,5 +183,14 @@ class Activity extends \yii\db\ActiveRecord
         }, $data);
 
         return $newData;
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if (is_array($this->tag)) {
+            $this->tag = json_encode($this->tag);
+        }
+
+        return parent::save($runValidation, $attributeNames);
     }
 }

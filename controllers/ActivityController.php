@@ -87,7 +87,9 @@ class ActivityController extends Controller
     public function actionJDetail()
     {
         $activityId = Yii::$app->request->post('activityId');
+        $userId = Yii::$app->user->id;
         $result = new stdClass();
+
         if (empty($activityId)) {
             $result->iRet = -1;
             $result->sMsg = 'activity is empty';
@@ -101,6 +103,12 @@ class ActivityController extends Controller
             $result->sMsg = 'activity is empty';
             $result->data = null;
             return $result;
+        }
+
+        $hasJoinModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
+
+        if (is_string($model->tag)) {
+            $model->tag = json_decode($model->tag);
         }
 
         $result->iRet = 0;
@@ -124,7 +132,9 @@ class ActivityController extends Controller
             'province' => $model->provinceName,
             'city' => $model->cityName,
             'area' => $model->areaName,
-            'hasJoin' => $model->hasJoin
+            'hasJoin' => $model->hasJoin,
+            'tag' => $model->tag,
+            'userJoinStatus' => empty($hasJoinModel) ? -1 : 1
         ];
 
         return $result;
@@ -223,6 +233,10 @@ class ActivityController extends Controller
                     $model->image = $pictureForm->path;
                 }
 
+                if (!empty($model->tag)) {
+                    $model->tag = json_encode($model->tag);
+                }
+
                 if ($model->province) {
                     $_p = AreaCode::findOne(['id' => $model->province]);
                     if ($_p) {
@@ -299,6 +313,10 @@ class ActivityController extends Controller
                     return $this->redirect(['view', 'id' => $model->activityId]);
                 }
             }
+        }
+
+        if (is_string($model->tag)) {
+            $model->tag = json_decode($model->tag);
         }
 
         return $this->render('update', [

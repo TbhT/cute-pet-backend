@@ -63,7 +63,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<controller:(admin)>' => 'user/index'
+                '<controller:(admin)>' => 'user/index',
+                'api/<controller>/<action>' => '<controller>/<action>'
             ]
         ],
     ],
