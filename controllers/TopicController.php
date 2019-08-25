@@ -93,7 +93,8 @@ class TopicController extends Controller
                 'text' => $d['text'],
                 'tweetId' => $d['tweetId'],
                 'mobile' => $d['user']['mobile'],
-                'avatar' => $d['user']['avatar']
+                'avatar' => $d['user']['avatar'],
+                'nickname' => $d['user']['nickname']
             ]);
         }
 

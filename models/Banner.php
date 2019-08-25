@@ -32,7 +32,7 @@ class Banner extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bannerId'], 'integer'],
+            [['bannerId', 'status'], 'integer'],
             [['name'], 'string'],
             [['createTime', 'updateTime'], 'safe'],
             [['image'], 'string', 'max' => 512],
