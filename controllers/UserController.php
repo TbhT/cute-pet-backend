@@ -36,7 +36,7 @@ class UserController extends Controller
                         'allow' => true,
                         'actions' => [
                             'login-with-user', 'validate-code', 'update-data', 'j-user-status',
-                            'j-user-info', 'j-all-pet', 'j-all-tweets', 'j-all-activity'
+                            'j-user-info', 'j-all-pet', 'j-all-tweets', 'j-all-activity', 'login'
                         ],
                         'roles' => ['?', '@']
                     ],
