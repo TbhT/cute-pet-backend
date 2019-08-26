@@ -1,1 +1,1 @@
-var vc = new VConsole();
+// var vc = new VConsole();
