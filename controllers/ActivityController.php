@@ -38,6 +38,11 @@ class ActivityController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'index', 'view', 'update', 'delete'],
                         'roles' => ['admin']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join', 'j-detail'],
+                        'roles' => ['?', '@']
                     ]
                 ],
             ],

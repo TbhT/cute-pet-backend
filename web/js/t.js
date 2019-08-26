@@ -1,0 +1,1 @@
+// var vc = new VConsole();

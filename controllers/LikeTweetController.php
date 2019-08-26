@@ -38,7 +38,7 @@ class LikeTweetController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['update', 'delete', 'index'],
+                        'actions' => ['update', 'delete', 'index', 'view', 'delete'],
                         'roles' => ['admin']
                     ]
                 ]

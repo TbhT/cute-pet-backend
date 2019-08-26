@@ -34,8 +34,11 @@ class UserController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login-with-user', 'login', 'validate-code'],
-                        'roles' => ['?']
+                        'actions' => [
+                            'login-with-user', 'validate-code', 'update-data', 'j-user-status',
+                            'j-user-info', 'j-all-pet', 'j-all-tweets', 'j-all-activity'
+                        ],
+                        'roles' => ['?', '@']
                     ],
                     [
                         'allow' => true,

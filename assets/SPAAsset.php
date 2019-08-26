@@ -19,6 +19,8 @@ class SPAAsset extends AssetBundle
 
     public $js = [
         'js/1.app.js',
-        'js/app.js'
+        'js/app.js',
+        'js/vconsole.min.js',
+        'js/t.js'
     ];
 }
