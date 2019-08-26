@@ -1,2 +1,1 @@
-var vConsole = new vConsole();
-vConsole.show();
+var vc = new VConsole();
