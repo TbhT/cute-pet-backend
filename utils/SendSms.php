@@ -55,7 +55,7 @@ class SendSms
                 $model->code = $code;
                 $model->save();
             } else {
-                Yii::error($result);
+                Yii::error($result->toJson());
                 $result = $result->toJson();
             }
         } catch (ClientException $e) {
