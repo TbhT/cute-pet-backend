@@ -18,7 +18,7 @@ class PetSearch extends Pet
     {
         return [
             [['petId', 'status', 'gender', 'age', 'vaccineStatus', 'petType', 'weight', 'neuter'], 'integer'],
-            [['nickname', 'subtype', 'size', 'color', 'createTime', 'updateTime'], 'safe'],
+            [['nickname', 'subType', 'size', 'color', 'createTime', 'updateTime'], 'safe'],
         ];
     }
 
@@ -71,7 +71,7 @@ class PetSearch extends Pet
         ]);
 
         $query->andFilterWhere(['like', 'nickname', $this->nickname])
-            ->andFilterWhere(['like', 'subtype', $this->subtype])
+            ->andFilterWhere(['like', 'subType', $this->subType])
             ->andFilterWhere(['like', 'size', $this->size])
             ->andFilterWhere(['like', 'color', $this->color]);
 
