@@ -38,6 +38,11 @@ class CommentController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'index', 'view', 'update', 'delete'],
                         'roles' => ['admin']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['j-create', 'j-tweet'],
+                        'roles' => ['?', '@']
                     ]
                 ],
             ],

@@ -39,6 +39,11 @@ class TopicController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'index', 'view', 'update', 'delete'],
                         'roles' => ['admin']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['j-all', 'j-list'],
+                        'roles' => ['?', '@']
                     ]
                 ],
             ],

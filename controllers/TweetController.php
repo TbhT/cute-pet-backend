@@ -39,6 +39,11 @@ class TweetController extends Controller
                         'allow' => true,
                         'actions' => ['create', 'index', 'view', 'update', 'delete'],
                         'roles' => ['admin']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['j-create', 'j-all-tweets', 'j-like', 'j-user-status'],
+                        'roles' => ['?', '@']
                     ]
                 ],
             ],
