@@ -56,17 +56,17 @@ class SendSms
                 $model->save();
             } else {
                 Yii::error($result);
-                $result = false;
+                $result = $result->toJson();
             }
         } catch (ClientException $e) {
             Yii::error($e->getErrorMessage());
-            $result = false;
+            $result = null;
         } catch (ServerException $e) {
             Yii::error($e->getErrorMessage());
-            $result = false;
+            $result = null;
         } catch (\Throwable $e) {
             Yii::error($e->getMessage());
-            $result = false;
+            $result = null;
         } finally {
             return $result;
         }
