@@ -12,6 +12,7 @@ use app\models\Activity;
 use app\models\ActivitySearch;
 use yii\db\StaleObjectException;
 use yii\debug\Panel;
+use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -30,6 +31,16 @@ class ActivityController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
+                        'roles' => ['admin']
+                    ]
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

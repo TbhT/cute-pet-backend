@@ -34,21 +34,16 @@ class MarketController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'only' => ['create', 'update', 'delete', 'index', 'view', 'j-create', 'j-detail', 'j-all'],
-//                'rules' => [
-//                    [
-//                        'allow' => true,
-//                        'roles' => ['admin']
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['j-create', 'j-detail', 'j-all'],
-//                        'roles' => ['@']
-//                    ]
-//                ]
-//            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
+                        'roles' => ['admin']
+                    ]
+                ],
+            ],
             [
                 'class' => GenerateIdBehavior::className(),
                 'attributes' => [

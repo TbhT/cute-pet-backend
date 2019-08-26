@@ -32,22 +32,16 @@ class TweetController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'only' => ['create', 'update', 'delete', 'index', 'view'],
-//                'rules' => [
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['view', 'j-create', 'j-all-tweets', 'j-like'],
-//                        'roles' => ['@']
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['create', 'update', 'delete', 'index'],
-//                        'roles' => ['admin']
-//                    ]
-//                ]
-//            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
+                        'roles' => ['admin']
+                    ]
+                ],
+            ],
             [
                 'class' => ContentNegotiator::className(),
                 'only' => ['j-create', 'j-all-tweets', 'j-like', 'j-user-status'],

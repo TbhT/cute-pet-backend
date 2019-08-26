@@ -32,14 +32,16 @@ class TopicController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'only' => ['create', 'update', 'delete', 'index', 'view'],
-//                'rules' => [
-//                    'allow' => true,
-//                    'roles' => 'admin'
-//                ]
-//            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
+                        'roles' => ['admin']
+                    ]
+                ],
+            ],
             [
                 'class' => ContentNegotiator::className(),
                 'only' => ['j-all', 'j-list'],

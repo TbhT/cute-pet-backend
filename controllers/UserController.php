@@ -29,26 +29,26 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'rules' => [
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['login-with-user', 'login', 'validate-code'],
-//                        'roles' => ['?']
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['logout', 'logout-with-user'],
-//                        'roles' => ['@']
-//                    ],
-//                    [
-//                        'allow' => true,
-//                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
-//                        'roles' => ['admin']
-//                    ]
-//                ]
-//            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login-with-user', 'login', 'validate-code'],
+                        'roles' => ['?']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['logout', 'logout-with-user'],
+                        'roles' => ['@']
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'index', 'view', 'update', 'delete'],
+                        'roles' => ['admin']
+                    ]
+                ]
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
