@@ -2,7 +2,7 @@
   "name": "CutePet",
   "short_name": "CutePet",
   "description": "CutePet",
-  "lang": "en-US",
+  "lang": "zh-cn",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f7b453",
