@@ -41,7 +41,11 @@ class ActivityController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join', 'j-detail'],
+                        'actions' => [
+                            'city-list', 'area-list', 'province-list', 
+                            'j-activity', 'j-join', 'j-detail',
+                            'cities', 'area'
+                            ],
                         'roles' => ['?', '@']
                     ]
                 ],
