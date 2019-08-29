@@ -35,6 +35,7 @@ class LikeTweet extends ActiveRecord
         return [
             [['userId'], 'required'],
             [['tweetId'], 'integer'],
+            [['createTime', 'updateTime'], 'safe'],
         ];
     }
 
