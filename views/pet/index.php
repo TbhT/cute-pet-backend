@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -24,12 +25,30 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'petId',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->status === 0 ? '正常' : '其他';
+                }
+            ],
             'nickname',
             'gender',
+            [
+                'attribute' => 'gender',
+                'value' => function ($model) {
+                    return $model->gender === 0 ? '公' : '母';
+                }
+            ],
             'age',
-            'vaccineStatus',
+            [
+                'attribute' => 'vaccineStatus',
+                'value' => function ($model) {
+                    return $model->vaccineStatus === 0 ? '未接种' : '已接种';
+                }
+            ],
+            'color',
             'petType',
+            'subType',
             'createTime',
             //'updateTime',
 

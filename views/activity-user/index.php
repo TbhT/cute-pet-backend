@@ -3,20 +3,15 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ActivityUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Activity Users';
+$this->title = '报名';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="activity-user-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Activity User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -26,13 +21,36 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'auId',
-            'activityId',
-            'userId',
+//            'id',
+//            'userId',
+//            'name',
+//            'phone',
+//            'relation',
+            //'size',
+            [
+                'attribute' => 'userInfo',
+                'label' => '用户手机号',
+                'value' => function ($model) {
+                    return $model->userInfo->mobile;
+                }
+            ],
+            [
+                'label' => '用户姓名',
+                'value' => function ($model) {
+                    return $model->userInfo->name;
+                }
+            ],
+            [
+                'label' => '活动名称',
+                'value' => function ($model) {
+                    return $model->activityInfo->name;
+                }
+            ],
             'createTime',
-            'updateTime',
-
+//            'updateTime',
+            //'tag',
+            //'type',
+            //'amount',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

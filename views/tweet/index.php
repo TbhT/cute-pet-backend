@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TweetSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -22,14 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'userId',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->status === 0 ? '正常' : '屏蔽';
+                }
+            ],
             'text:ntext',
             'image',
             'commentCount',
             'likeCount',
             'createTime',
             'updateTime',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

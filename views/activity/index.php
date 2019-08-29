@@ -3,6 +3,7 @@
 use app\models\Activity;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
@@ -40,6 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'organizer',
             'coorganizer',
             'place',
+            [
+                'label' => '查看报名情况',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::a('查看报名情况', Url::to(['/activity-user/index', 'ActivityUserSearch[activityId]' => $model->activityId]));
+                }
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view} {update} {delete}',

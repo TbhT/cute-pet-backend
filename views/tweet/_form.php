@@ -12,20 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'commentCount')->textInput() ?>
-
-    <?= $form->field($model, 'likeCount')->textInput() ?>
-
-    <?= $form->field($model, 'createTime')->textInput() ?>
-
-    <?= $form->field($model, 'updateTime')->textInput() ?>
+    <?=
+    $form->field($model, 'status')->dropDownList(
+        [
+            0 => '正常',
+            1 => '屏蔽'
+        ]
+    )
+    ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('更新', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -143,6 +143,7 @@ class User extends ActiveRecord implements IdentityInterface
             'address' => '家庭详细住址',
             'idCard' => '身份证号',
             'high' => '身高',
+            'status' => '用户状态',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
             'password' => '密码'

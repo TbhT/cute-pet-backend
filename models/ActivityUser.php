@@ -2,9 +2,7 @@
 
 namespace app\models;
 
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
+use Yii;
 
 /**
  * This is the model class for table "activity_user".
@@ -18,18 +16,12 @@ use yii\db\Expression;
  * @property string $activityId 活动id
  * @property string $createTime
  * @property string $updateTime
+ * @property string $tag
+ * @property int $type 支付类型
+ * @property double $amount 金额
  */
 class ActivityUser extends \yii\db\ActiveRecord
 {
-    // 两人一宠
-    const TYPE_TWO_ONE = 1;
-    // 两人两宠
-    const TYPE_TWO_TWO = 2;
-    // 一人两宠
-    const TYPE_ONE_TWO = 3;
-    // 一人一宠
-    const TYPE_ONE_ONE = 4;
-
     /**
      * {@inheritdoc}
      */
@@ -44,11 +36,11 @@ class ActivityUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userId', 'activityId'], 'integer'],
-            [['amount'], 'double'],
-//            [['type', 'amount'], 'required'],
+            [['userId', 'activityId', 'type'], 'integer'],
             [['createTime', 'updateTime'], 'safe'],
+            [['amount'], 'number'],
             [['name', 'phone', 'relation', 'size'], 'string', 'max' => 32],
+            [['tag'], 'string', 'max' => 255],
             [['userId', 'activityId'], 'unique', 'targetAttribute' => ['userId', 'activityId']],
         ];
     }
@@ -66,28 +58,13 @@ class ActivityUser extends \yii\db\ActiveRecord
             'relation' => '随行人关系',
             'size' => '随行人尺寸',
             'activityId' => '活动id',
-            'tag' => '参与人必填字段',
-            'type' => '支付类型',
-            'amount' => '金额',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
+            'tag' => 'Tag',
+            'type' => '支付类型',
+            'amount' => '金额',
         ];
     }
-
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
-                ],
-                'value' => new Expression('NOW()')
-            ]
-        ];
-    }
-
 
     /**
      * {@inheritdoc}
@@ -96,5 +73,15 @@ class ActivityUser extends \yii\db\ActiveRecord
     public static function find()
     {
         return new ActivityUserQuery(get_called_class());
+    }
+
+    public function getUserInfo()
+    {
+        return $this->hasOne(User::className(), ['userId' => 'userId']);
+    }
+
+    public function getActivityInfo()
+    {
+        return $this->hasOne(Activity::className(), ['activityId' => 'activityId']);
     }
 }

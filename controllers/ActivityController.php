@@ -178,6 +178,13 @@ class ActivityController extends Controller
             return $result;
         }
 
+        if ($activity->hasJoin >= $activity->personCount) {
+            $result->iRet = -4;
+            $result->sMsg = 'activity is full';
+            $result->data = null;
+            return $result;
+        }
+
         $hasJoinModel = ActivityUser::findOne(['userId' => $userId, 'activityId' => $activityId]);
         if ($hasJoinModel) {
             $result->iRet = -4;
