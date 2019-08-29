@@ -171,7 +171,7 @@ class User extends ActiveRecord implements IdentityInterface
             $now = new DateTime('now', $timezone);
             $diff = $now->diff($createTime);
 
-            if ($diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0 && $diff->i <= 5) {
+            if ($diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0 && $diff->i <= 30) {
                 return true;
             }
 
