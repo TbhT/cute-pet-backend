@@ -46,9 +46,9 @@ class LikeTweet extends ActiveRecord
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['createTime', 'updateTime'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime'],
-                    'value' => new Expression('NOW()')
-                ]
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updateTime']
+                ],
+                'value' => new Expression('NOW()')
             ],
             [
                 'class' => GenerateIdBehavior::className(),
