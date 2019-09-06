@@ -29,7 +29,7 @@ SPAAsset::register($this);
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <?php $this->registerCsrfMetaTags() ?>
-        <title>CutePet</title>
+        <title>宠伢</title>
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <link rel="apple-touch-icon" href="static/icons/apple-touch-icon.png">

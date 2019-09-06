@@ -41,7 +41,11 @@ class ActivityController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['city-list', 'area-list', 'province-list', 'j-activity', 'j-join', 'j-detail'],
+                        'actions' => [
+                            'city-list', 'area-list', 'province-list', 
+                            'j-activity', 'j-join', 'j-detail',
+                            'cities', 'area'
+                            ],
                         'roles' => ['?', '@']
                     ]
                 ],
@@ -170,6 +174,13 @@ class ActivityController extends Controller
         if (!$activity) {
             $result->iRet = -3;
             $result->sMsg = 'activity is empty';
+            $result->data = null;
+            return $result;
+        }
+
+        if ($activity->hasJoin >= $activity->personCount) {
+            $result->iRet = -4;
+            $result->sMsg = 'activity is full';
             $result->data = null;
             return $result;
         }

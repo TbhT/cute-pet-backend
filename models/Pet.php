@@ -45,10 +45,11 @@ class Pet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'gender', 'age', 'vaccineStatus', 'weight', 'neuter'], 'integer'],
+            [['status', 'gender', 'age', 'vaccineStatus', 'neuter'], 'integer'],
             [['avatar', 'petId', 'createTime', 'updateTime'], 'safe'],
             [['nickname', 'subType'], 'string', 'max' => 16],
             [['size', 'color', 'petType', ], 'string', 'max' => 64],
+            [['weight'], 'float'],
             [['petId'], 'unique'],
         ];
     }
@@ -60,7 +61,7 @@ class Pet extends \yii\db\ActiveRecord
     {
         return [
             'petId' => 'Pet ID',
-            'status' => 'Status',
+            'status' => '宠物状态',
             'nickname' => '昵称',
             'gender' => '性别',
             'age' => '年龄',

@@ -46,7 +46,7 @@ class ActivityUserController extends Controller
 
     /**
      * Displays a single ActivityUser model.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -67,7 +67,7 @@ class ActivityUserController extends Controller
         $model = new ActivityUser();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->auId]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -78,7 +78,7 @@ class ActivityUserController extends Controller
     /**
      * Updates an existing ActivityUser model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -87,7 +87,7 @@ class ActivityUserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->auId]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -98,11 +98,9 @@ class ActivityUserController extends Controller
     /**
      * Deletes an existing ActivityUser model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -114,7 +112,7 @@ class ActivityUserController extends Controller
     /**
      * Finds the ActivityUser model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
+     * @param integer $id
      * @return ActivityUser the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */

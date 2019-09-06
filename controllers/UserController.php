@@ -36,7 +36,7 @@ class UserController extends Controller
                         'allow' => true,
                         'actions' => [
                             'login-with-user', 'validate-code', 'update-data', 'j-user-status',
-                            'j-user-info', 'j-all-pet', 'j-all-tweets', 'j-all-activity'
+                            'j-user-info', 'j-all-pet', 'j-all-tweets', 'j-all-activity', 'login'
                         ],
                         'roles' => ['?', '@']
                     ],
@@ -116,14 +116,18 @@ class UserController extends Controller
         $phone = Yii::$app->request->post('mobile');
         $result = SendSms::send($phone);
 
-        if ($result === false) {
+        if (empty($result)) {
             $res->iRet = -1;
             $res->sMsg = 'validate code error';
+            $res->data = $result;
+        } else if (is_string($result)) {
+            $res->iRet = -2;
+            $res->sMsg = 'failed';
             $res->data = $result;
         } else {
             $res->iRet = 0;
             $res->sMsg = 'success';
-            $res->data = $result;
+            $result->data = null;
         }
 
         return $res;

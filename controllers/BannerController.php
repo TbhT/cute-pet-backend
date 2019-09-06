@@ -147,7 +147,10 @@ class BannerController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             if ($pictureForm->upload()) {
-                $model->image = $pictureForm->path;
+                if ($pictureForm->path) {
+                    $model->image = $pictureForm->path;
+                }
+
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->bannerId]);
                 }

@@ -143,6 +143,7 @@ class User extends ActiveRecord implements IdentityInterface
             'address' => '家庭详细住址',
             'idCard' => '身份证号',
             'high' => '身高',
+            'status' => '用户状态',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
             'password' => '密码'
@@ -170,7 +171,7 @@ class User extends ActiveRecord implements IdentityInterface
             $now = new DateTime('now', $timezone);
             $diff = $now->diff($createTime);
 
-            if ($diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0 && $diff->i <= 5) {
+            if ($diff->y == 0 && $diff->m == 0 && $diff->d == 0 && $diff->h == 0 && $diff->i <= 30) {
                 return true;
             }
 

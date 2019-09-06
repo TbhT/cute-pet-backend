@@ -51,6 +51,7 @@ $isAdmin = in_array(Yii::$app->user->id, $userIds);
                 ])
                 :
                 [
+                    ['label' => '报名管理', 'url' => '/activity-user'],
                     ['label' => '活动管理', 'url' => '/activity'],
                     ['label' => '动态管理', 'url' => '/tweet'],
                     ['label' => '轮播图管理', 'url' => '/banner'],

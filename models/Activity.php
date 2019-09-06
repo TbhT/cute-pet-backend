@@ -141,6 +141,14 @@ class Activity extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取活动报名的信息
+     */
+    public function actionActivityUser()
+    {
+        return $this->hasMany(ActivityUser::className(), ['activityId' => '$activityId']);
+    }
+
+    /**
      * 获取省份列表
      * @param int $type
      * @return Activity[]|array

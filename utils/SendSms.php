@@ -55,18 +55,18 @@ class SendSms
                 $model->code = $code;
                 $model->save();
             } else {
-                Yii::error($result);
-                $result = false;
+                Yii::error($result->toJson());
+                $result = $result->toJson();
             }
         } catch (ClientException $e) {
             Yii::error($e->getErrorMessage());
-            $result = false;
+            $result = null;
         } catch (ServerException $e) {
             Yii::error($e->getErrorMessage());
-            $result = false;
+            $result = null;
         } catch (\Throwable $e) {
             Yii::error($e->getMessage());
-            $result = false;
+            $result = null;
         } finally {
             return $result;
         }

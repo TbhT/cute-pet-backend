@@ -30,8 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'userId',
+            [
+                'attribute' => 'avatar',
+                'value' => $model->avatar,
+                'format' => [
+                    'image',
+                    ['width' => 100, 'height' => 100]
+                ]
+            ],
             'mobile',
-            'avatar',
             'name',
             'nickname',
             'birth',
@@ -42,9 +49,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'address',
             'idCard',
             'high',
+            [
+                'attribute' => 'status',
+                'value' => $model->status === 0 ? '正常' : '其他'
+            ],
             'status',
-            'password_hash',
-            'auth_key',
+//            'password_hash',
+//            'auth_key',
             'createTime',
             'updateTime',
         ],
