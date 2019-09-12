@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\ActivityUser;
 use app\models\AreaCode;
 use app\models\UploadForm;
+use app\utils\Pay;
 use stdClass;
 use Throwable;
 use Yii;
@@ -19,6 +20,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use Yurun\PaySDK\Weixin\JSAPI\Params\JSParams\Request;
+use Yurun\PaySDK\Weixin\Params\PublicParams;
+use Yurun\PaySDK\Weixin\SDK;
 
 /**
  * ActivityController implements the CRUD actions for Activity model.
@@ -42,10 +46,10 @@ class ActivityController extends Controller
                     [
                         'allow' => true,
                         'actions' => [
-                            'city-list', 'area-list', 'province-list', 
+                            'city-list', 'area-list', 'province-list',
                             'j-activity', 'j-join', 'j-detail',
-                            'cities', 'area'
-                            ],
+                            'cities', 'area', 'j-pay'
+                        ],
                         'roles' => ['?', '@']
                     ]
                 ],
@@ -215,6 +219,33 @@ class ActivityController extends Controller
         return $result;
     }
 
+    public function actionJPay()
+    {
+        $params = new PublicParams();
+        $params->appID = Yii::$app->params['WeChatParams']['appid'];
+        $params->mch_id = Yii::$app->params['WeChatParams']['mch_id'];
+        $params->key = Yii::$app->params['WeChatParams']['key'];
+
+        $pay = new SDK($params);
+
+        $request = new Request();
+        $request->body = 'test';
+        $request->out_trade_no = 'test' . mt_rand(10000000, 99999999);
+        $request->total_fee = 1;
+        $request->spbill_create_ip = Yii::$app->request->getUserIP();
+        $request->notify_url = Yii::$app->params['WeChatParams']['notify_url'];
+        $request->openid = Pay::GetOpenid();
+
+        $result = $pay->execute($request);
+
+        if ($result->checkResult()) {
+            $request = new Request;
+            $request->prepay_id = $result['prepay_id'];
+            $jsapiParams = $pay->execute($request);
+            return json_encode($jsapiParams);
+        }
+    }
+
     /**
      * Lists all Activity models.
      * @return mixed
@@ -267,7 +298,7 @@ class ActivityController extends Controller
                 if ($model->province) {
                     $_p = AreaCode::findOne(['id' => $model->province]);
                     if ($_p) {
-                        $model->provinceName =  $_p->name;
+                        $model->provinceName = $_p->name;
                     }
                 }
 
@@ -318,7 +349,7 @@ class ActivityController extends Controller
                 if ($model->province) {
                     $_p = AreaCode::findOne(['id' => $model->province]);
                     if ($_p) {
-                        $model->provinceName =  $_p->name;
+                        $model->provinceName = $_p->name;
                     }
                 }
 

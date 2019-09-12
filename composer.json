@@ -29,7 +29,9 @@
     "kartik-v/yii2-widget-fileinput": "dev-master",
     "kartik-v/yii2-widget-select2": "dev-master",
     "kartik-v/yii2-widget-depdrop": "dev-master",
-    "alibabacloud/sdk": "^1.7"
+    "alibabacloud/sdk": "^1.7",
+    "yurunsoft/pay-sdk": "~2.0",
+    "ext-curl": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
