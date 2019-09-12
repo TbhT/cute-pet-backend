@@ -106,7 +106,8 @@ class Pay
 
         if (empty($code)) {
             //触发微信返回code码
-            $baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING']);
+            $baseUrl = urlencode('http://'.$_SERVER['HTTP_HOST'].'/'.$_SERVER['QUERY_STRING']);
+//            $baseUrl = urlencode('http://www.chongyapet.com/');
             $url = static::createOAuthUrlForCode($baseUrl);
             Header("Location: $url");
             exit();
