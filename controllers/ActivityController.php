@@ -20,6 +20,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use Yurun\PaySDK\Weixin\JSAPI\Params\JSParams\Request as jsRequest;
 use Yurun\PaySDK\Weixin\JSAPI\Params\Pay\Request;
 use Yurun\PaySDK\Weixin\Params\PublicParams;
 use Yurun\PaySDK\Weixin\SDK;
@@ -237,12 +238,15 @@ class ActivityController extends Controller
         $request->openid = Pay::GetOpenid();
 
         $result = $pay->execute($request);
+        Yii::info($result);
 
-        if ($result->checkResult()) {
-            $request = new Request;
+        if ($pay->checkResult()) {
+            $request = new jsRequest;
             $request->prepay_id = $result['prepay_id'];
             $jsapiParams = $pay->execute($request);
             return json_encode($jsapiParams);
+        } else {
+            Yii::error($pay->checkResult());
         }
     }
 
