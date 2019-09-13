@@ -10,7 +10,7 @@ return [
         'key' => '5b9357b0870a8bb4d856efa60dc3ec5e',
         'notify_url' => 'http://www.chongyapet.com/',
         'wap_name' => '宠伢充值',
-        'app_secret' => '',
+        'app_secret' => '017640aec43d470d672edbcb4b261237',
         'sign_type' => 'MD5'
     ]
 ];
