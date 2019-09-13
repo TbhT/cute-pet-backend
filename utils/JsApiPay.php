@@ -34,6 +34,8 @@ class JsApiPay
      */
     public $data = null;
 
+    public $curl_timeout = 60000;
+
     /**
      *
      * 通过跳转获取用户的openid，跳转流程如下：
@@ -156,7 +158,7 @@ class JsApiPay
      *
      * 获取地址js参数
      *
-     * @return 获取共享收货地址js函数需要的参数，json格式可以直接做参数使用
+     * @return string 获取共享收货地址js函数需要的参数，json格式可以直接做参数使用
      */
     public function GetEditAddressParameters()
     {
@@ -207,8 +209,7 @@ class JsApiPay
     /**
      *
      * 构造获取open和access_toke的url地址
-     * @param string $code，微信跳转带回的code
-     *
+     * @param $code
      * @return string
      */
     private function __CreateOauthUrlForOpenid($code)

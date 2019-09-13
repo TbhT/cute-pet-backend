@@ -80,7 +80,7 @@ class WxPayApi
      * @param WxPayConfigInterface $config 配置对象
      * @param WxPayOrderQuery $inputObj
      * @param int $timeOut
-     * @return 成功时返回，其他抛异常
+     * @return array|bool
      * @throws WxPayException
      */
     public static function orderQuery($config, $inputObj, $timeOut = 6)
@@ -112,7 +112,7 @@ class WxPayApi
      * @param WxPayConfigInterface $config 配置对象
      * @param WxPayCloseOrder $inputObj
      * @param int $timeOut
-     * @return 成功时返回，其他抛异常
+     * @return array|bool
      * @throws WxPayException
      */
     public static function closeOrder($config, $inputObj, $timeOut = 6)
@@ -145,7 +145,7 @@ class WxPayApi
      * @param WxPayConfigInterface $config 配置对象
      * @param WxPayRefund $inputObj
      * @param int $timeOut
-     * @return 成功时返回，其他抛异常
+     * @return array|bool
      * @throws WxPayException
      */
     public static function refund($config, $inputObj, $timeOut = 6)
@@ -187,7 +187,7 @@ class WxPayApi
      * @param WxPayConfigInterface $config 配置对象
      * @param WxPayRefundQuery $inputObj
      * @param int $timeOut
-     * @return 成功时返回，其他抛异常
+     * @return array|bool
      * @throws WxPayException
      */
     public static function refundQuery($config, $inputObj, $timeOut = 6)
@@ -221,7 +221,7 @@ class WxPayApi
      * @param WxPayConfigInterface $config 配置对象
      * @param WxPayDownloadBill $inputObj
      * @param int $timeOut
-     * @return 成功时返回，其他抛异常
+     * @return string 成功时返回，其他抛异常
      * @throws WxPayException
      */
     public static function downloadBill($config, $inputObj, $timeOut = 6)
