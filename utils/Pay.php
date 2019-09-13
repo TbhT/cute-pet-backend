@@ -148,6 +148,7 @@ class Pay
         curl_close($ch);
         //取出openid
         $data = json_decode($res, true);
+        var_dump($data);
         $openid = $data['openid'];
         return $openid;
     }
