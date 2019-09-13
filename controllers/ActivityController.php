@@ -20,7 +20,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
-use Yurun\PaySDK\Weixin\JSAPI\Params\JSParams\Request;
+use Yurun\PaySDK\Weixin\JSAPI\Params\Pay\Request;
 use Yurun\PaySDK\Weixin\Params\PublicParams;
 use Yurun\PaySDK\Weixin\SDK;
 
