@@ -246,7 +246,10 @@ class ActivityController extends Controller
             $jsapiParams = $pay->execute($request);
             return json_encode($jsapiParams);
         } else {
+            Yii::error($result);
             Yii::error($pay->checkResult());
+            Yii::error($pay->getError());
+            Yii::error($pay->getErrorCode());
         }
     }
 
