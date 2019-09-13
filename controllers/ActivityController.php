@@ -247,6 +247,7 @@ class ActivityController extends Controller
             return json_encode($jsapiParams);
         } else {
             Yii::error($result);
+            Yii::error($pay->signType);
             Yii::error($pay->checkResult());
             Yii::error($pay->getError());
             Yii::error($pay->getErrorCode());
