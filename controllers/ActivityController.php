@@ -5,7 +5,11 @@ namespace app\controllers;
 use app\models\ActivityUser;
 use app\models\AreaCode;
 use app\models\UploadForm;
+use app\utils\JsApiPay;
 use app\utils\Pay;
+use app\utils\WxPayApi;
+use app\utils\WxPayConfig;
+use app\utils\WxPayUnifiedOrder;
 use stdClass;
 use Throwable;
 use Yii;
@@ -222,36 +226,31 @@ class ActivityController extends Controller
 
     public function actionJPay()
     {
-        $params = new PublicParams();
-        $params->appID = Yii::$app->params['WeChatParams']['appid'];
-        $params->mch_id = Yii::$app->params['WeChatParams']['mch_id'];
-        $params->key = Yii::$app->params['WeChatParams']['key'];
 
-        $pay = new SDK($params);
+        $tools = new JsApiPay();
+        $openId = $tools->GetOpenid();
 
-        $request = new Request();
-        $request->body = 'test';
-        $request->out_trade_no = 'test' . mt_rand(10000000, 99999999);
-        $request->total_fee = 1;
-        $request->spbill_create_ip = Yii::$app->request->getUserIP();
-        $request->notify_url = Yii::$app->params['WeChatParams']['notify_url'];
-        $request->openid = Pay::GetOpenid();
+        //②、统一下单
+        $input = new WxPayUnifiedOrder();
+        $input->SetBody("test");
+        $input->SetAttach("test");
+        $input->SetOut_trade_no("sdkphp" . date("YmdHis"));
+        $input->SetTotal_fee("1");
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 600));
+        $input->SetGoods_tag("test");
+        $input->SetNotify_url("http://www.chongyapet.com");
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($openId);
+        $config = new WxPayConfig();
+        $order = WxPayApi::unifiedOrder($config, $input);
+        echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
+//        var_dump($order);
+        $jsApiParameters = $tools->GetJsApiParameters($order);
 
-        $result = $pay->execute($request);
-        Yii::info($result);
-
-        if ($pay->checkResult()) {
-            $request = new jsRequest;
-            $request->prepay_id = $result['prepay_id'];
-            $jsapiParams = $pay->execute($request);
-            return json_encode($jsapiParams);
-        } else {
-            Yii::error($result);
-            Yii::error($pay->signType);
-            Yii::error($pay->checkResult());
-            Yii::error($pay->getError());
-            Yii::error($pay->getErrorCode());
-        }
+        //获取共享收货地址js函数参数
+//        $editAddress = $tools->GetEditAddressParameters();
+        var_dump($jsApiParameters);
     }
 
     /**
