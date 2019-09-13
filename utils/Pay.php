@@ -148,7 +148,8 @@ class Pay
         curl_close($ch);
         //取出openid
         $data = json_decode($res, true);
-        var_dump($data);
+//        var_dump($data);
+        Yii::error($data);
         $openid = $data['openid'];
         return $openid;
     }
