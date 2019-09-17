@@ -189,10 +189,7 @@ class OrderController extends Controller
         $result->sMsg = 'success';
 
         if (empty($order)) {
-            $result->data = [
-                'userId' => $userId,
-                'activityId' => $activityId
-            ];
+            $result->data = null;
         } else {
             $result->data = $order;
         }
