@@ -44,7 +44,7 @@ class OrderController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['j-create', 'j-detail', 'j-pay', 'j-final'],
+                        'actions' => ['j-create', 'j-detail', 'j-pay', 'j-final', 'j-list'],
                         'roles' => ['@']
                     ]
                 ]
@@ -57,7 +57,7 @@ class OrderController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create', 'j-detail', 'j-final'],
+                'only' => ['j-create', 'j-detail', 'j-final', 'j-list'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -71,6 +71,36 @@ class OrderController extends Controller
 //                ]
 //            ]
         ];
+    }
+
+    public function actionJList()
+    {
+        $userId = Yii::$app->user->id;
+        $orders = Order::findAll(['userId' => $userId]);
+        $result = new stdClass();
+
+//        var_dump($orders);
+        $ordersArray = [];
+        foreach ($orders as $order) {
+            $ordersArray[] = [
+                'activityId' => $order->activityId,
+                'createTime' => $order->createTime,
+                'name' => $order->name,
+                'orderId' => $order->orderId,
+                'status' => $order->status,
+                'userId' => $order->userId,
+                'totalFee' => $order->totalFee,
+                'activity' => [
+                    'name' => $order->activity->name
+                ]
+            ];
+        }
+
+        $result->iRet = 0;
+        $result->sMsg = 'success';
+        $result->data = $ordersArray;
+
+        return $result;
     }
 
     public function actionJFinal()
@@ -92,7 +122,7 @@ class OrderController extends Controller
                 }
             }
         }
-        
+
         return $result;
     }
 

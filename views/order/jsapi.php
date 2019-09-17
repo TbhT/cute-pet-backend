@@ -7,7 +7,7 @@
     <script src="/js/vconsole.min.js"></script>
 
     <script type="text/javascript">
-        new VConsole();
+        // new VConsole();
 
         //调用微信JS api 支付
         var orderId = <?= $orderId ?>;

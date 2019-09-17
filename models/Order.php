@@ -97,4 +97,8 @@ class Order extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getActivity()
+    {
+        return $this->hasOne(Activity::className(), ['activityId' => 'activityId']);
+    }
 }
