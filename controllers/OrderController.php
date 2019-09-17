@@ -81,6 +81,18 @@ class OrderController extends Controller
         $config = new WxPayConfig();
         $result = WxPayApi::orderQuery($config, $input);
         Yii::error($result, '支付');
+
+        if ($result['trade_state'] === 'SUCCESS') {
+            $order = Order::findOne(['orderId' => $orderId]);
+            if ($order) {
+                $order->status = Order::PAY;
+                $flag = $order->save();
+                if (!$flag) {
+                    Yii::error($order->getErrorSummary(true), '支付');
+                }
+            }
+        }
+        
         return $result;
     }
 

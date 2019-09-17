@@ -22,7 +22,7 @@
                             url: '/order/j-final',
                             data: {orderId: orderId},
                             success: function (data) {
-                                console.log(data)
+                                location.href = '/'
                             }
                         })
                     // } else {
