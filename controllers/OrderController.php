@@ -6,6 +6,7 @@ use app\models\Activity;
 use app\utils\JsApiPay;
 use app\utils\WxPayApi;
 use app\utils\WxPayConfig;
+use app\utils\WxPayOrderQuery;
 use app\utils\WxPayUnifiedOrder;
 use stdClass;
 use Throwable;
@@ -43,7 +44,7 @@ class OrderController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['j-create', 'j-detail', 'j-pay'],
+                        'actions' => ['j-create', 'j-detail', 'j-pay', 'j-final'],
                         'roles' => ['@']
                     ]
                 ]
@@ -56,7 +57,7 @@ class OrderController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create', 'j-detail'],
+                'only' => ['j-create', 'j-detail', 'j-final'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
@@ -70,6 +71,17 @@ class OrderController extends Controller
 //                ]
 //            ]
         ];
+    }
+
+    public function actionJFinal()
+    {
+        $orderId = Yii::$app->request->post('orderId');
+        $input = new WxPayOrderQuery();
+        $input->SetOut_trade_no($orderId);
+        $config = new WxPayConfig();
+        $result = WxPayApi::orderQuery($config, $input);
+        Yii::error($result, '支付');
+        return $result;
     }
 
     public function actionJPay()
@@ -116,6 +128,7 @@ class OrderController extends Controller
         $this->layout = false;
         return $this->render('jsapi', [
             'jsApiParameters' => $jsApiParameters,
+            'orderId' => $orderId
         ]);
     }
 
