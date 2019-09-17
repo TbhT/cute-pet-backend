@@ -113,7 +113,7 @@ class OrderController extends Controller
         //获取共享收货地址js函数参数
 //        $editAddress = $tools->GetEditAddressParameters();
 //        var_dump($jsApiParameters);
-        $this->layout = '';
+        $this->layout = false;
         return $this->render('jsapi', [
             'jsApiParameters' => $jsApiParameters,
         ]);
