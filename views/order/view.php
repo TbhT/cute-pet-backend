@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Order */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '订单', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,8 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->orderId], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->orderId], [
+        <?= Html::a('更新', ['update', 'id' => $model->orderId], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->orderId], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -30,12 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'orderId',
-            'status',
+            'activityId',
+            [
+                'attribute' => 'status',
+                'value' => $model->status == 1 ? '未支付' : '已支付'
+            ],
             'userId',
-            'totalFee',
+            [
+                'attribute' => 'totalFee',
+                'value' => function ($model) {
+                    return $model->totalFee / 100 . '元';
+                }
+            ],
+//            'totalFee',
             'name',
             'createTime',
-            'updateTime',
+//            'updateTime',
         ],
     ]) ?>
 

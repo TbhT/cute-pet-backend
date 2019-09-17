@@ -12,9 +12,14 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'orderId')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?=
+    $form->field($model, 'status')->dropDownList(
+        [
+            1 => '未支付',
+            2 => '已支付'
+        ]
+    )
+    ?>
 
     <?= $form->field($model, 'userId')->textInput(['maxlength' => true]) ?>
 
@@ -27,7 +32,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'updateTime')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('更新', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
