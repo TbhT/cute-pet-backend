@@ -35,6 +35,12 @@ class Generate
         return "6$id";
     }
 
+    public static function orderId()
+    {
+        $id = self::timeId();
+        return "1{$id}";
+    }
+
     public static function tweetId()
     {
         $id = self::shortId();

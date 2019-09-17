@@ -19,6 +19,8 @@ use yii\web\UploadedFile;
  * @property int $status 活动审核状态
  * @property string $name 活动名称
  * @property string $beginTime 活动开始时间
+ * @property int $petUnitPrice 宠物单价
+ * @property int $personUnitPrice 活动单价
  * @property string $endTime 活动结束时间
  * @property string $joinBeginTime 报名开始时间
  * @property string $joinEndTime 报名截止时间

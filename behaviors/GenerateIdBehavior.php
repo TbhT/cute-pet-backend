@@ -15,6 +15,7 @@ class GenerateIdBehavior extends AttributeBehavior
     const LIKE_TWEET_ID_TYPE = 'like_tweet_id';
     const PET_ID_TYPE = 'pet_id';
     const MARKET_ID_TYPE = 'market_id';
+    const ORDER_ID_TYPE = 'order_id';
 
     public $idType;
 
@@ -28,45 +29,50 @@ class GenerateIdBehavior extends AttributeBehavior
 
         switch ($this->idType) {
             case self::USER_ID_TYPE:
-                {
-                    $value = Generate::userId();
-                    break;
-                }
+            {
+                $value = Generate::userId();
+                break;
+            }
 
             case self::TWEET_ID_TYPE:
-                {
-                    $value = Generate::tweetId();
-                    break;
-                }
+            {
+                $value = Generate::tweetId();
+                break;
+            }
 
             case self::ACTIVITY_ID_TYPE:
-                {
-                    $value = Generate::activityId();
-                    break;
-                }
+            {
+                $value = Generate::activityId();
+                break;
+            }
 
             case self::COMMENT_ID_TYPE:
-                {
-                    $value = Generate::commentId();
-                    break;
-                }
+            {
+                $value = Generate::commentId();
+                break;
+            }
 
             case self::LIKE_TWEET_ID_TYPE:
-                {
-                    $value = Generate::likeTweetId();
-                    break;
-                }
+            {
+                $value = Generate::likeTweetId();
+                break;
+            }
 
             case self::PET_ID_TYPE:
-                {
-                    $value = Generate::petId();
-                    break;
-                }
+            {
+                $value = Generate::petId();
+                break;
+            }
             case self::MARKET_ID_TYPE:
-                {
-                    $value = Generate::marketId();
-                    break;
-                }
+            {
+                $value = Generate::marketId();
+                break;
+            }
+            case self::ORDER_ID_TYPE:
+            {
+                $value = Generate::orderId();
+                break;
+            }
         }
 
         return $value;
