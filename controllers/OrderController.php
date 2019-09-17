@@ -56,7 +56,7 @@ class OrderController extends Controller
             ],
             [
                 'class' => ContentNegotiator::className(),
-                'only' => ['j-create', 'j-detail', 'j-pay'],
+                'only' => ['j-create', 'j-detail'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON
                 ]
