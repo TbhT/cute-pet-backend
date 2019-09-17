@@ -18,7 +18,7 @@
                 <?= $jsApiParameters; ?>,
                 function (res) {
                     // if (res.err_msg == "get_brand_wcpay_request:ok") {
-                        $.ajax({
+                        $.post({
                             url: '/order/j-final',
                             data: {orderId: orderId},
                             success: function (data) {
