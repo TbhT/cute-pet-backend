@@ -46,10 +46,10 @@ class Pet extends \yii\db\ActiveRecord
     {
         return [
             [['status', 'gender', 'age', 'vaccineStatus', 'neuter'], 'integer'],
-            [['avatar', 'petId', 'createTime', 'updateTime'], 'safe'],
+            [['avatar', 'petId', 'createTime', 'updateTime', 'picture'], 'safe'],
             [['nickname', 'subType'], 'string', 'max' => 16],
-            [['size', 'color', 'petType', ], 'string', 'max' => 64],
-            [['weight'], 'float'],
+            [['size', 'color', 'petType',], 'string', 'max' => 64],
+            [['weight'], 'double'],
             [['petId'], 'unique'],
         ];
     }
@@ -112,7 +112,7 @@ class Pet extends \yii\db\ActiveRecord
     {
         if ($this->picture) {
             $webImagePath = UploadImage::saveImage($this->picture, $path);
-            $this->image = $webImagePath;
+            $this->avatar = $webImagePath;
         }
 
         return parent::save($runValidation, $attributeNames);

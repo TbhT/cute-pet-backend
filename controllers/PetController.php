@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\UploadForm;
 use app\models\UserPet;
 use stdClass;
 use Yii;
