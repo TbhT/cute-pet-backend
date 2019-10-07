@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "861188b2b7749134549c68450a01ffee",
+    "content-hash": "ff835e2ef0bddcb641c77d3ccab5ba06",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -63,16 +63,16 @@
         },
         {
             "name": "alibabacloud/client",
-            "version": "1.5.16",
+            "version": "1.5.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/openapi-sdk-php-client.git",
-                "reference": "b4d4b5360c393a15e57e9606bb3bf2f0b930aec1"
+                "reference": "0bb50708178c086a754812ba739a4c4f22ef2ff4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/b4d4b5360c393a15e57e9606bb3bf2f0b930aec1",
-                "reference": "b4d4b5360c393a15e57e9606bb3bf2f0b930aec1",
+                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php-client/zipball/0bb50708178c086a754812ba739a4c4f22ef2ff4",
+                "reference": "0bb50708178c086a754812ba739a4c4f22ef2ff4",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -146,20 +146,20 @@
                 "sdk",
                 "tool"
             ],
-            "time": "2019-08-21T05:00:07+00:00"
+            "time": "2019-09-16T12:01:10+00:00"
         },
         {
             "name": "alibabacloud/sdk",
-            "version": "1.7.99",
+            "version": "1.7.109",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/openapi-sdk-php.git",
-                "reference": "00ebdc0430a08685911df7026179f8cdb9fe4861"
+                "reference": "c7323af28e79030117b6bf9288bfc44ae1328de2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php/zipball/00ebdc0430a08685911df7026179f8cdb9fe4861",
-                "reference": "00ebdc0430a08685911df7026179f8cdb9fe4861",
+                "url": "https://api.github.com/repos/aliyun/openapi-sdk-php/zipball/c7323af28e79030117b6bf9288bfc44ae1328de2",
+                "reference": "c7323af28e79030117b6bf9288bfc44ae1328de2",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -230,6 +230,7 @@
                 "alibabacloud/drds": "self.version",
                 "alibabacloud/dts": "self.version",
                 "alibabacloud/dybaseapi": "self.version",
+                "alibabacloud/dyplsapi": "self.version",
                 "alibabacloud/dypnsapi": "self.version",
                 "alibabacloud/dysmsapi": "self.version",
                 "alibabacloud/dyvmsapi": "self.version",
@@ -270,6 +271,7 @@
                 "alibabacloud/market": "self.version",
                 "alibabacloud/mopen": "self.version",
                 "alibabacloud/mts": "self.version",
+                "alibabacloud/multimediaai": "self.version",
                 "alibabacloud/nas": "self.version",
                 "alibabacloud/netana": "self.version",
                 "alibabacloud/nlp": "self.version",
@@ -298,6 +300,7 @@
                 "alibabacloud/sas": "self.version",
                 "alibabacloud/sasapi": "self.version",
                 "alibabacloud/scdn": "self.version",
+                "alibabacloud/schedulerx2": "self.version",
                 "alibabacloud/skyeye": "self.version",
                 "alibabacloud/slb": "self.version",
                 "alibabacloud/smartag": "self.version",
@@ -359,7 +362,7 @@
                 "library",
                 "sdk"
             ],
-            "time": "2019-09-09T02:21:44+00:00"
+            "time": "2019-09-26T02:55:03+00:00"
         },
         {
             "name": "bower-asset/bootstrap",
@@ -525,16 +528,16 @@
         },
         {
             "name": "clagiordano/weblibs-configmanager",
-            "version": "v1.0.6",
+            "version": "v1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clagiordano/weblibs-configmanager.git",
-                "reference": "d1869310b9f57812581ff56cf4b456cbcc0d0516"
+                "reference": "6ef4c27354368deb2f54b39bbe06601da8c873a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clagiordano/weblibs-configmanager/zipball/d1869310b9f57812581ff56cf4b456cbcc0d0516",
-                "reference": "d1869310b9f57812581ff56cf4b456cbcc0d0516",
+                "url": "https://api.github.com/repos/clagiordano/weblibs-configmanager/zipball/6ef4c27354368deb2f54b39bbe06601da8c873a0",
+                "reference": "6ef4c27354368deb2f54b39bbe06601da8c873a0",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -547,7 +550,8 @@
                 "php": ">=5.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "clagiordano/phpunit-result-printer": "^1",
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
@@ -557,7 +561,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "LGPL-3.0"
+                "LGPL-3.0-or-later"
             ],
             "authors": [
                 {
@@ -574,7 +578,7 @@
                 "tool",
                 "weblibs"
             ],
-            "time": "2016-08-23T19:11:20+00:00"
+            "time": "2019-09-25T22:10:10+00:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -1030,16 +1034,16 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v5.0.5",
+            "version": "v5.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "18cb677b6f629087513dc92cb2551353cf3d9181"
+                "reference": "97fbfb5b16a3035c79534d5bd8a1d9bf4f76b1c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/18cb677b6f629087513dc92cb2551353cf3d9181",
-                "reference": "18cb677b6f629087513dc92cb2551353cf3d9181",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/97fbfb5b16a3035c79534d5bd8a1d9bf4f76b1c5",
+                "reference": "97fbfb5b16a3035c79534d5bd8a1d9bf4f76b1c5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1085,7 +1089,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2019-08-23T05:18:53+00:00"
+            "time": "2019-09-11T18:05:56+00:00"
         },
         {
             "name": "kartik-v/dependent-dropdown",
@@ -1604,16 +1608,16 @@
         },
         {
             "name": "select2/select2",
-            "version": "4.0.8",
+            "version": "4.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/select2/select2.git",
-                "reference": "a389a6da47f613ea9de3efc7a6dcf5cbda167608"
+                "reference": "c4b730a0a014ea38641bfbcb245e4b7aa0ca5657"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/select2/select2/zipball/a389a6da47f613ea9de3efc7a6dcf5cbda167608",
-                "reference": "a389a6da47f613ea9de3efc7a6dcf5cbda167608",
+                "url": "https://api.github.com/repos/select2/select2/zipball/c4b730a0a014ea38641bfbcb245e4b7aa0ca5657",
+                "reference": "c4b730a0a014ea38641bfbcb245e4b7aa0ca5657",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1644,7 +1648,7 @@
             ],
             "description": "Select2 is a jQuery based replacement for select boxes.",
             "homepage": "https://select2.org/",
-            "time": "2019-07-21T03:16:43+00:00"
+            "time": "2019-08-28T03:09:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1974,17 +1978,67 @@
             "time": "2019-08-06T08:03:45+00:00"
         },
         {
-            "name": "yiisoft/yii2",
-            "version": "2.0.26",
+            "name": "yiidoc/yii2-redactor",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "5ca9036dd6eb75354fbd287cc57f79ca861fb7f1"
+                "url": "https://github.com/yiidoc/yii2-redactor.git",
+                "reference": "c4c80c19c68728e88d135f4eec5c51352fbbaa37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/5ca9036dd6eb75354fbd287cc57f79ca861fb7f1",
-                "reference": "5ca9036dd6eb75354fbd287cc57f79ca861fb7f1",
+                "url": "https://api.github.com/repos/yiidoc/yii2-redactor/zipball/c4c80c19c68728e88d135f4eec5c51352fbbaa37",
+                "reference": "c4c80c19c68728e88d135f4eec5c51352fbbaa37",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii\\redactor\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nghia Nguyen",
+                    "email": "zinzinday@gmail.com"
+                }
+            ],
+            "description": "Extension redactor for Yii2 Framework.",
+            "keywords": [
+                "Redactor",
+                "extension",
+                "html editor",
+                "imperavi",
+                "wysiwyg",
+                "yii2"
+            ],
+            "time": "2015-06-02T21:47:24+00:00"
+        },
+        {
+            "name": "yiisoft/yii2",
+            "version": "2.0.27",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-framework.git",
+                "reference": "6793f8f9b4cd891dbf475cfbb88cf480f74eaa85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/6793f8f9b4cd891dbf475cfbb88cf480f74eaa85",
+                "reference": "6793f8f9b4cd891dbf475cfbb88cf480f74eaa85",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2077,7 +2131,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2019-09-03T21:38:33+00:00"
+            "time": "2019-09-18T13:04:16+00:00"
         },
         {
             "name": "yiisoft/yii2-authclient",
@@ -2405,16 +2459,16 @@
         },
         {
             "name": "yurunsoft/yurun-http",
-            "version": "v3.2.0",
+            "version": "v3.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Yurunsoft/YurunHttp.git",
-                "reference": "f6319d63aeecc59265ec797b7b75b8591284fe95"
+                "reference": "2e7298f12a95e3fcb97b79ff690719b2fec84296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Yurunsoft/YurunHttp/zipball/f6319d63aeecc59265ec797b7b75b8591284fe95",
-                "reference": "f6319d63aeecc59265ec797b7b75b8591284fe95",
+                "url": "https://api.github.com/repos/Yurunsoft/YurunHttp/zipball/2e7298f12a95e3fcb97b79ff690719b2fec84296",
+                "reference": "2e7298f12a95e3fcb97b79ff690719b2fec84296",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -2442,7 +2496,7 @@
                 "MIT"
             ],
             "description": "一个基于PHP cURL的开源HTTP类库，支持链式操作，省去繁杂的cURL使用方法。(An open source HTTP class library based on PHP cURL, support chain operations, eliminating the use of miscellaneous cURL methods.)",
-            "time": "2019-07-30T08:01:43+00:00"
+            "time": "2019-09-30T09:19:48+00:00"
         }
     ],
     "packages-dev": [
@@ -3091,16 +3145,16 @@
         },
         {
             "name": "phpdocumentor/reflection-common",
-            "version": "1.0.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6"
+                "reference": "63a995caa1ca9e5590304cd845c15ad6d482a62a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
-                "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/63a995caa1ca9e5590304cd845c15ad6d482a62a",
+                "reference": "63a995caa1ca9e5590304cd845c15ad6d482a62a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3110,22 +3164,20 @@
                 ]
             },
             "require": {
-                "php": ">=5.5"
+                "php": ">=7.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.6"
+                "phpunit/phpunit": "~6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "phpDocumentor\\Reflection\\": [
-                        "src"
-                    ]
+                    "phpDocumentor\\Reflection\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3147,20 +3199,20 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2017-09-11T18:02:19+00:00"
+            "time": "2018-08-07T13:53:10+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "4.3.1",
+            "version": "4.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c"
+                "reference": "b83ff7cfcfee7827e1e78b637a5904fe6a96698e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c",
-                "reference": "bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/b83ff7cfcfee7827e1e78b637a5904fe6a96698e",
+                "reference": "b83ff7cfcfee7827e1e78b637a5904fe6a96698e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3171,12 +3223,12 @@
             },
             "require": {
                 "php": "^7.0",
-                "phpdocumentor/reflection-common": "^1.0.0",
-                "phpdocumentor/type-resolver": "^0.4.0",
+                "phpdocumentor/reflection-common": "^1.0.0 || ^2.0.0",
+                "phpdocumentor/type-resolver": "~0.4 || ^1.0.0",
                 "webmozart/assert": "^1.0"
             },
             "require-dev": {
-                "doctrine/instantiator": "~1.0.5",
+                "doctrine/instantiator": "^1.0.5",
                 "mockery/mockery": "^1.0",
                 "phpunit/phpunit": "^6.4"
             },
@@ -3204,20 +3256,20 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2019-04-30T17:48:53+00:00"
+            "time": "2019-09-12T14:27:41+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "0.4.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7"
+                "reference": "2e32a6d48972b2c1976ed5d8967145b6cec4a4a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/9c977708995954784726e25d0cd1dddf4e65b0f7",
-                "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/2e32a6d48972b2c1976ed5d8967145b6cec4a4a9",
+                "reference": "2e32a6d48972b2c1976ed5d8967145b6cec4a4a9",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3227,24 +3279,23 @@
                 ]
             },
             "require": {
-                "php": "^5.5 || ^7.0",
-                "phpdocumentor/reflection-common": "^1.0"
+                "php": "^7.1",
+                "phpdocumentor/reflection-common": "^2.0"
             },
             "require-dev": {
-                "mockery/mockery": "^0.9.4",
-                "phpunit/phpunit": "^5.2||^4.8.24"
+                "ext-tokenizer": "^7.1",
+                "mockery/mockery": "~1",
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "phpDocumentor\\Reflection\\": [
-                        "src/"
-                    ]
+                    "phpDocumentor\\Reflection\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3257,7 +3308,8 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2017-07-14T14:27:02+00:00"
+            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
+            "time": "2019-08-22T18:11:29+00:00"
         },
         {
             "name": "phpspec/php-diff",
@@ -3305,16 +3357,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.8.1",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76"
+                "reference": "f6811d96d97bdf400077a0cc100ae56aa32b9203"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
-                "reference": "1927e75f4ed19131ec9bcc3b002e07fb1173ee76",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/f6811d96d97bdf400077a0cc100ae56aa32b9203",
+                "reference": "f6811d96d97bdf400077a0cc100ae56aa32b9203",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -3326,7 +3378,7 @@
             "require": {
                 "doctrine/instantiator": "^1.0.2",
                 "php": "^5.3|^7.0",
-                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
+                "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0|^5.0",
                 "sebastian/comparator": "^1.1|^2.0|^3.0",
                 "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
@@ -3370,7 +3422,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2019-06-13T12:50:23+00:00"
+            "time": "2019-10-03T11:07:50+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4099,16 +4151,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "06a9a5947f47b3029d76118eb5c22802e5869687"
+                "reference": "68609e1261d215ea5b21b7987539cbfbe156ec3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/06a9a5947f47b3029d76118eb5c22802e5869687",
-                "reference": "06a9a5947f47b3029d76118eb5c22802e5869687",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/68609e1261d215ea5b21b7987539cbfbe156ec3e",
+                "reference": "68609e1261d215ea5b21b7987539cbfbe156ec3e",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -4168,7 +4220,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2019-08-11T12:43:14+00:00"
+            "time": "2019-09-14T09:02:43+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -5313,16 +5365,16 @@
         },
         {
             "name": "yiisoft/yii2-debug",
-            "version": "2.1.8",
+            "version": "2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "959bf8206a3ec64f8949f62024a2c58d9a02e78f"
+                "reference": "62679af3183c308c0edffecc69778afc32ae55aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/959bf8206a3ec64f8949f62024a2c58d9a02e78f",
-                "reference": "959bf8206a3ec64f8949f62024a2c58d9a02e78f",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/62679af3183c308c0edffecc69778afc32ae55aa",
+                "reference": "62679af3183c308c0edffecc69778afc32ae55aa",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -5373,7 +5425,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2019-08-20T15:19:56+00:00"
+            "time": "2019-09-18T10:49:01+00:00"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -5498,7 +5550,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-curl": "*"
     },
     "platform-dev": []
 }

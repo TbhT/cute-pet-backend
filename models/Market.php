@@ -45,6 +45,7 @@ class Market extends \yii\db\ActiveRecord
             [['createTime', 'updateTime'], 'safe'],
             [['name', 'contact', 'phone', 'place'], 'required'],
             [['name'], 'string', 'max' => 256],
+            [['body'], 'string'],
             [['contact', 'phone'], 'string', 'max' => 64],
         ];
     }
@@ -63,6 +64,7 @@ class Market extends \yii\db\ActiveRecord
             'phone' => '联系方式',
             'place' => '地点',
             'image' => '商家图片',
+            'body' => '商家详情内容',
             'createTime' => '创建时间',
             'updateTime' => '更新时间',
         ];

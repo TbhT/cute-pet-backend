@@ -2,6 +2,7 @@
 
 use kartik\file\FileInput;
 use yii\helpers\Html;
+use yii\redactor\widgets\Redactor;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -31,6 +32,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'contact')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'body')->widget(Redactor::className(), [
+        'clientOptions' => [
+            'imageUpload' => ['/redactor/upload/image'],
+            'lang' => 'zh_cn',
+            'plugins' => ['clips', 'fontcolor']
+        ]
+    ])?>
+
 
     <?=
     $form->field($pictureForm, 'imageFile')->widget(FileInput::className(), [

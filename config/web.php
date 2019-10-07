@@ -70,6 +70,14 @@ $config = [
             ]
         ],
     ],
+    'modules' => [
+        'redactor' => [
+            'class' => 'yii\redactor\RedactorModule',
+            'uploadDir' => '@webroot/images/redactor',
+            'uploadUrl' => '@web/images/redactor',
+            'imageAllowExtensions' => ['jpg', 'png', 'gif']
+        ],
+    ],
     'params' => $params,
 ];
 
