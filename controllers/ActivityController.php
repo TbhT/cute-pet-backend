@@ -164,6 +164,7 @@ class ActivityController extends Controller
             'area' => $model->areaName,
             'hasJoin' => $model->hasJoin,
             'tag' => $model->tag,
+            'body' => $model->body,
             'userJoinStatus' => empty($hasJoinModel) ? -1 : 1
         ];
 

@@ -76,6 +76,7 @@ class Activity extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 32],
             [['organizer', 'coorganizer'], 'string', 'max' => 127],
             [['place'], 'string', 'max' => 255],
+            [['body'], 'string'],
             [['personUnitPrice', 'petUnitPrice', 'personCount'], 'double'],
             [['activityId'], 'unique'],
         ];
@@ -108,6 +109,7 @@ class Activity extends \yii\db\ActiveRecord
             'updateTime' => '更新时间',
             'image' => '活动图片',
             'picture' => '活动封面图',
+            'body' => '活动详情',
             'tag' => '参与者必填字段'
         ];
     }

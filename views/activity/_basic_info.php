@@ -1,6 +1,7 @@
 <?php
 
 use kartik\file\FileInput;
+use yii\redactor\widgets\Redactor;
 
 /* @var $pictureForm app\models\UploadForm */
 
@@ -127,6 +128,16 @@ $data = [
             'pluginOptions' => [
                 'tags' => true,
                 'maximumInputLength' => 10
+            ]
+        ])
+        ?>
+
+        <?=
+        $form->field($model, 'body')->widget(Redactor::className(), [
+            'clientOptions' => [
+                'imageUpload' => ['/redactor/upload/image'],
+                'lang' => 'zh_cn',
+                'plugins' => ['clips', 'fontcolor']
             ]
         ])
         ?>
